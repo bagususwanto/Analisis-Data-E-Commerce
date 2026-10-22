@@ -1,0 +1,266 @@
+{
+  "phase": "P00",
+  "checked_at": "2026-10-22T19:59:29+07:00",
+  "timezone": "Asia/Jakarta",
+  "plan_version": "2.1",
+  "plan_sha256": "b06a5944d3393ac8b77bad60b117f47410febc384522344b981f6e9454767d8e",
+  "source_files": [
+    {
+      "path": "data/orders_dataset.csv",
+      "role": "primary",
+      "size_bytes": 17654914,
+      "sha256": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+      "row_count": 99441,
+      "columns": [
+        "order_id",
+        "customer_id",
+        "order_status",
+        "order_purchase_timestamp",
+        "order_approved_at",
+        "order_delivered_carrier_date",
+        "order_delivered_customer_date",
+        "order_estimated_delivery_date"
+      ],
+      "plan_row_count": 99441,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/customers_dataset.csv",
+      "role": "primary",
+      "size_bytes": 9033957,
+      "sha256": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+      "row_count": 99441,
+      "columns": [
+        "customer_id",
+        "customer_unique_id",
+        "customer_zip_code_prefix",
+        "customer_city",
+        "customer_state"
+      ],
+      "plan_row_count": 99441,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/order_items_dataset.csv",
+      "role": "primary",
+      "size_bytes": 15438671,
+      "sha256": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+      "row_count": 112650,
+      "columns": [
+        "order_id",
+        "order_item_id",
+        "product_id",
+        "seller_id",
+        "shipping_limit_date",
+        "price",
+        "freight_value"
+      ],
+      "plan_row_count": 112650,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/products_dataset.csv",
+      "role": "primary",
+      "size_bytes": 2379446,
+      "sha256": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+      "row_count": 32951,
+      "columns": [
+        "product_id",
+        "product_category_name",
+        "product_name_lenght",
+        "product_description_lenght",
+        "product_photos_qty",
+        "product_weight_g",
+        "product_length_cm",
+        "product_height_cm",
+        "product_width_cm"
+      ],
+      "plan_row_count": 32951,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/order_reviews_dataset.csv",
+      "role": "primary",
+      "size_bytes": 14451670,
+      "sha256": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+      "row_count": 99224,
+      "columns": [
+        "review_id",
+        "order_id",
+        "review_score",
+        "review_comment_title",
+        "review_comment_message",
+        "review_creation_date",
+        "review_answer_timestamp"
+      ],
+      "plan_row_count": 99224,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/product_category_name_translation.csv",
+      "role": "primary",
+      "size_bytes": 2613,
+      "sha256": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+      "row_count": 71,
+      "columns": [
+        "product_category_name",
+        "product_category_name_english"
+      ],
+      "plan_row_count": 71,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/order_payments_dataset.csv",
+      "role": "supporting",
+      "size_bytes": 5777138,
+      "sha256": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+      "row_count": 103886,
+      "columns": [
+        "order_id",
+        "payment_sequential",
+        "payment_type",
+        "payment_installments",
+        "payment_value"
+      ],
+      "plan_row_count": 103886,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/sellers_dataset.csv",
+      "role": "supporting",
+      "size_bytes": 174703,
+      "sha256": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+      "row_count": 3095,
+      "columns": [
+        "seller_id",
+        "seller_zip_code_prefix",
+        "seller_city",
+        "seller_state"
+      ],
+      "plan_row_count": 3095,
+      "matches_plan_row_count": true
+    },
+    {
+      "path": "data/geolocation_dataset.csv",
+      "role": "supporting",
+      "size_bytes": 61273883,
+      "sha256": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6",
+      "row_count": 1000163,
+      "columns": [
+        "geolocation_zip_code_prefix",
+        "geolocation_lat",
+        "geolocation_lng",
+        "geolocation_city",
+        "geolocation_state"
+      ],
+      "plan_row_count": 1000163,
+      "matches_plan_row_count": true
+    }
+  ],
+  "initial_plan_comparison": {
+    "missing_text_policy": "Empty or whitespace-only text is missing; source text is preserved.",
+    "review_text_empty_only": {
+      "titles": 87656,
+      "messages": 58247
+    },
+    "observed": {
+      "purchase_min": "2016-09-04 21:15:19",
+      "purchase_max": "2018-10-17 17:30:18",
+      "sparse_month_orders": {
+        "2018-09": 16,
+        "2018-10": 4
+      },
+      "delivered_orders": 96478,
+      "missing_delivery_dates": 2965,
+      "delivered_missing_delivery_dates": 8,
+      "missing_approval_dates": 160,
+      "missing_carrier_dates": 1783,
+      "products_missing_category": 610,
+      "missing_review_titles": 87658,
+      "missing_review_messages": 58274,
+      "orders_multiple_reviews": 547,
+      "additional_repeated_review_ids": 814,
+      "orders_multiple_payments": 2961,
+      "delivered_unique_customers": 93358,
+      "delivered_repeat_customers": 2801,
+      "shipping_limit_max": "2020-04-09 22:35:08"
+    },
+    "expected": {
+      "delivered_orders": 96478,
+      "missing_delivery_dates": 2965,
+      "delivered_missing_delivery_dates": 8,
+      "missing_approval_dates": 160,
+      "missing_carrier_dates": 1783,
+      "products_missing_category": 610,
+      "missing_review_titles": 87658,
+      "missing_review_messages": 58274,
+      "orders_multiple_reviews": 547,
+      "additional_repeated_review_ids": 814,
+      "orders_multiple_payments": 2961,
+      "delivered_unique_customers": 93358,
+      "delivered_repeat_customers": 2801
+    },
+    "differences": {},
+    "scope_note": "P00 rechecks initial profile; full schema/type, key, null, parsing and integrity assessment remains P02. Prior source hashes unavailable; this establishes the first hash baseline."
+  },
+  "template": {
+    "template_verified": true,
+    "path": "references/notebook_template.ipynb",
+    "source_url": "https://colab.research.google.com/drive/144WFnMMqvTAnGG-Qj5pUuVAYtCHGJbcp?usp=sharing",
+    "download_url": "https://drive.google.com/uc?export=download&id=144WFnMMqvTAnGG-Qj5pUuVAYtCHGJbcp",
+    "retrieved_at": "2026-10-22T19:59:29+07:00",
+    "sha256": "a278bc0b6f5210e56f820c4afe3c9320da0a3db26d188ff566a3ce3bb5f29b33",
+    "size_bytes": 7213,
+    "nbformat": 4,
+    "cell_count": 37,
+    "headings": [
+      "# Proyek Analisis Data: [Input Nama Dataset]",
+      "## Menentukan Pertanyaan Bisnis",
+      "## Import Semua Packages/Library yang Digunakan",
+      "## Data Wrangling",
+      "### Gathering Data",
+      "#### Load df ...",
+      "### Assessing Data",
+      "#### Identifying ... problem",
+      "### Cleaning Data",
+      "#### Fixing ... problem",
+      "## Exploratory Data Analysis (EDA)",
+      "### Explore ...",
+      "## Visualization & Explanatory Analysis",
+      "### Pertanyaan 1:",
+      "### Pertanyaan 2:",
+      "## Analisis Lanjutan (Opsional)",
+      "## Conclusion & Recommendation"
+    ]
+  },
+  "identity": {
+    "full_name": {
+      "status": "provided_by_user",
+      "value": "Bagus Uswanto"
+    },
+    "email": {
+      "status": "provided_by_user",
+      "value": "DS013B6Y0318@student.devacademy.id"
+    },
+    "dicoding_id": {
+      "status": "provided_by_user",
+      "value": "DS013B6Y0318"
+    }
+  },
+  "runtime": {
+    "executable": "/opt/homebrew/opt/python@3.14/bin/python3.14",
+    "python_version": "3.14.5",
+    "platform": "macOS-27.0.1-arm64-arm-64bit-Mach-O",
+    "isolated_environment_created": false,
+    "note": "Runtime inventory only; selection and dependency compatibility belong to P01."
+  },
+  "workspace": {
+    "git_repository": false,
+    "applicable_agents_files": [],
+    "extra_data_files": [
+      "New Text Document.txt"
+    ],
+    "note": "No source CSV modified; extra data files left untouched."
+  },
+  "identity_updated_at": "2026-10-22T20:05:22+07:00"
+}
