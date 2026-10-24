@@ -1,0 +1,41 @@
+{
+  "phase": "P03",
+  "status": "passed",
+  "verified_at": "2026-10-24T09:19:01+07:00",
+  "invocation_cwd": "/private/tmp",
+  "checks": {
+    "independent_review_winners_match": 98673,
+    "raw_and_clean_price_total_cents": 1359164370,
+    "raw_and_clean_freight_total_cents": 225190954,
+    "invalid_delivery_pairs_with_null_labels": 2965,
+    "delivered_missing_receipt_with_null_labels": 8,
+    "required_keys_unique_and_complete": true
+  },
+  "deterministic_second_run": true,
+  "nine_source_hashes_unchanged": true,
+  "template_hash_unchanged": true,
+  "p02_report_hash_matches_verification": true,
+  "cleaning_audit_sha256": "cebb669099c7e83cd62ab03669bafe81dc41187bf983ec91ae3262862f4c801a",
+  "review_selection_sha256": "cf984452aa7b6fe69287139f08e02b21bc762c0adde7a679eb01c8a06b067e80",
+  "rows_after": {
+    "orders_dataset": 99441,
+    "customers_dataset": 99441,
+    "product_category_name_translation": 71,
+    "products_dataset": 32951,
+    "order_items_dataset": 112650,
+    "order_reviews_dataset": 98673
+  },
+  "note": "Tes kasus risiko dijalankan terpisah melalui pytest; lihat EXECUTION_STATUS.md.",
+  "risk_tests": {
+    "command": ".venv/bin/python -m pytest tests/test_pipeline.py -q",
+    "result": "31 passed",
+    "exit_code": 0
+  },
+  "review_trace_checks": {
+    "candidate_rows": 1098,
+    "selected_rows": 547,
+    "affected_orders": 547,
+    "hash_verified": true
+  },
+  "final_artifact_check_at": "2026-10-24T09:20:24+07:00"
+}

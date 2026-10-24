@@ -2,7 +2,7 @@
 
 Proyek analisis dataset E-Commerce untuk submission Dicoding. Pemilik: **Bagus Uswanto**, ID Dicoding **DS013B6Y0318**.
 
-Saat ini tersedia inventaris sumber (P00), konfigurasi bersama, loader mentah, pemeriksaan fondasi (P01), serta assessment formal dan rencana tindakan kualitas data (P02). Cleaning, notebook analisis, dan dashboard mengikuti phase berikutnya pada [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). Status aktual dicatat di [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
+Saat ini tersedia inventaris sumber (P00), konfigurasi bersama dan loader mentah (P01), assessment formal (P02), serta cleaning dan penanda kualitas yang dapat diaudit (P03). Integrasi tabel analisis, notebook, dan dashboard mengikuti phase berikutnya pada [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). Status aktual dicatat di [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
 
 ## Setup lingkungan
 
@@ -49,6 +49,33 @@ Skrip memuat enam sumber utama melalui loader dan membuat profil ringkas tiga su
 Laporan lengkap dan rencana tindakan per `issue_id` tersimpan pada [reports/data_quality.json](reports/data_quality.json). Tabel Gathering, Assessing, dan Steps to Take untuk bahan notebook tersedia pada [reports/assessment_summary.md](reports/assessment_summary.md). Profil ditambahkan ke baseline dengan tetap mempertahankan hash dan riwayat P00. Hash sembilan CSV dan templat diperiksa sebelum/sesudah proses; sumber yang berubah menyebabkan skrip berhenti. Entry point juga dapat dipanggil melalui path absolut dari direktori lain.
 
 P02 hanya menilai sumber dan mendokumentasikan tindakan. Seleksi ulasan dan transformasi cleaning dikerjakan di P03; tabel analisis dan flag eligibility dibentuk di P04. Jumlah masalah dapat tumpang tindih, sehingga tidak boleh dijumlahkan sebagai total transaksi bermasalah.
+
+## Menjalankan cleaning P03
+
+```bash
+.venv/bin/python -m pytest tests/test_pipeline.py -q
+.venv/bin/python scripts/check_cleaning.py
+```
+
+Fungsi cleaning tersedia pada `src/data_pipeline.py`; setiap fungsi mengembalikan `(tabel, audit)`. Untuk memakainya dari notebook atau phase berikutnya:
+
+```python
+from src.data_pipeline import clean_primary_sources
+
+tables, audits = clean_primary_sources()
+orders = tables["orders_dataset"]
+selected_reviews = tables["order_reviews_dataset"]
+```
+
+Cleaning dimulai dari enam sumber mentah dan memakai salinan data. Hasil tidak memfilter status atau periode. Kolom tanggal dikonversi dengan salinan `*_raw`, serta flag missing, gagal parsing, dan valid. `is_late` menggunakan tanggal kalender; `days_late` berupa integer nullable. Pasangan tanggal yang tidak dapat dievaluasi tetap menghasilkan nilai kosong. Inversi waktu approval/kurir dicatat tanpa menebak tanggal pengganti. Estimasi sebelum tanggal pembelian diberi flag dan tidak menghasilkan label keterlambatan.
+
+Uang disimpan dalam `price_cents` dan `freight_cents` (`Int64`) melalui representasi Decimal dan rasio integer yang tepat. Nilai nol dipertahankan; nilai negatif/non-numerik menjadi tidak tersedia dengan alasan kualitas. Presisi di luar sen menghentikan proses melalui `MoneyPrecisionError`; tidak ada pembulatan diam-diam. ID dan kode pos tetap string.
+
+Produk memiliki `category_code`, `category_name`, `category_missing`, dan `category_translation_missing`. Label kategori kosong dibedakan dari fallback kode kategori yang belum diterjemahkan. Atribut produk opsional tetap nullable. Duplikasi persis dibuang dengan jejak ordinal sumber, sedangkan konflik kunci berbeda isi menghentikan proses untuk diinspeksi.
+
+Ulasan dipilih satu per pesanan dengan urutan creation terbaru, answer terbaru, review ID leksikografis terbesar, lalu ordinal sumber terbesar; tanggal kosong ditempatkan sebelum tanggal valid. Validasi skor dilakukan sesudah pemilihan. Kolom `source_row_number` adalah urutan data record mulai 1 sebelum deduplikasi, bukan nomor baris fisik CSV. `review_candidate_count` menghitung kandidat setelah duplikasi persis dihapus. Review ID yang sama pada pesanan berbeda dipertahankan.
+
+Skrip pemeriksaan menjalankan cleaning dua kali untuk membuktikan hasil deterministik, memeriksa kunci dan label nullable, serta merekonsiliasi pemenang review dengan pembacaan CSV independen dan total uang dengan Decimal. Sembilan hash CSV dan hash templat diperiksa sebelum/sesudah. Keluaran berupa [audit cleaning](reports/cleaning_audit.json), [jejak kandidat review](reports/review_selection.csv), dan [laporan verifikasi](reports/cleaning_validation.json). Audit mencakup sebelum/sesudah seluruh issue P02, termasuk kondisi yang sengaja dipertahankan dan pekerjaan eligibility yang menjadi milik P04. CSV tabel analisis/dashboard belum diekspor pada tahap ini.
 
 ## Konfigurasi dan sumber
 

@@ -1,0 +1,860 @@
+{
+  "phase": "P03",
+  "status": "completed",
+  "verified_at": "2026-10-24T09:19:01+07:00",
+  "generator": "scripts/check_cleaning.py",
+  "runtime": {
+    "python": "3.12.13",
+    "pandas": "3.1.0",
+    "invocation_cwd": "/private/tmp"
+  },
+  "source_sha256": {
+    "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+    "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+    "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+    "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+    "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+    "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+    "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+    "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+    "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+  },
+  "assessment_sha256": "76ba8eb1bfee7fd713d9357af1d95e5e913790b8bbcb2f8ec0fbf739c2d41327",
+  "scope": "Cleaning enam sumber; status/periode tidak difilter. Tabel analisis/eligibility/ekspor dashboard belum dibuat.",
+  "sources": {
+    "orders_dataset": {
+      "source": "orders_dataset",
+      "rows_before": 99441,
+      "rows_after_exact_dedup": 99441,
+      "rows_after": 99441,
+      "exact_duplicate_rows_removed": 0,
+      "exact_duplicate_source_rows_removed": [],
+      "source_row_number_definition": "Ordinal 1-based data record sebelum dedup, tidak termasuk header; bukan nomor baris fisik CSV",
+      "key_columns": [
+        "order_id"
+      ],
+      "dates": {
+        "order_purchase_timestamp": {
+          "missing_before": 0,
+          "parse_failures": 0,
+          "null_after": 0,
+          "valid_after": 99441
+        },
+        "order_approved_at": {
+          "missing_before": 160,
+          "parse_failures": 0,
+          "null_after": 160,
+          "valid_after": 99281
+        },
+        "order_delivered_carrier_date": {
+          "missing_before": 1783,
+          "parse_failures": 0,
+          "null_after": 1783,
+          "valid_after": 97658
+        },
+        "order_delivered_customer_date": {
+          "missing_before": 2965,
+          "parse_failures": 0,
+          "null_after": 2965,
+          "valid_after": 96476
+        },
+        "order_estimated_delivery_date": {
+          "missing_before": 0,
+          "parse_failures": 0,
+          "null_after": 0,
+          "valid_after": 99441
+        }
+      },
+      "numeric": {},
+      "flags": {
+        "order_purchase_timestamp_missing": 0,
+        "order_purchase_timestamp_parse_failed": 0,
+        "order_purchase_timestamp_valid": 99441,
+        "order_approved_at_missing": 160,
+        "order_approved_at_parse_failed": 0,
+        "order_approved_at_valid": 99281,
+        "order_delivered_carrier_date_missing": 1783,
+        "order_delivered_carrier_date_parse_failed": 0,
+        "order_delivered_carrier_date_valid": 97658,
+        "order_delivered_customer_date_missing": 2965,
+        "order_delivered_customer_date_parse_failed": 0,
+        "order_delivered_customer_date_valid": 96476,
+        "order_estimated_delivery_date_missing": 0,
+        "order_estimated_delivery_date_parse_failed": 0,
+        "order_estimated_delivery_date_valid": 99441,
+        "order_approved_at_before_order_purchase_timestamp": 0,
+        "order_delivered_carrier_date_before_order_purchase_timestamp": 166,
+        "order_delivered_customer_date_before_order_purchase_timestamp": 0,
+        "order_delivered_carrier_date_before_order_approved_at": 1359,
+        "order_delivered_customer_date_before_order_approved_at": 61,
+        "order_delivered_customer_date_before_order_delivered_carrier_date": 23,
+        "estimated_date_before_purchase": 0,
+        "has_lifecycle_chronology_issue": 1382,
+        "customer_id_valid": 99441,
+        "delivery_dates_valid": 96476,
+        "is_late": 6535
+      },
+      "delivery_label_scope": "Tanggal valid saja; status delivered dan periode belum difilter (P04). Inversi approval/carrier tidak membatalkan pasangan tanggal aktual/estimasi.",
+      "null_lateness_rows": 2965
+    },
+    "customers_dataset": {
+      "source": "customers_dataset",
+      "rows_before": 99441,
+      "rows_after_exact_dedup": 99441,
+      "rows_after": 99441,
+      "exact_duplicate_rows_removed": 0,
+      "exact_duplicate_source_rows_removed": [],
+      "source_row_number_definition": "Ordinal 1-based data record sebelum dedup, tidak termasuk header; bukan nomor baris fisik CSV",
+      "key_columns": [
+        "customer_id"
+      ],
+      "dates": {},
+      "numeric": {},
+      "flags": {
+        "customer_unique_id_valid": 99441,
+        "customer_state_valid": 99441
+      }
+    },
+    "product_category_name_translation": {
+      "source": "product_category_name_translation",
+      "rows_before": 71,
+      "rows_after_exact_dedup": 71,
+      "rows_after": 71,
+      "exact_duplicate_rows_removed": 0,
+      "exact_duplicate_source_rows_removed": [],
+      "source_row_number_definition": "Ordinal 1-based data record sebelum dedup, tidak termasuk header; bukan nomor baris fisik CSV",
+      "key_columns": [
+        "product_category_name"
+      ],
+      "dates": {},
+      "numeric": {},
+      "flags": {
+        "translation_name_valid": 71
+      }
+    },
+    "products_dataset": {
+      "source": "products_dataset",
+      "rows_before": 32951,
+      "rows_after_exact_dedup": 32951,
+      "rows_after": 32951,
+      "exact_duplicate_rows_removed": 0,
+      "exact_duplicate_source_rows_removed": [],
+      "source_row_number_definition": "Ordinal 1-based data record sebelum dedup, tidak termasuk header; bukan nomor baris fisik CSV",
+      "key_columns": [
+        "product_id"
+      ],
+      "dates": {},
+      "numeric": {
+        "product_name_lenght": {
+          "quality_counts": {
+            "valid": 32341,
+            "missing": 610
+          },
+          "null_after": 610
+        },
+        "product_description_lenght": {
+          "quality_counts": {
+            "valid": 32341,
+            "missing": 610
+          },
+          "null_after": 610
+        },
+        "product_photos_qty": {
+          "quality_counts": {
+            "valid": 32341,
+            "missing": 610
+          },
+          "null_after": 610
+        },
+        "product_weight_g": {
+          "quality_counts": {
+            "valid": 32949,
+            "missing": 2
+          },
+          "null_after": 2
+        },
+        "product_length_cm": {
+          "quality_counts": {
+            "valid": 32949,
+            "missing": 2
+          },
+          "null_after": 2
+        },
+        "product_height_cm": {
+          "quality_counts": {
+            "valid": 32949,
+            "missing": 2
+          },
+          "null_after": 2
+        },
+        "product_width_cm": {
+          "quality_counts": {
+            "valid": 32949,
+            "missing": 2
+          },
+          "null_after": 2
+        }
+      },
+      "flags": {
+        "category_missing": 610,
+        "category_translation_missing": 13,
+        "optional_attributes_missing": 611,
+        "product_name_lenght_valid": 32341,
+        "product_description_lenght_valid": 32341,
+        "product_photos_qty_valid": 32341,
+        "product_weight_g_valid": 32949,
+        "product_length_cm_valid": 32949,
+        "product_height_cm_valid": 32949,
+        "product_width_cm_valid": 32949,
+        "product_weight_zero": 4
+      },
+      "category_lookup": {
+        "rows_before": 32951,
+        "rows_after": 32951,
+        "translation_key_unique": true,
+        "missing_category_products": 610,
+        "untranslated_products": 13,
+        "unknown_display_name_after": 610,
+        "untranslated_codes": [
+          "pc_gamer",
+          "portateis_cozinha_e_preparadores_de_alimentos"
+        ]
+      }
+    },
+    "order_items_dataset": {
+      "source": "order_items_dataset",
+      "rows_before": 112650,
+      "rows_after_exact_dedup": 112650,
+      "rows_after": 112650,
+      "exact_duplicate_rows_removed": 0,
+      "exact_duplicate_source_rows_removed": [],
+      "source_row_number_definition": "Ordinal 1-based data record sebelum dedup, tidak termasuk header; bukan nomor baris fisik CSV",
+      "key_columns": [
+        "order_id",
+        "order_item_id"
+      ],
+      "dates": {
+        "shipping_limit_date": {
+          "missing_before": 0,
+          "parse_failures": 0,
+          "null_after": 0,
+          "valid_after": 112650
+        }
+      },
+      "numeric": {
+        "order_item_id": {
+          "quality_counts": {
+            "valid": 112650
+          },
+          "null_after": 0
+        },
+        "price": {
+          "target": "price_cents",
+          "quality_counts": {
+            "valid": 112650
+          },
+          "valid_zero_rows": 0,
+          "valid_total_cents": 1359164370,
+          "null_after": 0
+        },
+        "freight_value": {
+          "target": "freight_cents",
+          "quality_counts": {
+            "valid": 112650
+          },
+          "valid_zero_rows": 383,
+          "valid_total_cents": 225190954,
+          "null_after": 0
+        }
+      },
+      "flags": {
+        "shipping_limit_date_missing": 0,
+        "shipping_limit_date_parse_failed": 0,
+        "shipping_limit_date_valid": 112650,
+        "order_item_id_valid": 112650,
+        "price_valid": 112650,
+        "freight_value_valid": 112650,
+        "shipping_limit_before_purchase": 0,
+        "shipping_limit_after_purchase_snapshot": 4
+      }
+    },
+    "order_reviews_dataset": {
+      "source": "order_reviews_dataset",
+      "rows_before": 99224,
+      "rows_after_exact_dedup": 99224,
+      "rows_after": 98673,
+      "exact_duplicate_rows_removed": 0,
+      "exact_duplicate_source_rows_removed": [],
+      "source_row_number_definition": "Ordinal 1-based data record sebelum dedup, tidak termasuk header; bukan nomor baris fisik CSV",
+      "key_columns": [
+        "order_id"
+      ],
+      "dates": {
+        "review_creation_date": {
+          "missing_before": 0,
+          "parse_failures": 0,
+          "null_after": 0,
+          "valid_after": 99224
+        },
+        "review_answer_timestamp": {
+          "missing_before": 0,
+          "parse_failures": 0,
+          "null_after": 0,
+          "valid_after": 99224
+        }
+      },
+      "numeric": {
+        "review_score": {
+          "quality_counts": {
+            "valid": 99224
+          },
+          "null_after": 0
+        }
+      },
+      "flags": {
+        "review_creation_date_missing": 0,
+        "review_creation_date_parse_failed": 0,
+        "review_creation_date_valid": 98673,
+        "review_answer_timestamp_missing": 0,
+        "review_answer_timestamp_parse_failed": 0,
+        "review_answer_timestamp_valid": 98673,
+        "review_created_before_purchase": 61,
+        "review_answer_before_creation": 0,
+        "review_comment_title_missing": 87125,
+        "review_comment_message_missing": 57927,
+        "review_score_valid": 98673
+      },
+      "review_selection": {
+        "rows_before_selection": 99224,
+        "rows_after_selection": 98673,
+        "alternative_rows_removed": 551,
+        "orders_with_multiple_candidates": 547,
+        "repeated_review_id_additional_before": 814,
+        "repeated_review_id_additional_after": 572,
+        "reason_counts": {
+          "single_candidate": 98126,
+          "latest_creation_date": 391,
+          "latest_answer_timestamp": 156
+        },
+        "candidate_missing_title": 87658,
+        "candidate_missing_message": 58274,
+        "candidate_created_before_purchase": 64,
+        "candidate_answer_before_creation": 0,
+        "candidate_invalid_scores": 0,
+        "selected_invalid_scores": 0,
+        "selection_policy": "Max creation, answer, lexical review_id, source_row_number; tanggal null sebelum valid. Skor tidak ikut menentukan pemenang."
+      },
+      "selection_trace_file": {
+        "path": "reports/review_selection.csv",
+        "rows": 1098,
+        "sha256": "cf984452aa7b6fe69287139f08e02b21bc762c0adde7a679eb01c8a06b067e80",
+        "scope": "Kandidat pada order dengan beberapa baris setelah exact dedup; single candidate tercatat pada tabel hasil cleaning"
+      }
+    }
+  },
+  "issue_impacts": [
+    {
+      "issue_id": "DQ01",
+      "source": "products_dataset",
+      "owner_phase": "P03",
+      "before_count": 610,
+      "before_unit": "products",
+      "before_population": "raw source records (P02)",
+      "after_count": 0,
+      "after_measure": "products without display name",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 610,
+      "status": "handled_with_label",
+      "action": "Beri label Tidak diketahui; pertahankan nilai barang dalam total/denominator dan pisahkan dari top 5.",
+      "notes": "Kode sumber kosong tetap tersedia; kondisi awal tidak dianggap kategori berhasil ditemukan. Label bukan kategori rekomendasi.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ02",
+      "source": "products_dataset",
+      "owner_phase": "P03",
+      "before_count": 13,
+      "before_unit": "products",
+      "before_population": "raw source records (P02)",
+      "after_count": 0,
+      "after_measure": "untranslated products without fallback display",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 13,
+      "status": "handled_with_fallback",
+      "action": "Pertahankan kode asli sebagai kunci dan nama tampilan fallback; jangan gabungkan dengan kategori kosong.",
+      "notes": "Kode nonkosong dipertahankan; nama asli menjadi fallback. Tidak dicampur dengan kategori kosong.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ03",
+      "source": "order_reviews_dataset",
+      "owner_phase": "P03",
+      "before_count": 547,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 0,
+      "after_measure": "orders with multiple selected reviews",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 547,
+      "status": "resolved_by_selection",
+      "action": "Pilih satu review per order: creation terbaru, answer terbaru, review_id leksikografis terbesar, lalu nomor baris sumber terbesar; null tanggal sebelum tanggal valid. Pilih sebelum validasi skor.",
+      "notes": "551 alternatif tersisih setelah exact dedup. Trace mencatat kandidat, pemenang, ordinal sumber, serta alasan tie-break.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ04",
+      "source": "order_reviews_dataset",
+      "owner_phase": "P03",
+      "before_count": 814,
+      "before_unit": "additional_rows",
+      "before_population": "raw source records (P02)",
+      "after_count": 572,
+      "after_measure": "additional repeated review IDs among selected rows",
+      "after_population": "selected review records",
+      "values_repaired_or_replaced": 0,
+      "status": "retained_by_policy",
+      "action": "Jangan deduplikasi berdasarkan review_id; gunakan nomor baris sumber untuk audit dan pilih review pada tingkat order.",
+      "notes": "Tidak ada penghapusan berdasarkan review_id. Perubahan jumlah akhir berasal dari seleksi per order DQ03, bukan ID dedup.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ05",
+      "source": "orders_dataset",
+      "owner_phase": "P03",
+      "before_count": 2965,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 2965,
+      "after_measure": "orders with null receipt timestamp",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "retained_nullable_with_flag",
+      "action": "Pertahankan NaT dan flag. Tanggal aktual hilang mengecualikan evaluasi keterlambatan; approval/carrier kosong tidak otomatis mengecualikan sales/RFM atau delivery yang tanggal wajibnya valid.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ06",
+      "source": "orders_dataset",
+      "owner_phase": "P03",
+      "before_count": 1783,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 1783,
+      "after_measure": "orders with null carrier timestamp",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "retained_nullable_with_flag",
+      "action": "Pertahankan NaT dan flag. Tanggal aktual hilang mengecualikan evaluasi keterlambatan; approval/carrier kosong tidak otomatis mengecualikan sales/RFM atau delivery yang tanggal wajibnya valid.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ07",
+      "source": "orders_dataset",
+      "owner_phase": "P03",
+      "before_count": 160,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 160,
+      "after_measure": "orders with null approval timestamp",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "retained_nullable_with_flag",
+      "action": "Pertahankan NaT dan flag. Tanggal aktual hilang mengecualikan evaluasi keterlambatan; approval/carrier kosong tidak otomatis mengecualikan sales/RFM atau delivery yang tanggal wajibnya valid.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ08",
+      "source": "order_reviews_dataset",
+      "owner_phase": "P03",
+      "before_count": 87658,
+      "before_unit": "review_rows",
+      "before_population": "raw source records (P02)",
+      "after_count": 87125,
+      "after_measure": "selected reviews with missing title",
+      "after_population": "selected review records",
+      "values_repaired_or_replaced": 0,
+      "status": "retained_nullable_with_flag",
+      "action": "Tandai kosong termasuk whitespace untuk dokumentasi; jangan imputasi atau membuang skor valid.",
+      "notes": "Sebelum pada semua kandidat: 87658; sesudah pada review terpilih. Perbedaan cakupan hanya seleksi DQ03, bukan imputasi.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ09",
+      "source": "order_reviews_dataset",
+      "owner_phase": "P03",
+      "before_count": 58274,
+      "before_unit": "review_rows",
+      "before_population": "raw source records (P02)",
+      "after_count": 57927,
+      "after_measure": "selected reviews with missing message",
+      "after_population": "selected review records",
+      "values_repaired_or_replaced": 0,
+      "status": "retained_nullable_with_flag",
+      "action": "Tandai kosong termasuk whitespace untuk dokumentasi; jangan imputasi atau membuang skor valid.",
+      "notes": "Sebelum pada semua kandidat: 58274; sesudah pada review terpilih. Perbedaan cakupan hanya seleksi DQ03, bukan imputasi.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ10",
+      "source": "products_dataset",
+      "owner_phase": "P03",
+      "before_count": 611,
+      "before_unit": "products",
+      "before_population": "raw source records (P02)",
+      "after_count": 611,
+      "after_measure": "products with missing optional attributes",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "retained_nullable_with_flag",
+      "action": "Parse numerik dengan audit dan pertahankan null; jangan imputasi ukuran atau menghapus item terkait.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ11",
+      "source": "orders_dataset",
+      "owner_phase": "P03",
+      "before_count": 1382,
+      "before_unit": "orders_union",
+      "before_population": "raw source records (P02)",
+      "after_count": 1382,
+      "after_measure": "orders flagged for observed chronology inversions",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "flagged_no_date_correction",
+      "action": "Flag setiap pasangan tanggal tanpa menebak tanggal pengganti. Tanggal penerimaan sebelum pembelian membuat delivery tidak eligible; inversi approval/carrier saja tidak mengecualikan sales/RFM atau delivery. Estimasi sebelum tanggal pembelian harus diinvestigasi jika ditemukan.",
+      "notes": "Timestamp asli disimpan; inversi approval/carrier saja tidak membatalkan pasangan tanggal delivery. Estimasi sebelum pembelian ditandai dan tidak menghasilkan label keterlambatan.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ12",
+      "source": "order_items_dataset",
+      "owner_phase": "documentation",
+      "before_count": 4,
+      "before_unit": "item_rows",
+      "before_population": "raw source records (P02)",
+      "after_count": 4,
+      "after_measure": "item rows flagged for shipping deadline after purchase snapshot",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "flagged_documentation",
+      "action": "Dokumentasikan sebagai anomali untuk inspeksi, pertahankan tanggal dan jangan gunakan sebagai batas periode analisis.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ13",
+      "source": "orders_dataset",
+      "owner_phase": "P04",
+      "before_count": 775,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 775,
+      "after_measure": "orders without item coverage retained",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "deferred_to_P04",
+      "action": "Pertahankan order; order_value null dan sales/RFM tidak eligible. Evaluasi delivery secara independen.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ14",
+      "source": "orders_dataset",
+      "owner_phase": "P04",
+      "before_count": 768,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 768,
+      "after_measure": "orders without review coverage retained",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "deferred_to_P04",
+      "action": "Pertahankan order; review null, tidak eligible untuk perbandingan skor. Delivery/sales tidak bergantung pada review.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ15",
+      "source": "order_payments_dataset",
+      "owner_phase": "P04",
+      "before_count": 2961,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 2961,
+      "after_measure": "same supporting-source condition; no transformation",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "deferred_to_P04",
+      "action": "Sumber pendukung; jika dipakai kelak, agregasikan per order sebelum join. Q1–Q3 memakai price item.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ16",
+      "source": "geolocation_dataset",
+      "owner_phase": "documentation",
+      "before_count": 17972,
+      "before_unit": "zip_prefixes",
+      "before_population": "raw source records (P02)",
+      "after_count": 17972,
+      "after_measure": "same supporting-source condition; no transformation",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "documented_not_used",
+      "action": "Simpan sebagai sumber pendukung; tidak digunakan untuk analisis negara bagian. Agregasikan dengan kebijakan eksplisit jika dipakai kelak.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ17",
+      "source": "order_reviews_dataset",
+      "owner_phase": "P03",
+      "before_count": 64,
+      "before_unit": "review_rows",
+      "before_population": "raw source records (P02)",
+      "after_count": 61,
+      "after_measure": "selected reviews flagged for creation before purchase",
+      "after_population": "selected review records",
+      "values_repaired_or_replaced": 0,
+      "status": "flagged_metadata_score_retained",
+      "action": "Flag kronologi ulasan, pertahankan timestamp dan aturan seleksi deterministik plan. Skor integer 1–5 tetap tersedia; jangan mengubah tanggal atau membuang skor hanya karena anomali metadata ini.",
+      "notes": "Semua kandidat terflag: 64; sesudah memakai review terpilih. Skor integer 1–5 tidak dihapus karena metadata waktu.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ18",
+      "source": "geolocation_dataset",
+      "owner_phase": "documentation",
+      "before_count": 261831,
+      "before_unit": "additional_rows",
+      "before_population": "raw source records (P02)",
+      "after_count": 261831,
+      "after_measure": "same supporting-source condition; no transformation",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "documented_not_used",
+      "action": "Catat tanpa mengubah sumber; belum perlu deduplikasi karena geolocation tidak dipakai Q1–Q3. Tinjau satuan baris sebelum analisis peta kelak.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ19",
+      "source": "products_dataset",
+      "owner_phase": "P03",
+      "before_count": 4,
+      "before_unit": "products",
+      "before_population": "raw source records (P02)",
+      "after_count": 4,
+      "after_measure": "products with zero weight retained and flagged",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "flagged_unused_attribute",
+      "action": "Flag berat nol dan pertahankan nilai sumber; atribut tidak dipakai Q1–Q3 sehingga transaksi tidak dikeluarkan.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ20",
+      "source": "orders_dataset",
+      "owner_phase": "documentation",
+      "before_count": 1,
+      "before_unit": "orders",
+      "before_population": "raw source records (P02)",
+      "after_count": 1,
+      "after_measure": "same supporting-source condition; no transformation",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "documented_not_used",
+      "action": "Dokumentasikan sumber pendukung; jangan mengubah nilai barang menjadi nol atau mengecualikan Q1–Q3 yang memakai item.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    },
+    {
+      "issue_id": "DQ21",
+      "source": "order_payments_dataset",
+      "owner_phase": "documentation",
+      "before_count": 2,
+      "before_unit": "payment_rows",
+      "before_population": "raw source records (P02)",
+      "after_count": 2,
+      "after_measure": "same supporting-source condition; no transformation",
+      "after_population": "same source population, unless explicitly stated",
+      "values_repaired_or_replaced": 0,
+      "status": "documented_not_used",
+      "action": "Catat tanpa imputasi; pembayaran tidak dipakai dalam Q1–Q3. Payment_value nol tidak otomatis invalid.",
+      "notes": "Tidak ada imputasi. Kondisi yang dipertahankan/ditunda dicatat sesuai relevansi metrik dan phase pemilik.",
+      "counts_not_additive": true
+    }
+  ],
+  "table_schemas": {
+    "orders_dataset": {
+      "order_id": "string",
+      "customer_id": "string",
+      "order_status": "string",
+      "order_purchase_timestamp": "datetime64[us]",
+      "order_approved_at": "datetime64[us]",
+      "order_delivered_carrier_date": "datetime64[us]",
+      "order_delivered_customer_date": "datetime64[us]",
+      "order_estimated_delivery_date": "datetime64[us]",
+      "source_row_number": "Int64",
+      "order_purchase_timestamp_raw": "string",
+      "order_purchase_timestamp_missing": "boolean",
+      "order_purchase_timestamp_parse_failed": "boolean",
+      "order_purchase_timestamp_valid": "boolean",
+      "order_approved_at_raw": "string",
+      "order_approved_at_missing": "boolean",
+      "order_approved_at_parse_failed": "boolean",
+      "order_approved_at_valid": "boolean",
+      "order_delivered_carrier_date_raw": "string",
+      "order_delivered_carrier_date_missing": "boolean",
+      "order_delivered_carrier_date_parse_failed": "boolean",
+      "order_delivered_carrier_date_valid": "boolean",
+      "order_delivered_customer_date_raw": "string",
+      "order_delivered_customer_date_missing": "boolean",
+      "order_delivered_customer_date_parse_failed": "boolean",
+      "order_delivered_customer_date_valid": "boolean",
+      "order_estimated_delivery_date_raw": "string",
+      "order_estimated_delivery_date_missing": "boolean",
+      "order_estimated_delivery_date_parse_failed": "boolean",
+      "order_estimated_delivery_date_valid": "boolean",
+      "order_approved_at_before_order_purchase_timestamp": "boolean",
+      "order_delivered_carrier_date_before_order_purchase_timestamp": "boolean",
+      "order_delivered_customer_date_before_order_purchase_timestamp": "boolean",
+      "order_delivered_carrier_date_before_order_approved_at": "boolean",
+      "order_delivered_customer_date_before_order_approved_at": "boolean",
+      "order_delivered_customer_date_before_order_delivered_carrier_date": "boolean",
+      "estimated_date_before_purchase": "boolean",
+      "has_lifecycle_chronology_issue": "boolean",
+      "customer_id_valid": "boolean",
+      "delivery_dates_valid": "boolean",
+      "is_late": "boolean",
+      "days_late": "Int64"
+    },
+    "customers_dataset": {
+      "customer_id": "string",
+      "customer_unique_id": "string",
+      "customer_zip_code_prefix": "string",
+      "customer_city": "string",
+      "customer_state": "string",
+      "source_row_number": "Int64",
+      "customer_unique_id_valid": "boolean",
+      "customer_state_valid": "boolean"
+    },
+    "product_category_name_translation": {
+      "product_category_name": "string",
+      "product_category_name_english": "string",
+      "source_row_number": "Int64",
+      "translation_name_valid": "boolean"
+    },
+    "products_dataset": {
+      "product_id": "string",
+      "product_category_name": "string",
+      "product_name_lenght": "Int64",
+      "product_description_lenght": "Int64",
+      "product_photos_qty": "Int64",
+      "product_weight_g": "Int64",
+      "product_length_cm": "Int64",
+      "product_height_cm": "Int64",
+      "product_width_cm": "Int64",
+      "source_row_number": "Int64",
+      "category_code": "string",
+      "category_missing": "boolean",
+      "category_translation_missing": "boolean",
+      "category_name": "string",
+      "optional_attributes_missing": "boolean",
+      "product_name_lenght_raw": "string",
+      "product_name_lenght_quality": "string",
+      "product_name_lenght_valid": "boolean",
+      "product_description_lenght_raw": "string",
+      "product_description_lenght_quality": "string",
+      "product_description_lenght_valid": "boolean",
+      "product_photos_qty_raw": "string",
+      "product_photos_qty_quality": "string",
+      "product_photos_qty_valid": "boolean",
+      "product_weight_g_raw": "string",
+      "product_weight_g_quality": "string",
+      "product_weight_g_valid": "boolean",
+      "product_length_cm_raw": "string",
+      "product_length_cm_quality": "string",
+      "product_length_cm_valid": "boolean",
+      "product_height_cm_raw": "string",
+      "product_height_cm_quality": "string",
+      "product_height_cm_valid": "boolean",
+      "product_width_cm_raw": "string",
+      "product_width_cm_quality": "string",
+      "product_width_cm_valid": "boolean",
+      "product_weight_zero": "boolean"
+    },
+    "order_items_dataset": {
+      "order_id": "string",
+      "order_item_id": "string",
+      "product_id": "string",
+      "seller_id": "string",
+      "shipping_limit_date": "datetime64[us]",
+      "price": "string",
+      "freight_value": "string",
+      "source_row_number": "Int64",
+      "shipping_limit_date_raw": "string",
+      "shipping_limit_date_missing": "boolean",
+      "shipping_limit_date_parse_failed": "boolean",
+      "shipping_limit_date_valid": "boolean",
+      "order_item_id_raw": "string",
+      "order_item_id_quality": "string",
+      "order_item_id_valid": "boolean",
+      "order_item_number": "Int64",
+      "price_cents": "Int64",
+      "price_quality": "string",
+      "price_valid": "boolean",
+      "freight_cents": "Int64",
+      "freight_value_quality": "string",
+      "freight_value_valid": "boolean",
+      "shipping_limit_before_purchase": "boolean",
+      "shipping_limit_after_purchase_snapshot": "boolean"
+    },
+    "order_reviews_dataset": {
+      "review_id": "string",
+      "order_id": "string",
+      "review_comment_title": "string",
+      "review_comment_message": "string",
+      "review_creation_date": "datetime64[us]",
+      "review_answer_timestamp": "datetime64[us]",
+      "source_row_number": "Int64",
+      "review_creation_date_raw": "string",
+      "review_creation_date_missing": "boolean",
+      "review_creation_date_parse_failed": "boolean",
+      "review_creation_date_valid": "boolean",
+      "review_answer_timestamp_raw": "string",
+      "review_answer_timestamp_missing": "boolean",
+      "review_answer_timestamp_parse_failed": "boolean",
+      "review_answer_timestamp_valid": "boolean",
+      "review_created_before_purchase": "boolean",
+      "review_answer_before_creation": "boolean",
+      "review_comment_title_raw": "string",
+      "review_comment_title_missing": "boolean",
+      "review_comment_message_raw": "string",
+      "review_comment_message_missing": "boolean",
+      "review_candidate_count": "Int64",
+      "review_selection_reason": "string",
+      "review_score": "Int64",
+      "review_score_raw": "string",
+      "review_score_quality": "string",
+      "review_score_valid": "boolean"
+    }
+  },
+  "gate": {
+    "passed": true,
+    "deterministic_second_run": true,
+    "source_hashes_unchanged": true,
+    "all_assessment_issues_accounted_for": true,
+    "independent_review_winners_match": 98673,
+    "raw_and_clean_price_total_cents": 1359164370,
+    "raw_and_clean_freight_total_cents": 225190954,
+    "invalid_delivery_pairs_with_null_labels": 2965,
+    "delivered_missing_receipt_with_null_labels": 8,
+    "required_keys_unique_and_complete": true
+  }
+}

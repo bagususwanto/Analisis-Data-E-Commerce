@@ -5,11 +5,11 @@ Acuan: [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), versi 2.1.
 
 ## Ringkasan untuk AI berikutnya
 
-- Status pekerjaan: **P00, P01, dan P02 selesai; P03 belum dimulai**.
-- Phase berikutnya: **P03 — Cleaning dan penanda kualitas**.
-- Permintaan pengguna terakhir: eksekusi P02 — Gathering dan Assessing Data. Assessment selesai dan gate lulus; P03 belum dimulai.
-- Artefak yang tersedia: plan/tracker, baseline dan templat P00, `src/config.py`, `src/data_pipeline.py`, requirements runtime/dev, README, `scripts/check_foundation.py`, `reports/foundation_validation.json`, modul/skrip assessment, `reports/data_quality.json`, ringkasan notebook, dan laporan verifikasi P02.
-- Kondisi terakhir: sembilan CSV sumber tetap sesuai hash baseline; modul fondasi tersedia dan loader berhasil. Notebook analisis dan dashboard belum dibuat. Runtime terpilih: Python 3.12.13 dalam `.venv`, juga dicatat pada `.python-version`.
+- Status pekerjaan: **P00–P03 selesai; P04 belum dimulai**.
+- Phase berikutnya: **P04 — Integrasi dan kontrak data analisis**.
+- Permintaan pengguna terakhir: eksekusi P03 — Cleaning dan penanda kualitas. Gate lulus; P04 belum dimulai.
+- Artefak yang tersedia: plan/tracker, baseline dan templat P00, `src/config.py`, `src/data_pipeline.py`, requirements runtime/dev, README, `scripts/check_foundation.py`, `reports/foundation_validation.json`, modul/skrip assessment, `reports/data_quality.json`, ringkasan notebook, laporan verifikasi P02, fungsi cleaning, tes pipeline, serta audit/trace/verifikasi P03.
+- Kondisi terakhir: sembilan CSV sumber tetap sesuai hash baseline; fondasi dan cleaning enam sumber berhasil diverifikasi. Hasil cleaning dikembalikan sebagai tabel dalam memori; tabel analisis/dashboard belum diekspor. Notebook analisis dan dashboard belum dibuat. Runtime terpilih: Python 3.12.13 dalam `.venv`, juga dicatat pada `.python-version`.
 - P00 memverifikasi sembilan CSV, ukuran, SHA-256, jumlah baris, dan profil awal pada 22 Oktober 2026. Seluruh jumlah baris dan temuan numerik yang diperiksa sesuai plan; hash pertama tersimpan pada `reports/baseline.json`. Assessment formal selesai pada P02; profil lengkap ditambahkan ke baseline tanpa mengubah hash/riwayat P00.
 - Salinan lokal templat notebook: **terverifikasi**, nbformat 4, 37 sel. URL sumber, waktu pengambilan, heading, dan SHA-256 tersedia dalam baseline; gunakan salinan ini pada P07.
 - Identitas notebook diberikan langsung oleh pengguna: **Bagus Uswanto**, **DS013B6Y0318@student.devacademy.id**, ID Dicoding **DS013B6Y0318**. Tersimpan di `reports/baseline.json`; gunakan pada P07.
@@ -25,8 +25,8 @@ Status yang sah: `not_started`, `in_progress`, `completed`, `blocked`, dan khusu
 | --- | --- | --- | --- | --- |
 | P00 | Inventaris dan templat | `completed` | Baseline 9 CSV dan templat JSON 37 sel terverifikasi | Gunakan baseline untuk P01/P02 |
 | P01 | Lingkungan dan fondasi | `completed` | Impor, pip check, loader 99.441 order, path dari /tmp, dan 9 hash sumber lulus | Fondasi dipakai pada P02/P03 |
-| P02 | Gathering dan assessment | `completed` | 9 profil, 21 issue dengan kebijakan, pemeriksaan CSV independen, entry point /tmp, dan 9 hash sumber lulus | Terapkan handoff P03 |
-| P03 | Cleaning | `not_started` | Belum ada transformasi | Terapkan keputusan dari P02 |
+| P02 | Gathering dan assessment | `completed` | 9 profil, 21 issue dengan kebijakan, pemeriksaan CSV independen, entry point /tmp, dan 9 hash sumber lulus | Kebijakan diterapkan pada P03 |
+| P03 | Cleaning | `completed` | 31 tes lulus; cleaning deterministik, 98.673 pemenang review dan total sen cocok secara independen; 9 hash utuh | Bangun tabel order/item dan eligibility P04 |
 | P04 | Join dan kontrak data | `not_started` | Belum ada tabel turunan | Bangun order/item-level setelah P03 |
 | P05 | Analisis Q1–Q2 | `not_started` | Belum ada hasil bisnis | Hitung agregasi setelah P04 |
 | P06 | RFM dan Q3 | `not_started` | Belum ada RFM | Hitung metrik/segmen setelah P04 |
@@ -97,7 +97,7 @@ Langkah berikutnya:
 
 ## Pemeriksaan yang perlu diulang akibat perubahan
 
-Tidak ada pemeriksaan ulang tertunda setelah P02. Jika sumber/loader/assessment berubah, hasil P02 dan profil baseline harus dihasilkan serta diverifikasi ulang. Ketika pipeline atau metrik berubah pada phase berikutnya, catat phase terdampak sampai verifikasi ulang lulus.
+Tidak ada pemeriksaan ulang tertunda setelah P03. Jika sumber/loader/assessment berubah, hasil P02 dan profil baseline harus dihasilkan serta diverifikasi ulang. Jika fungsi cleaning berubah, jalankan kembali tes P03 dan `scripts/check_cleaning.py`, lalu perbarui audit, trace, dan hasil verifikasi sebelum memakai tabel pada P04. Ketika pipeline atau metrik berubah pada phase berikutnya, catat phase terdampak sampai verifikasi ulang lulus.
 
 ## Riwayat perubahan perencanaan
 
@@ -144,3 +144,21 @@ Tidak ada pemeriksaan ulang tertunda setelah P02. Jika sumber/loader/assessment 
 - Gate: lulus. Masalah aktual dan tindakan per issue tersedia, jumlah baris/status dapat direproduksi, serta bahan sel Gathering/Assessing/Steps to Take tersedia. Tidak ada hambatan P02.
 - Handoff P03: terapkan tindakan per `issue_id` dalam JSON; bedakan kategori kosong dan belum diterjemahkan; pilih review deterministik sebelum validasi skor; pertahankan null; flag anomali lifecycle/review tanpa menebak tanggal. Inversi approval/carrier atau metadata review tidak otomatis membatalkan sales/RFM maupun skor valid. Review tie-breaker dioperasionalkan dengan urutan menurun creation/answer/review_id/nomor baris sumber (null tanggal sebelum tanggal valid), konsisten dengan pemilihan nilai terbaru pada plan. Isu cakupan tanpa item/review ditangani kontrak eligibility P04; sumber pendukung hanya didokumentasikan sampai dipakai.
 - Langkah berikutnya: P03 — implementasikan fungsi cleaning yang mengembalikan data dan audit dampak per issue, lalu verifikasi kasus berisiko sesuai plan. P03 belum dimulai.
+
+### P03 — Cleaning dan penanda kualitas
+
+- Mulai: 2026-10-24T09:14:49+07:00.
+- Verifikasi akhir: 2026-10-24T09:20:24+07:00. Status: `completed`.
+- Prasyarat: working tree awal bersih; plan/tracker, loader/config, issue register P02 dan instruksi workspace dibaca; tidak ditemukan AGENTS.md pada workspace/ancestor. Hash laporan P02 cocok dengan `assessment_validation.json`; sembilan hash CSV dan hash templat cocok dengan baseline sebelum/sesudah proses.
+- Keluaran: `src/data_pipeline.py` kini menyediakan `clean_orders`, `clean_customers`, `clean_translation`, `clean_products`, `clean_order_items`, `clean_reviews`, dan `clean_primary_sources`. Setiap cleaner mengembalikan tabel dan audit. Tambahan: `scripts/check_cleaning.py`, `tests/test_pipeline.py`, `reports/cleaning_audit.json`, `reports/review_selection.csv`, `reports/cleaning_validation.json`, dan petunjuk README. Baseline, laporan P02, serta seluruh sumber mentah tidak diubah.
+- Transformasi: timestamp bertipe datetime dengan kolom teks `*_raw` dan flag missing/parse failure/valid; skor integer 1–5 nullable; uang menjadi `price_cents`/`freight_cents` Int64 dari Decimal dan rasio integer tepat. Teks di luar presisi sen memicu `MoneyPrecisionError`, termasuk kasus >28 digit signifikan, tanpa pembulatan. Harga negatif/non-numerik/nonfinite menjadi null dengan alasan, sedangkan harga/freight nol tetap valid. ID dan kode pos tetap string.
+- Kategori: 610 produk kosong diberi `category_name` Tidak diketahui dan flag; 13 produk dari dua kode tanpa terjemahan memakai kode asli sebagai nama fallback. `category_code` mempertahankan kode asli atau null. Atribut opsional tetap nullable; empat berat nol dipertahankan dan diberi flag.
+- Tanggal: 1.382 inversi lifecycle diberi flag tanpa koreksi spekulatif. Semua 2.965 pasangan delivery yang tidak dapat dievaluasi memiliki `is_late`/`days_late` null, termasuk delapan delivered tanpa penerimaan. Tanggal kalender pada hari estimasi dianggap tepat waktu; selisih negatif yang valid menjadi nol hari terlambat. Label tanggal belum memakai filter status/periode. Inversi approval/carrier saja tidak membatalkan pasangan tanggal aktual/estimasi; estimasi yang mendahului tanggal pembelian diberi flag dan tidak menghasilkan label keterlambatan.
+- Ulasan: 99.224 kandidat menjadi 98.673 review terpilih (satu per order); 551 alternatif tersisih pada 547 order. Sebanyak 391 pemenang ditentukan oleh creation terbaru dan 156 oleh answer terbaru; lexical review_id dan ordinal sumber menjadi tie-breaker tambahan yang diuji. Skor diperiksa sesudah seleksi dan review terbaru invalid tidak diganti review lama. Dari 64 kandidat dengan creation sebelum tanggal pembelian, 61 terpilih dan tetap diberi flag; skor valid dipertahankan. Review ID berulang pada pesanan berbeda tidak dihapus; 572 kemunculan ID tambahan tetap ada setelah seleksi per order.
+- Jejak: `reports/review_selection.csv` memuat 1.098 kandidat bersaing, 547 pemenang, ordinal sumber, timestamp, skor asli, dan alasan seleksi. `source_row_number` berarti ordinal data record mulai 1 sebelum deduplikasi, bukan nomor baris fisik CSV. Jumlah kandidat dihitung sesudah exact dedup. Pada data asli tidak ada duplikasi persis pada enam sumber utama; jalur exact dedup dan penghentian konflik kunci berbeda isi telah diuji.
+- Audit: seluruh 21 issue P02 memiliki jumlah sebelum/sesudah, ukuran/populasi yang dijelaskan, tindakan, serta status. Tiga belas issue P03 ditangani; tiga isu cakupan item/review dan relasi pembayaran tetap milik P04; lima isu bersifat dokumentasi. Sumber pendukung tidak di-clean atau dipakai menghitung Q1–Q3. Perbedaan missing text/metadata pada review akhir berasal dari seleksi kandidat, bukan imputasi.
+- Verifikasi aktual, exit 0: `.venv/bin/python -m pytest tests/test_pipeline.py -q` (31 passed); `.venv/bin/python scripts/check_cleaning.py` dari root; kemudian executable dan skrip berpath absolut dari `/tmp` (cwd `/private/tmp`). Skrip menjalankan cleaning dua kali dan membandingkan semua tabel serta audit; pemenang 98.673 order cocok dengan seleksi independen via `csv.DictReader`/datetime; price total 1.359.164.370 sen dan freight 225.190.954 sen cocok dengan jumlah Decimal sumber. Enam kunci keluaran lengkap/unik pada satuan barisnya, seluruh status dan 99.441 order/112.650 item dipertahankan. Hash sembilan CSV dan templat tidak berubah. Pemeriksaan akhir juga memvalidasi hash audit/trace, jumlah kandidat/pemenang, dan `git diff --check`.
+- Temuan saat pengujian: dua kasus tanpa kelompok multi-review awalnya gagal karena map kosong menginferensikan tipe numerik pada pandas/Arrow. Implementasi diperbaiki dengan cast string sebelum fill label; ekspektasi tes dipertahankan. Seluruh 31 tes akhir lulus.
+- Gate: lulus. Cleaning deterministik dari mentah, kunci siap untuk join tervalidasi, null tidak berubah menjadi label tepat waktu palsu, dan sumber tetap utuh. Tidak ada hambatan P03 tersisa.
+- Handoff P04: gunakan `tables, audits = clean_primary_sources()`; agregasikan item per order sebelum join review/customer. Gunakan `price_valid` dan `price_cents` untuk menilai kelengkapan seluruh item, bukan menghitung sebagian order. Review terpilih unik pada `order_id`; `review_id` tidak unik lintas order. Gabungkan `delivery_dates_valid` dengan status delivered/periode saat membentuk eligibility; atribut approval/carrier tidak menjadi filter universal. Gunakan flag kategori untuk memisahkan denominator kategori tidak diketahui dari top 5. Bentuk kontrak tabel order/item, cakupan FK, dan audit rekonsiliasi sesuai plan.
+- Langkah berikutnya: P04 — Integrasi dan kontrak data analisis. P04 belum dimulai; belum ada CSV order-level/item-level/RFM, eligibility akhir, atau hasil bisnis Q1–Q3.
