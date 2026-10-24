@@ -1,0 +1,527 @@
+{
+  "phase": "P04",
+  "status": "completed",
+  "verified_at": "2026-10-24T09:55:13+07:00",
+  "generator": "scripts/check_integration.py",
+  "runtime": {
+    "python": "3.12.13",
+    "pandas": "3.1.0",
+    "invocation_cwd": "/private/tmp"
+  },
+  "source_sha256": {
+    "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+    "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+    "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+    "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+    "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+    "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+    "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+    "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+    "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+  },
+  "cleaning_audit_sha256": "a0d2a2e0eecbbc268517225fea4bc39787fd33072563bab06cedc12275d2f89b",
+  "data_dictionary": {
+    "path": "reports/data_dictionary.json",
+    "sha256": "da772b4a3284e265f33d3d2fec46b3a78a02bfa783ce3a60a91094786186a9c3"
+  },
+  "aggregation": {
+    "rows_before": 112650,
+    "orders_after": 98666,
+    "item_count_after": 112650,
+    "invalid_price_items": 0,
+    "incomplete_value_orders": 0,
+    "valid_item_price_total_cents": 1359164370,
+    "complete_order_value_total_cents": 1359164370,
+    "suppressed_known_price_cents_on_incomplete_orders": 0,
+    "no_partial_order_values": true
+  },
+  "joins": [
+    {
+      "join": "orders_customers",
+      "key": "customer_id",
+      "how": "left",
+      "validate": "many_to_one",
+      "before_left": {
+        "rows": 99441,
+        "unique_orders": 99441,
+        "money": {}
+      },
+      "before_right": {
+        "rows": 99441,
+        "unique_orders": null,
+        "money": {}
+      },
+      "after": {
+        "rows": 99441,
+        "unique_orders": 99441,
+        "money": {}
+      },
+      "unmatched_left_rows": 0,
+      "left_missing_key_rows": 0,
+      "unmatched_nonmissing_left_rows": 0,
+      "unmatched_nonmissing_key_examples": [],
+      "unused_right_rows": 0,
+      "unused_right_money": {},
+      "left_rows_orders_and_money_preserved": true
+    },
+    {
+      "join": "orders_item_aggregate",
+      "key": "order_id",
+      "how": "left",
+      "validate": "one_to_one",
+      "before_left": {
+        "rows": 99441,
+        "unique_orders": 99441,
+        "money": {}
+      },
+      "before_right": {
+        "rows": 98666,
+        "unique_orders": 98666,
+        "money": {
+          "order_value_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 98666,
+            "null_rows": 0
+          }
+        }
+      },
+      "after": {
+        "rows": 99441,
+        "unique_orders": 99441,
+        "money": {
+          "order_value_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 98666,
+            "null_rows": 775
+          }
+        }
+      },
+      "unmatched_left_rows": 775,
+      "left_missing_key_rows": 0,
+      "unmatched_nonmissing_left_rows": 775,
+      "unmatched_nonmissing_key_examples": [
+        "0010dedd556712d7bb69a19cb7bbd37a",
+        "00a500bc03bc4ec968e574c2553bed4b",
+        "00b1cb0320190ca0daa2c88b35206009",
+        "00bca4adac549020c1273714d04d0208",
+        "00d0ffd14774da775ac832ba8520510f"
+      ],
+      "unused_right_rows": 0,
+      "unused_right_money": {
+        "order_value_cents": {
+          "known_total_cents": 0,
+          "nonnull_rows": 0,
+          "null_rows": 0
+        }
+      },
+      "left_rows_orders_and_money_preserved": true
+    },
+    {
+      "join": "orders_selected_reviews",
+      "key": "order_id",
+      "how": "left",
+      "validate": "one_to_one",
+      "before_left": {
+        "rows": 99441,
+        "unique_orders": 99441,
+        "money": {
+          "order_value_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 98666,
+            "null_rows": 775
+          }
+        }
+      },
+      "before_right": {
+        "rows": 98673,
+        "unique_orders": 98673,
+        "money": {}
+      },
+      "after": {
+        "rows": 99441,
+        "unique_orders": 99441,
+        "money": {
+          "order_value_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 98666,
+            "null_rows": 775
+          }
+        }
+      },
+      "unmatched_left_rows": 768,
+      "left_missing_key_rows": 0,
+      "unmatched_nonmissing_left_rows": 768,
+      "unmatched_nonmissing_key_examples": [
+        "00143d0f86d6fbd9f9b38ab440ac16f5",
+        "00335b686d693c7d72deeb12f8e89227",
+        "00a77f9cc25b05b2004752593d7b8888",
+        "00aa423621f35a9ca6c6240f275b0640",
+        "016754282c7690ebd6658f9f8e0a49bb"
+      ],
+      "unused_right_rows": 0,
+      "unused_right_money": {},
+      "left_rows_orders_and_money_preserved": true
+    },
+    {
+      "join": "items_orders_customers",
+      "key": "order_id",
+      "how": "left",
+      "validate": "many_to_one",
+      "before_left": {
+        "rows": 112650,
+        "unique_orders": 98666,
+        "money": {
+          "price_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          },
+          "freight_cents": {
+            "known_total_cents": 225190954,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          }
+        }
+      },
+      "before_right": {
+        "rows": 99441,
+        "unique_orders": 99441,
+        "money": {}
+      },
+      "after": {
+        "rows": 112650,
+        "unique_orders": 98666,
+        "money": {
+          "price_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          },
+          "freight_cents": {
+            "known_total_cents": 225190954,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          }
+        }
+      },
+      "unmatched_left_rows": 0,
+      "left_missing_key_rows": 0,
+      "unmatched_nonmissing_left_rows": 0,
+      "unmatched_nonmissing_key_examples": [],
+      "unused_right_rows": 775,
+      "unused_right_money": {},
+      "left_rows_orders_and_money_preserved": true
+    },
+    {
+      "join": "items_products",
+      "key": "product_id",
+      "how": "left",
+      "validate": "many_to_one",
+      "before_left": {
+        "rows": 112650,
+        "unique_orders": 98666,
+        "money": {
+          "price_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          },
+          "freight_cents": {
+            "known_total_cents": 225190954,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          }
+        }
+      },
+      "before_right": {
+        "rows": 32951,
+        "unique_orders": null,
+        "money": {}
+      },
+      "after": {
+        "rows": 112650,
+        "unique_orders": 98666,
+        "money": {
+          "price_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          },
+          "freight_cents": {
+            "known_total_cents": 225190954,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          }
+        }
+      },
+      "unmatched_left_rows": 0,
+      "left_missing_key_rows": 0,
+      "unmatched_nonmissing_left_rows": 0,
+      "unmatched_nonmissing_key_examples": [],
+      "unused_right_rows": 0,
+      "unused_right_money": {},
+      "left_rows_orders_and_money_preserved": true
+    },
+    {
+      "join": "items_translation",
+      "key": "category_code",
+      "how": "left",
+      "validate": "many_to_one",
+      "before_left": {
+        "rows": 112650,
+        "unique_orders": 98666,
+        "money": {
+          "price_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          },
+          "freight_cents": {
+            "known_total_cents": 225190954,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          }
+        }
+      },
+      "before_right": {
+        "rows": 71,
+        "unique_orders": null,
+        "money": {}
+      },
+      "after": {
+        "rows": 112650,
+        "unique_orders": 98666,
+        "money": {
+          "price_cents": {
+            "known_total_cents": 1359164370,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          },
+          "freight_cents": {
+            "known_total_cents": 225190954,
+            "nonnull_rows": 112650,
+            "null_rows": 0
+          }
+        }
+      },
+      "unmatched_left_rows": 1627,
+      "left_missing_key_rows": 1603,
+      "unmatched_nonmissing_left_rows": 24,
+      "unmatched_nonmissing_key_examples": [
+        "pc_gamer",
+        "portateis_cozinha_e_preparadores_de_alimentos"
+      ],
+      "unused_right_rows": 0,
+      "unused_right_money": {},
+      "left_rows_orders_and_money_preserved": true
+    }
+  ],
+  "eligibility": {
+    "metrics": {
+      "eligible_sales": {
+        "population_orders": 99441,
+        "eligible_orders": 96211,
+        "ineligible_orders": 3230,
+        "overlapping_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2963,
+          "no_items": 775,
+          "incomplete_item_prices": 775
+        },
+        "exclusive_first_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2881,
+          "no_items": 0,
+          "incomplete_item_prices": 0
+        },
+        "analysis_period_delivered_orders": 96211,
+        "eligible_in_analysis_period_delivered": 96211,
+        "failures_within_analysis_period_delivered": {
+          "no_items": 0,
+          "incomplete_item_prices": 0
+        }
+      },
+      "eligible_delivery": {
+        "population_orders": 99441,
+        "eligible_orders": 96203,
+        "ineligible_orders": 3238,
+        "overlapping_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2963,
+          "invalid_delivery_dates": 2965
+        },
+        "exclusive_first_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2881,
+          "invalid_delivery_dates": 8
+        },
+        "analysis_period_delivered_orders": 96211,
+        "eligible_in_analysis_period_delivered": 96203,
+        "failures_within_analysis_period_delivered": {
+          "invalid_delivery_dates": 8
+        }
+      },
+      "eligible_review_comparison": {
+        "population_orders": 99441,
+        "eligible_orders": 95560,
+        "ineligible_orders": 3881,
+        "overlapping_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2963,
+          "invalid_delivery_dates": 2965,
+          "no_valid_selected_review": 768
+        },
+        "exclusive_first_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2881,
+          "invalid_delivery_dates": 8,
+          "no_valid_selected_review": 643
+        },
+        "analysis_period_delivered_orders": 96211,
+        "eligible_in_analysis_period_delivered": 95560,
+        "failures_within_analysis_period_delivered": {
+          "invalid_delivery_dates": 8,
+          "no_valid_selected_review": 643
+        }
+      },
+      "eligible_rfm": {
+        "population_orders": 99441,
+        "eligible_orders": 96211,
+        "ineligible_orders": 3230,
+        "overlapping_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2963,
+          "no_items": 775,
+          "incomplete_item_prices": 775,
+          "no_valid_customer_identity": 0
+        },
+        "exclusive_first_failure_counts": {
+          "outside_analysis_period": 349,
+          "not_delivered": 2881,
+          "no_items": 0,
+          "incomplete_item_prices": 0,
+          "no_valid_customer_identity": 0
+        },
+        "analysis_period_delivered_orders": 96211,
+        "eligible_in_analysis_period_delivered": 96211,
+        "failures_within_analysis_period_delivered": {
+          "no_items": 0,
+          "incomplete_item_prices": 0,
+          "no_valid_customer_identity": 0
+        }
+      }
+    },
+    "reason_count_note": "overlapping_failure_counts tidak dijumlahkan; exclusive_first_failure_counts saling eksklusif dalam urutan tertera",
+    "coverage_differences": {
+      "sales_without_delivery": 8,
+      "delivery_without_sales": 0,
+      "delivery_without_valid_review": 643,
+      "sales_without_rfm_identity": 0,
+      "sales_value_cents": 1318102713,
+      "rfm_value_cents": 1318102713
+    }
+  },
+  "reconciliation": {
+    "order_rows_before": 99441,
+    "order_rows_after": 99441,
+    "item_rows_before": 112650,
+    "item_rows_after": 112650,
+    "all_item_money_before": {
+      "price_cents": {
+        "known_total_cents": 1359164370,
+        "nonnull_rows": 112650,
+        "null_rows": 0
+      },
+      "freight_cents": {
+        "known_total_cents": 225190954,
+        "nonnull_rows": 112650,
+        "null_rows": 0
+      }
+    },
+    "all_item_money_after": {
+      "price_cents": {
+        "known_total_cents": 1359164370,
+        "nonnull_rows": 112650,
+        "null_rows": 0
+      },
+      "freight_cents": {
+        "known_total_cents": 225190954,
+        "nonnull_rows": 112650,
+        "null_rows": 0
+      }
+    },
+    "eligible_sales_orders": 96211,
+    "eligible_sales_items": 109880,
+    "eligible_order_item_count": 109880,
+    "eligible_order_value_cents": 1318102713,
+    "eligible_item_price_cents": 1318102713,
+    "eligible_items_unique_orders": 96211,
+    "matched_item_order_totals_equal": true
+  },
+  "coverage": {
+    "orders_without_customer_match": 0,
+    "orders_without_items": 775,
+    "orders_without_review": 768,
+    "items_without_order": 0,
+    "items_without_product": 0,
+    "items_without_category_code": 1603,
+    "items_with_untranslated_category": 24
+  },
+  "contracts": {
+    "order_level": {
+      "grain": "Satu baris per pesanan; seluruh status dipertahankan",
+      "primary_key": [
+        "order_id"
+      ],
+      "columns": 35,
+      "validated": true
+    },
+    "item_level": {
+      "grain": "Satu baris per pasangan order/item; denominator Q2 memakai order_level",
+      "primary_key": [
+        "order_id",
+        "order_item_id"
+      ],
+      "columns": 23,
+      "validated": true
+    }
+  },
+  "payments_policy": "Tidak digunakan; tidak ada join pembayaran mentah. Jika digunakan kelak harus diagregasi per order terlebih dahulu.",
+  "assessment_issue_handoff": {
+    "DQ13": {
+      "status": "handled",
+      "orders_without_items": 775,
+      "policy": "Order dipertahankan, item_count 0, order_value null, sales/RFM false; delivery independen."
+    },
+    "DQ14": {
+      "status": "handled",
+      "orders_without_review": 768,
+      "policy": "Order dipertahankan; review null, comparison false; sales/delivery independen."
+    },
+    "DQ15": {
+      "status": "documented_not_used",
+      "policy": "Tidak digunakan; tidak ada join pembayaran mentah. Jika digunakan kelak harus diagregasi per order terlebih dahulu."
+    }
+  },
+  "gate": {
+    "passed": true,
+    "deterministic_second_build": true,
+    "source_hashes_unchanged": true,
+    "six_validated_left_joins": true,
+    "independent_reference": {
+      "order_field_comparisons": 1690497,
+      "item_rows_checked": 112650,
+      "order_rows_checked": 99441,
+      "eligibility_counts": {
+        "eligible_sales": 96211,
+        "eligible_delivery": 96203,
+        "eligible_review_comparison": 95560,
+        "eligible_rfm": 96211
+      },
+      "eligible_sales_value_cents": 1318102713,
+      "eligible_sales_item_count": 109880,
+      "all_order_statuses_preserved": true
+    }
+  },
+  "scope": "Tabel order/item direproduksi dalam memori. Ekspor CSV/dashboard dan metadata paket menjadi milik P08; analisis Q1–Q3 belum dikerjakan."
+}

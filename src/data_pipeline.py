@@ -68,7 +68,7 @@ def _blank(series):
 
 
 def _require_unique(frame, columns, source):
-    if frame[list(columns)].apply(_blank).any(axis=1).any():
+    if any(_blank(frame[col]).any() for col in columns):
         raise DataQualityError(f'{source}: kunci kosong pada {columns}')
     if frame.duplicated(list(columns)).any():
         raise DataQualityError(f'{source}: konflik kunci {columns}; inspeksi sebelum join')
@@ -394,3 +394,256 @@ def clean_primary_sources(*, data_dir=None):
     tables['order_reviews_dataset'], audits['order_reviews_dataset'] = clean_reviews(
         raw['order_reviews_dataset'], tables['orders_dataset'])
     return tables, audits
+
+
+# Integrasi P04: setiap join mempertahankan sisi kiri dan diaudit.
+def _money_totals(frame):
+    return {
+        c: {'known_total_cents': sum(int(v) for v in frame[c].dropna()),
+            'nonnull_rows': int(frame[c].notna().sum()), 'null_rows': int(frame[c].isna().sum())}
+        for c in frame if c.endswith('_cents')
+    }
+
+
+def _table_snapshot(frame):
+    return {'rows': len(frame), 'unique_orders': int(frame['order_id'].nunique()) if 'order_id' in frame else None,
+            'money': _money_totals(frame)}
+
+
+def _audited_left_join(left, right, *, on, relationship, name, audit):
+    _require_unique(right, (on,), f'{name} right')
+    overlaps = (set(left) & set(right)) - {on}
+    if overlaps:
+        raise DataQualityError(f'{name}: kolom saling menimpa: {sorted(overlaps)}')
+    marker = f'_{name}_merge'
+    if marker in left or marker in right:
+        raise DataQualityError(f'{name}: kolom audit sudah ada')
+    before = _table_snapshot(left)
+    joined = left.merge(right, on=on, how='left', validate=relationship, indicator=marker, sort=False)
+    after = _table_snapshot(joined)
+    if before['rows'] != after['rows'] or before['unique_orders'] != after['unique_orders']:
+        raise DataQualityError(f'{name}: join memperbanyak/menghilangkan baris atau pesanan kiri')
+    for col, value in before['money'].items():
+        if after['money'][col] != value:
+            raise DataQualityError(f'{name}: nilai uang kiri berubah pada {col}')
+    unmatched = joined[marker].eq('left_only')
+    unused = ~right[on].isin(left[on])
+    left_blank = _blank(left[on])
+    audit.append({
+        'join': name, 'key': on, 'how': 'left', 'validate': relationship,
+        'before_left': before, 'before_right': _table_snapshot(right), 'after': after,
+        'unmatched_left_rows': int(unmatched.sum()),
+        'left_missing_key_rows': int(left_blank.sum()),
+        'unmatched_nonmissing_left_rows': int((~left_blank & ~left[on].isin(right[on])).sum()),
+        'unmatched_nonmissing_key_examples': sorted(left.loc[~left_blank & ~left[on].isin(right[on]),on].drop_duplicates().astype(str).tolist())[:5],
+        'unused_right_rows': int(unused.sum()), 'unused_right_money': _money_totals(right.loc[unused]),
+        'left_rows_orders_and_money_preserved': True,
+    })
+    return joined, joined[marker].eq('both').astype('boolean'), marker
+
+
+def aggregate_order_items(items):
+    """Satu baris per order; satu harga invalid membuat nilai order tidak tersedia."""
+    _require_unique(items, ('order_id','order_item_id'), 'clean items')
+    valid = items['price_valid'].fillna(False) & items['price_cents'].notna() & items['price_cents'].ge(0).fillna(False)
+    work = items[['order_id','order_item_id']].copy()
+    work['_valid_price'] = valid
+    group = work.groupby('order_id', sort=False)
+    result = group.agg(item_count=('order_item_id','size'), valid_price_item_count=('_valid_price','sum'))
+    result['invalid_price_item_count'] = result['item_count'] - result['valid_price_item_count']
+    # object/Python integer voorkomt overflow in tussensommen; nooit een partial orderbedrag.
+    sums = items['price_cents'].where(valid).astype(object).groupby(items['order_id'], sort=False).sum(min_count=1)
+    complete = result['invalid_price_item_count'].eq(0)
+    sums = sums.where(complete, pd.NA)
+    try:
+        result['order_value_cents'] = pd.array(sums, dtype='Int64')
+    except (OverflowError, TypeError) as exc:
+        raise DataQualityError('Orderbedrag past niet in Int64 sen; expliciete opslagkeuze nodig') from exc
+    for col in ('item_count','valid_price_item_count','invalid_price_item_count'):
+        result[col] = result[col].astype('Int64')
+    result['items_value_complete'] = complete.astype('boolean')
+    result = result.reset_index()
+    known_price = sum(int(v) for v in items.loc[valid,'price_cents'])
+    complete_price = sum(int(v) for v in result['order_value_cents'].dropna())
+    return result, {
+        'rows_before': len(items), 'orders_after': len(result),
+        'item_count_after': int(result['item_count'].sum()),
+        'invalid_price_items': int((~valid).sum()),
+        'incomplete_value_orders': int((~complete).sum()),
+        'valid_item_price_total_cents': known_price,
+        'complete_order_value_total_cents': complete_price,
+        'suppressed_known_price_cents_on_incomplete_orders': known_price - complete_price,
+        'no_partial_order_values': True,
+    }
+
+
+def _apply_order_eligibility(orders):
+    from .config import ANALYSIS_START, ANALYSIS_END_EXCLUSIVE, SALES_ORDER_STATUS
+    orders['purchase_date'] = orders['order_purchase_timestamp'].dt.normalize()
+    orders['purchase_month'] = orders['order_purchase_timestamp'].dt.strftime('%Y-%m').astype('string')
+    orders['in_analysis_period'] = (
+        orders['order_purchase_timestamp'].ge(pd.Timestamp(ANALYSIS_START))
+        & orders['order_purchase_timestamp'].lt(pd.Timestamp(ANALYSIS_END_EXCLUSIVE))
+    ).fillna(False).astype('boolean')
+    delivered = orders['order_status'].eq(SALES_ORDER_STATUS).fillna(False)
+    base = orders['in_analysis_period'] & delivered
+    orders['eligible_sales'] = (base & orders['has_items'] & orders['items_value_complete']).astype('boolean')
+    orders['eligible_delivery'] = (base & orders['delivery_dates_valid']).astype('boolean')
+    orders['eligible_review_comparison'] = (orders['eligible_delivery'] & orders['review_score_valid']).astype('boolean')
+    orders['eligible_rfm'] = (orders['eligible_sales'] & orders['customer_identity_valid']).astype('boolean')
+    return orders
+
+
+def _eligibility_audit(orders):
+    from .config import SALES_ORDER_STATUS
+    delivered = orders['order_status'].eq(SALES_ORDER_STATUS).fillna(False)
+    conditions = {
+        'outside_analysis_period': orders['in_analysis_period'],
+        'not_delivered': delivered, 'no_items': orders['has_items'],
+        'incomplete_item_prices': orders['items_value_complete'],
+        'invalid_delivery_dates': orders['delivery_dates_valid'],
+        'no_valid_selected_review': orders['review_score_valid'],
+        'no_valid_customer_identity': orders['customer_identity_valid'],
+    }
+    factors = {
+        'eligible_sales': ['outside_analysis_period','not_delivered','no_items','incomplete_item_prices'],
+        'eligible_delivery': ['outside_analysis_period','not_delivered','invalid_delivery_dates'],
+        'eligible_review_comparison': ['outside_analysis_period','not_delivered','invalid_delivery_dates','no_valid_selected_review'],
+        'eligible_rfm': ['outside_analysis_period','not_delivered','no_items','incomplete_item_prices','no_valid_customer_identity'],
+    }
+    base = orders['in_analysis_period'] & delivered
+    metrics = {}
+    for flag, reasons in factors.items():
+        remaining = pd.Series(True, index=orders.index, dtype='boolean')
+        exclusive = {}
+        for reason in reasons:
+            good = conditions[reason].fillna(False)
+            exclusive[reason] = int((remaining & ~good).sum())
+            remaining &= good
+        eligible = orders[flag]
+        if not remaining.equals(eligible):
+            raise DataQualityError(f'{flag}: kelayakan tidak cocok dengan audit alasan')
+        metrics[flag] = {
+            'population_orders': len(orders), 'eligible_orders': int(eligible.sum()),
+            'ineligible_orders': int((~eligible).sum()),
+            'overlapping_failure_counts': {reason:int((~conditions[reason]).sum()) for reason in reasons},
+            'exclusive_first_failure_counts': exclusive,
+            'analysis_period_delivered_orders': int(base.sum()),
+            'eligible_in_analysis_period_delivered': int((base & eligible).sum()),
+            'failures_within_analysis_period_delivered': {
+                reason:int((base & ~conditions[reason]).sum()) for reason in reasons[2:]},
+        }
+    sales = orders['eligible_sales']; rfm = orders['eligible_rfm']; delivery = orders['eligible_delivery']
+    return {
+        'metrics': metrics,
+        'reason_count_note': 'overlapping_failure_counts tidak dijumlahkan; exclusive_first_failure_counts saling eksklusif dalam urutan tertera',
+        'coverage_differences': {
+            'sales_without_delivery': int((sales & ~delivery).sum()),
+            'delivery_without_sales': int((delivery & ~sales).sum()),
+            'delivery_without_valid_review': int((delivery & ~orders['review_score_valid']).sum()),
+            'sales_without_rfm_identity': int((sales & ~rfm).sum()),
+            'sales_value_cents': sum(int(v) for v in orders.loc[sales,'order_value_cents']),
+            'rfm_value_cents': sum(int(v) for v in orders.loc[rfm,'order_value_cents']),
+        },
+    }
+
+
+def build_analysis_tables(cleaned=None, *, data_dir=None):
+    """Kembalikan ({order_level, item_level}, audit P04); tidak menulis CSV."""
+    from .data_contracts import TABLE_CONTRACTS, conform_table
+    if cleaned is None:
+        cleaned, _ = clean_primary_sources(data_dir=data_dir)
+    elif data_dir is not None:
+        raise ValueError('Pilih cleaned atau data_dir, bukan keduanya')
+    orders = cleaned['orders_dataset']; items = cleaned['order_items_dataset']
+    customers = cleaned['customers_dataset']; products = cleaned['products_dataset']
+    reviews = cleaned['order_reviews_dataset']; translation = cleaned['product_category_name_translation']
+    _require_unique(orders, ('order_id',), 'orders')
+    _require_unique(reviews, ('order_id',), 'selected reviews')
+    order_cols = ['order_id','customer_id','order_status','order_purchase_timestamp','order_approved_at',
+                  'order_delivered_carrier_date','order_delivered_customer_date','order_estimated_delivery_date',
+                  'has_lifecycle_chronology_issue','delivery_dates_valid','is_late','days_late']
+    order_level = orders[order_cols].copy()
+    joins = []
+    customer_fields = ['customer_id','customer_unique_id','customer_state','customer_unique_id_valid']
+    order_level, matched, marker = _audited_left_join(order_level, customers[customer_fields], on='customer_id',
+        relationship='many_to_one', name='orders_customers', audit=joins)
+    order_level['customer_matched'] = matched
+    order_level['customer_identity_valid'] = (matched & order_level['customer_unique_id_valid'].fillna(False)
+        & ~_blank(order_level['customer_unique_id'])).astype('boolean')
+    order_level = order_level.drop(columns=[marker,'customer_unique_id_valid'])
+    aggregate, aggregate_audit = aggregate_order_items(items)
+    order_level, _, marker = _audited_left_join(order_level, aggregate, on='order_id',
+        relationship='one_to_one', name='orders_item_aggregate', audit=joins)
+    for col in ('item_count','valid_price_item_count','invalid_price_item_count'):
+        order_level[col] = order_level[col].fillna(0).astype('Int64')
+    order_level['has_items'] = order_level['item_count'].gt(0).astype('boolean')
+    order_level['items_value_complete'] = order_level['items_value_complete'].fillna(False).astype('boolean')
+    order_level = order_level.drop(columns=marker)
+    review_fields = ['order_id','review_id','review_score','review_score_valid','review_candidate_count','review_created_before_purchase']
+    order_level, matched, marker = _audited_left_join(order_level, reviews[review_fields], on='order_id',
+        relationship='one_to_one', name='orders_selected_reviews', audit=joins)
+    order_level['review_matched'] = matched
+    order_level['review_score_valid'] = (matched & order_level['review_score_valid'].fillna(False)).astype('boolean')
+    order_level['review_candidate_count'] = order_level['review_candidate_count'].fillna(0).astype('Int64')
+    order_level = _apply_order_eligibility(order_level.drop(columns=marker))
+    order_level = conform_table(order_level, 'order_level')
+    item_fields = ['order_id','order_item_id','product_id','seller_id','price_cents','price_valid','freight_cents']
+    order_payload = ['order_id','customer_id','customer_unique_id','customer_state','order_status',
+                     'order_purchase_timestamp','purchase_date','purchase_month','in_analysis_period','eligible_sales']
+    item_level, matched, marker = _audited_left_join(items[item_fields], order_level[order_payload], on='order_id',
+        relationship='many_to_one', name='items_orders_customers', audit=joins)
+    item_level['order_matched'] = matched
+    for col in ('in_analysis_period','eligible_sales'):
+        item_level[col] = item_level[col].fillna(False).astype('boolean')
+    item_level = item_level.drop(columns=marker)
+    item_level, matched, marker = _audited_left_join(item_level, products[['product_id','category_code']], on='product_id',
+        relationship='many_to_one', name='items_products', audit=joins)
+    item_level['product_matched'] = matched
+    item_level = item_level.drop(columns=marker)
+    lookup = translation[['product_category_name','product_category_name_english']].rename(columns={'product_category_name':'category_code'})
+    item_level, matched, marker = _audited_left_join(item_level, lookup, on='category_code',
+        relationship='many_to_one', name='items_translation', audit=joins)
+    english = item_level['product_category_name_english'].mask(_blank(item_level['product_category_name_english']))
+    code = item_level['category_code'].mask(_blank(item_level['category_code']))
+    item_level['category_code'] = code
+    item_level['category_name'] = english.fillna(code).fillna(UNKNOWN_CATEGORY_LABEL).astype('string')
+    item_level['category_missing'] = code.isna().astype('boolean')
+    item_level['category_translation_matched'] = matched
+    item_level['category_translation_missing'] = (code.notna() & english.isna()).astype('boolean')
+    item_level = conform_table(item_level.drop(columns=[marker,'product_category_name_english']), 'item_level')
+    eligible_orders = order_level.loc[order_level['eligible_sales']]
+    eligible_items = item_level.loc[item_level['eligible_sales']]
+    order_total = sum(int(v) for v in eligible_orders['order_value_cents'])
+    item_total = sum(int(v) for v in eligible_items['price_cents'])
+    eligible_item_count = int(eligible_orders['item_count'].sum())
+    if order_total != item_total or eligible_item_count != len(eligible_items):
+        raise DataQualityError('Rekonsiliasi item dan order eligible sales gagal')
+    if _money_totals(items[item_fields]) != _money_totals(item_level):
+        raise DataQualityError('Total uang item berubah setelah join kategori')
+    audit = {
+        'aggregation': aggregate_audit, 'joins': joins, 'eligibility': _eligibility_audit(order_level),
+        'reconciliation': {
+            'order_rows_before': len(orders), 'order_rows_after': len(order_level),
+            'item_rows_before': len(items), 'item_rows_after': len(item_level),
+            'all_item_money_before': _money_totals(items[item_fields]), 'all_item_money_after': _money_totals(item_level),
+            'eligible_sales_orders': len(eligible_orders), 'eligible_sales_items': len(eligible_items),
+            'eligible_order_item_count': eligible_item_count,
+            'eligible_order_value_cents': order_total, 'eligible_item_price_cents': item_total,
+            'eligible_items_unique_orders': int(eligible_items['order_id'].nunique()),
+            'matched_item_order_totals_equal': True,
+        },
+        'coverage': {
+            'orders_without_customer_match': int((~order_level['customer_matched']).sum()),
+            'orders_without_items': int((~order_level['has_items']).sum()),
+            'orders_without_review': int((~order_level['review_matched']).sum()),
+            'items_without_order': int((~item_level['order_matched']).sum()),
+            'items_without_product': int((~item_level['product_matched']).sum()),
+            'items_without_category_code': int(item_level['category_missing'].sum()),
+            'items_with_untranslated_category': int(item_level['category_translation_missing'].sum()),
+        },
+        'contracts': {name:{'grain':c['grain'],'primary_key':c['primary_key'],
+                            'columns':len(c['fields']),'validated':True} for name,c in TABLE_CONTRACTS.items()},
+        'payments_policy': 'Tidak digunakan; tidak ada join pembayaran mentah. Jika digunakan kelak harus diagregasi per order terlebih dahulu.',
+    }
+    return {'order_level':order_level,'item_level':item_level}, audit

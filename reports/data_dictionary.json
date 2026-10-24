@@ -1,0 +1,613 @@
+{
+  "schema_version": 1,
+  "phase": "P04",
+  "generated_at": "2026-10-24T09:55:13+07:00",
+  "currency": "BRL",
+  "analysis_period": {
+    "start_inclusive": "2017-01-01",
+    "end_exclusive": "2018-09-01"
+  },
+  "status_policy": "Snapshot dataset; bukan rekonstruksi status historis setiap bulan",
+  "money_policy": "Integer sen; null untuk order tanpa item atau setidaknya satu harga invalid. Bukan laba atau total pembayaran.",
+  "tables": {
+    "order_level": {
+      "grain": "Satu baris per pesanan; seluruh status dipertahankan",
+      "primary_key": [
+        "order_id"
+      ],
+      "row_count": 99441,
+      "fields": {
+        "order_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Kunci satu pesanan",
+          "source": "orders_dataset.order_id",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "customer_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Identitas pelanggan pada pesanan",
+          "source": "orders_dataset.customer_id",
+          "nullable": true,
+          "null_meaning": "Referensi pelanggan tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "customer_unique_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Identitas pelanggan lintas pesanan",
+          "source": "customers_dataset.customer_unique_id",
+          "nullable": true,
+          "null_meaning": "Pelanggan tidak cocok atau identitas tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "customer_state": {
+          "dtype": "string",
+          "unit": "kode negara bagian",
+          "meaning": "Wilayah pelanggan pesanan",
+          "source": "customers_dataset.customer_state",
+          "nullable": true,
+          "null_meaning": "Pelanggan tidak cocok atau wilayah tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "order_status": {
+          "dtype": "string",
+          "unit": "status",
+          "meaning": "Status pada snapshot sumber",
+          "source": "orders_dataset.order_status",
+          "nullable": true,
+          "null_meaning": "Status tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "order_purchase_timestamp": {
+          "dtype": "datetime64[ns]",
+          "unit": "timestamp tanpa timezone",
+          "meaning": "Waktu pembelian sumber",
+          "source": "orders_dataset.order_purchase_timestamp",
+          "nullable": true,
+          "null_meaning": "Tanggal kosong atau gagal parsing",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 0
+        },
+        "purchase_date": {
+          "dtype": "datetime64[ns]",
+          "unit": "tanggal kalender",
+          "meaning": "Tanggal pembelian dinormalisasi ke tengah malam",
+          "source": "order_purchase_timestamp",
+          "nullable": true,
+          "null_meaning": "Waktu pembelian tidak tersedia",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 0
+        },
+        "purchase_month": {
+          "dtype": "string",
+          "unit": "YYYY-MM",
+          "meaning": "Bulan pembelian",
+          "source": "order_purchase_timestamp",
+          "nullable": true,
+          "null_meaning": "Waktu pembelian tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "order_approved_at": {
+          "dtype": "datetime64[ns]",
+          "unit": "timestamp tanpa timezone",
+          "meaning": "Waktu persetujuan",
+          "source": "orders_dataset.order_approved_at",
+          "nullable": true,
+          "null_meaning": "Tanggal kosong atau gagal parsing",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 160
+        },
+        "order_delivered_carrier_date": {
+          "dtype": "datetime64[ns]",
+          "unit": "timestamp tanpa timezone",
+          "meaning": "Waktu diserahkan ke kurir",
+          "source": "orders_dataset.order_delivered_carrier_date",
+          "nullable": true,
+          "null_meaning": "Tanggal kosong atau gagal parsing",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 1783
+        },
+        "order_delivered_customer_date": {
+          "dtype": "datetime64[ns]",
+          "unit": "timestamp tanpa timezone",
+          "meaning": "Waktu penerimaan pelanggan",
+          "source": "orders_dataset.order_delivered_customer_date",
+          "nullable": true,
+          "null_meaning": "Tanggal kosong atau gagal parsing",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 2965
+        },
+        "order_estimated_delivery_date": {
+          "dtype": "datetime64[ns]",
+          "unit": "tanggal estimasi",
+          "meaning": "Estimasi pengiriman sumber",
+          "source": "orders_dataset.order_estimated_delivery_date",
+          "nullable": true,
+          "null_meaning": "Tanggal kosong atau gagal parsing",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 0
+        },
+        "order_value_cents": {
+          "dtype": "Int64",
+          "unit": "sen BRL",
+          "meaning": "Total price semua item; seluruh harga harus valid",
+          "source": "order_items_dataset.price_cents; agregasi order_id",
+          "nullable": true,
+          "null_meaning": "Pesanan tanpa item atau sedikitnya satu harga invalid; tidak dihitung sebagian",
+          "observed_dtype": "Int64",
+          "observed_null_count": 775
+        },
+        "item_count": {
+          "dtype": "Int64",
+          "unit": "baris item",
+          "meaning": "Jumlah item termasuk yang harganya invalid; nol jika tanpa item",
+          "source": "order_items_dataset; count per order_id",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "Int64",
+          "observed_null_count": 0
+        },
+        "valid_price_item_count": {
+          "dtype": "Int64",
+          "unit": "baris item",
+          "meaning": "Jumlah item dengan harga valid",
+          "source": "order_items_dataset.price_valid; count per order_id",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "Int64",
+          "observed_null_count": 0
+        },
+        "invalid_price_item_count": {
+          "dtype": "Int64",
+          "unit": "baris item",
+          "meaning": "Jumlah item dengan harga invalid",
+          "source": "item_count - valid_price_item_count",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "Int64",
+          "observed_null_count": 0
+        },
+        "has_items": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Ada sedikitnya satu item",
+          "source": "item_count > 0",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "items_value_complete": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Ada item dan semua harganya valid",
+          "source": "has_items; invalid_price_item_count; order_value_cents",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "customer_matched": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Referensi customer_id menemukan pelanggan",
+          "source": "join orders -> customers",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "customer_identity_valid": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Pelanggan cocok dan customer_unique_id nonkosong",
+          "source": "customer_matched; customers_dataset.customer_unique_id_valid",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "review_matched": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Tersedia satu review terpilih",
+          "source": "join orders -> selected reviews",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "review_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Review terpilih; tidak unik lintas pesanan",
+          "source": "order_reviews_dataset.review_id (P03)",
+          "nullable": true,
+          "null_meaning": "Tidak ada review terpilih",
+          "observed_dtype": "string",
+          "observed_null_count": 768
+        },
+        "review_score": {
+          "dtype": "Int64",
+          "unit": "skor 1–5",
+          "meaning": "Skor dari review terpilih",
+          "source": "order_reviews_dataset.review_score (P03)",
+          "nullable": true,
+          "null_meaning": "Tidak ada review atau skor terpilih invalid",
+          "observed_dtype": "Int64",
+          "observed_null_count": 768
+        },
+        "review_score_valid": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Review terpilih memiliki skor integer 1–5",
+          "source": "review_matched; order_reviews_dataset.review_score_valid",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "review_candidate_count": {
+          "dtype": "Int64",
+          "unit": "baris review",
+          "meaning": "Kandidat setelah exact dedup P03; nol jika tanpa review",
+          "source": "order_reviews_dataset.review_candidate_count",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "Int64",
+          "observed_null_count": 0
+        },
+        "review_created_before_purchase": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Metadata tanggal ulasan mendahului tanggal pembelian",
+          "source": "order_reviews_dataset.review_created_before_purchase",
+          "nullable": true,
+          "null_meaning": "Tidak ada review atau tanggal tidak dapat dibandingkan",
+          "observed_dtype": "boolean",
+          "observed_null_count": 768
+        },
+        "has_lifecycle_chronology_issue": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Ada inversi urutan tanggal yang teramati",
+          "source": "orders_dataset.has_lifecycle_chronology_issue (P03)",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "delivery_dates_valid": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Tanggal pembelian/aktual/estimasi valid; penerimaan dan tanggal estimasi tidak mendahului pembelian",
+          "source": "orders_dataset.delivery_dates_valid (P03)",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "is_late": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Tanggal kalender penerimaan melewati estimasi; status/periode belum diterapkan",
+          "source": "orders_dataset.is_late (P03)",
+          "nullable": true,
+          "null_meaning": "Pasangan tanggal tidak dapat dievaluasi; bukan tepat waktu",
+          "observed_dtype": "boolean",
+          "observed_null_count": 2965
+        },
+        "days_late": {
+          "dtype": "Int64",
+          "unit": "hari kalender",
+          "meaning": "Selisih aktual-estimasi dengan minimum nol",
+          "source": "orders_dataset.days_late (P03)",
+          "nullable": true,
+          "null_meaning": "Pasangan tanggal tidak dapat dievaluasi; bukan nol hari",
+          "observed_dtype": "Int64",
+          "observed_null_count": 2965
+        },
+        "in_analysis_period": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "2017-01-01 <= pembelian < 2018-09-01",
+          "source": "order_purchase_timestamp; src.config",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "eligible_sales": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Dalam periode; delivered; ada item; seluruh harga valid",
+          "source": "in_analysis_period; order_status; has_items; items_value_complete",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "eligible_delivery": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Dalam periode; delivered; tanggal delivery valid",
+          "source": "in_analysis_period; order_status; delivery_dates_valid",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "eligible_review_comparison": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Eligible delivery dan skor review terpilih valid",
+          "source": "eligible_delivery; review_score_valid",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "eligible_rfm": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Eligible sales dan identitas pelanggan unik valid",
+          "source": "eligible_sales; customer_identity_valid",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        }
+      }
+    },
+    "item_level": {
+      "grain": "Satu baris per pasangan order/item; denominator Q2 memakai order_level",
+      "primary_key": [
+        "order_id",
+        "order_item_id"
+      ],
+      "row_count": 112650,
+      "fields": {
+        "order_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Bagian kunci order/item",
+          "source": "order_items_dataset.order_id",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "order_item_id": {
+          "dtype": "string",
+          "unit": "ID urutan item",
+          "meaning": "Bagian kunci order/item; bentuk teks sumber",
+          "source": "order_items_dataset.order_item_id",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "product_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Referensi produk",
+          "source": "order_items_dataset.product_id",
+          "nullable": true,
+          "null_meaning": "Referensi produk kosong",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "seller_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Referensi penjual; sumber penjual belum dipakai",
+          "source": "order_items_dataset.seller_id",
+          "nullable": true,
+          "null_meaning": "Referensi penjual kosong",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "price_cents": {
+          "dtype": "Int64",
+          "unit": "sen BRL",
+          "meaning": "Nilai barang per item, tidak termasuk freight",
+          "source": "order_items_dataset.price_cents (P03)",
+          "nullable": true,
+          "null_meaning": "Harga sumber kosong/invalid; lihat price_valid",
+          "observed_dtype": "Int64",
+          "observed_null_count": 0
+        },
+        "price_valid": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Harga item valid, termasuk harga nol",
+          "source": "order_items_dataset.price_valid (P03)",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "freight_cents": {
+          "dtype": "Int64",
+          "unit": "sen BRL",
+          "meaning": "Ongkos kirim per item",
+          "source": "order_items_dataset.freight_cents (P03)",
+          "nullable": true,
+          "null_meaning": "Freight sumber kosong/invalid; tidak otomatis membatalkan sales",
+          "observed_dtype": "Int64",
+          "observed_null_count": 0
+        },
+        "order_matched": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Referensi order_id menemukan pesanan",
+          "source": "join items -> order_level",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "customer_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Identitas pelanggan pada pesanan",
+          "source": "order_level.customer_id",
+          "nullable": true,
+          "null_meaning": "Pesanan tidak cocok atau referensi tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "customer_unique_id": {
+          "dtype": "string",
+          "unit": "ID",
+          "meaning": "Identitas pelanggan lintas pesanan",
+          "source": "order_level.customer_unique_id",
+          "nullable": true,
+          "null_meaning": "Pesanan/pelanggan tidak cocok atau identitas tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "customer_state": {
+          "dtype": "string",
+          "unit": "kode negara bagian",
+          "meaning": "Wilayah pelanggan pesanan",
+          "source": "order_level.customer_state",
+          "nullable": true,
+          "null_meaning": "Pesanan/pelanggan tidak cocok atau wilayah tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "order_status": {
+          "dtype": "string",
+          "unit": "status",
+          "meaning": "Status snapshot pesanan",
+          "source": "order_level.order_status",
+          "nullable": true,
+          "null_meaning": "Pesanan tidak cocok atau status tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "order_purchase_timestamp": {
+          "dtype": "datetime64[ns]",
+          "unit": "timestamp tanpa timezone",
+          "meaning": "Waktu pembelian pesanan",
+          "source": "order_level.order_purchase_timestamp",
+          "nullable": true,
+          "null_meaning": "Pesanan tidak cocok atau waktu tidak tersedia",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 0
+        },
+        "purchase_date": {
+          "dtype": "datetime64[ns]",
+          "unit": "tanggal kalender",
+          "meaning": "Tanggal pembelian dinormalisasi",
+          "source": "order_level.purchase_date",
+          "nullable": true,
+          "null_meaning": "Waktu pembelian tidak tersedia",
+          "observed_dtype": "datetime64[ns]",
+          "observed_null_count": 0
+        },
+        "purchase_month": {
+          "dtype": "string",
+          "unit": "YYYY-MM",
+          "meaning": "Bulan pembelian pesanan",
+          "source": "order_level.purchase_month",
+          "nullable": true,
+          "null_meaning": "Waktu pembelian tidak tersedia",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "in_analysis_period": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Pesanan dalam periode utama; false untuk referensi order tidak cocok",
+          "source": "order_level.in_analysis_period",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "eligible_sales": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Eligibility seluruh order; semua item order invalid dikeluarkan bersama",
+          "source": "order_level.eligible_sales; order_matched",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "product_matched": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Referensi product_id menemukan produk",
+          "source": "join items -> products",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "category_code": {
+          "dtype": "string",
+          "unit": "kode kategori sumber",
+          "meaning": "Kunci kategori; terjemahan tidak mengubah kode",
+          "source": "products_dataset.category_code (P03)",
+          "nullable": true,
+          "null_meaning": "Kategori kosong atau produk tidak cocok",
+          "observed_dtype": "string",
+          "observed_null_count": 1603
+        },
+        "category_name": {
+          "dtype": "string",
+          "unit": "nama kategori",
+          "meaning": "Nama Inggris, fallback kode sumber, atau label Tidak diketahui",
+          "source": "translation.product_category_name_english; category_code; src.config",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "string",
+          "observed_null_count": 0
+        },
+        "category_missing": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Kode kategori tidak tersedia, termasuk produk yang tidak cocok",
+          "source": "category_code",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "category_translation_matched": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Kode kategori menemukan baris terjemahan",
+          "source": "join item category_code -> translation",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        },
+        "category_translation_missing": {
+          "dtype": "boolean",
+          "unit": "flag",
+          "meaning": "Kode kategori ada tetapi nama terjemahan tidak tersedia",
+          "source": "category_code; translation.product_category_name_english",
+          "nullable": false,
+          "null_meaning": "Tidak boleh kosong",
+          "observed_dtype": "boolean",
+          "observed_null_count": 0
+        }
+      }
+    }
+  }
+}

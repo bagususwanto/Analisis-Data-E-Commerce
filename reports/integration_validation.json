@@ -1,0 +1,37 @@
+{
+  "phase": "P04",
+  "status": "passed",
+  "verified_at": "2026-10-24T09:55:13+07:00",
+  "invocation_cwd": "/private/tmp",
+  "join_audit_sha256": "2b32a1b9132bb6ccf615bf6acc7a0b48274da9619dc759a571a67ab37facfb9a",
+  "data_dictionary_sha256": "da772b4a3284e265f33d3d2fec46b3a78a02bfa783ce3a60a91094786186a9c3",
+  "nine_source_hashes_unchanged": true,
+  "template_hash_unchanged": true,
+  "deterministic_second_build": true,
+  "independent_reference": {
+    "order_field_comparisons": 1690497,
+    "item_rows_checked": 112650,
+    "order_rows_checked": 99441,
+    "eligibility_counts": {
+      "eligible_sales": 96211,
+      "eligible_delivery": 96203,
+      "eligible_review_comparison": 95560,
+      "eligible_rfm": 96211
+    },
+    "eligible_sales_value_cents": 1318102713,
+    "eligible_sales_item_count": 109880,
+    "all_order_statuses_preserved": true
+  },
+  "rows_after": {
+    "order_level": 99441,
+    "item_level": 112650
+  },
+  "note": "Tes pipeline dijalankan terpisah; hasil aktual dicatat dalam EXECUTION_STATUS.md.",
+  "risk_tests": {
+    "command": ".venv/bin/python -m pytest tests/test_pipeline.py -q",
+    "result": "51 passed",
+    "exit_code": 0,
+    "scope": "31 tes P03 dan 20 tes P04"
+  },
+  "final_artifact_check_at": "2026-10-24T09:55:58+07:00"
+}

@@ -1,12 +1,12 @@
 {
   "phase": "P03",
   "status": "completed",
-  "verified_at": "2026-10-24T09:19:01+07:00",
+  "verified_at": "2026-10-24T09:52:50+07:00",
   "generator": "scripts/check_cleaning.py",
   "runtime": {
     "python": "3.12.13",
     "pandas": "3.1.0",
-    "invocation_cwd": "/private/tmp"
+    "invocation_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce"
   },
   "source_sha256": {
     "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
