@@ -1,8 +1,8 @@
 {
-  "phase": "P05",
+  "phase": "P06",
   "status": "completed",
-  "generated_at": "2026-10-24T10:03:51+07:00",
-  "generator": "scripts/check_analytics.py",
+  "generated_at": "2026-10-24T13:08:32+07:00",
+  "generator": "scripts/check_rfm.py",
   "runtime": {
     "python": "3.12.13",
     "pandas": "3.1.0",
@@ -3648,7 +3648,390 @@
       "partial_month",
       "empty_states",
       "outside_period"
-    ]
+    ],
+    "rfm_passed": true,
+    "rfm_deterministic_on_shuffled_orders": true,
+    "q1_q2_preserved_and_reverified": true
   },
-  "scope": "Agregasi Q1/Q2; visualisasi/narasi akhir P07, RFM/Q3 P06 belum dijalankan."
+  "scope": "Q1/Q2 dan RFM/Q3; tabel pelanggan dalam memori, ekspor CSV P08 dan visualisasi/narasi akhir P07 belum dibuat.",
+  "p05_generated_at": "2026-10-24T10:03:51+07:00",
+  "p05_original_report_sha256": "9bfe746d6ed13e50e120aff913a4f18d1d381feeefd1417c3d46c7b17ac0d289",
+  "q3": {
+    "filters": {
+      "states": null,
+      "state_filter_label": "Wilayah pesanan terakhir",
+      "metrics_period": {
+        "start_inclusive": "2017-01-01",
+        "end_exclusive": "2018-09-01"
+      },
+      "reference_date": "2018-09-01"
+    },
+    "summary": {
+      "customer_count": 93104,
+      "order_count": 96211,
+      "monetary_cents": 1318102713,
+      "one_time_customers": 90315,
+      "repeat_customers": 2789,
+      "repeat_customer_pct": 2.995574841037979,
+      "high_value_customers": 23276,
+      "high_value_customer_pct": 25.0
+    },
+    "high_value": {
+      "quantile": 0.75,
+      "interpolation": "linear",
+      "population": "Seluruh pelanggan eligible RFM dalam periode acuan, sebelum filter wilayah",
+      "population_customer_count": 93104,
+      "threshold_cents": 15417.5,
+      "threshold_cents_exact": {
+        "numerator": 30835,
+        "denominator": 2
+      },
+      "comparison": "monetary_cents * denominator >= numerator; ties termasuk nilai tinggi",
+      "customers_at_threshold": 0,
+      "high_value_customers": 23276
+    },
+    "segments": [
+      {
+        "segment": "Pembeli sekali yang baru",
+        "customer_count": 5820,
+        "customer_contribution_pct": 6.2510740677092285,
+        "order_count": 5820,
+        "monetary_cents": 76982939,
+        "monetary_contribution_pct": 5.8404355169550435,
+        "median_recency_days": 20.0,
+        "median_frequency": 1.0,
+        "median_monetary_cents": 7999.0,
+        "high_value_customers": 1297,
+        "high_value_customer_pct": 22.285223367697593
+      },
+      {
+        "segment": "Pembeli sekali yang masih baru",
+        "customer_count": 11650,
+        "customer_contribution_pct": 12.51288881251074,
+        "order_count": 11650,
+        "monetary_cents": 163219047,
+        "monetary_contribution_pct": 12.38287770673908,
+        "median_recency_days": 61.0,
+        "median_frequency": 1.0,
+        "median_monetary_cents": 8919.0,
+        "high_value_customers": 2800,
+        "high_value_customer_pct": 24.034334763948497
+      },
+      {
+        "segment": "Pembeli sekali yang lama tidak membeli",
+        "customer_count": 72845,
+        "customer_contribution_pct": 78.24046227874206,
+        "order_count": 72845,
+        "monetary_cents": 1005365223,
+        "monetary_contribution_pct": 76.27366312840599,
+        "median_recency_days": 269.0,
+        "median_frequency": 1.0,
+        "median_monetary_cents": 8700.0,
+        "high_value_customers": 17504,
+        "high_value_customer_pct": 24.029102889697302
+      },
+      {
+        "segment": "Pelanggan berulang aktif",
+        "customer_count": 603,
+        "customer_contribution_pct": 0.647662828664719,
+        "order_count": 1299,
+        "monetary_cents": 16197013,
+        "monetary_contribution_pct": 1.2288126593060127,
+        "median_recency_days": 45.0,
+        "median_frequency": 2.0,
+        "median_monetary_cents": 19400.0,
+        "high_value_customers": 375,
+        "high_value_customer_pct": 62.18905472636816
+      },
+      {
+        "segment": "Pelanggan berulang yang lama tidak membeli",
+        "customer_count": 2186,
+        "customer_contribution_pct": 2.34791201237326,
+        "order_count": 4597,
+        "monetary_cents": 56338491,
+        "monetary_contribution_pct": 4.274210988593876,
+        "median_recency_days": 250.5,
+        "median_frequency": 2.0,
+        "median_monetary_cents": 17989.0,
+        "high_value_customers": 1300,
+        "high_value_customer_pct": 59.469350411710884
+      }
+    ],
+    "metric_distributions": [
+      {
+        "metric": "recency_days",
+        "count": 93104,
+        "min": 3,
+        "q25": 117.0,
+        "median": 221.0,
+        "q75": 348.0,
+        "max": 604
+      },
+      {
+        "metric": "frequency",
+        "count": 93104,
+        "min": 1,
+        "q25": 1.0,
+        "median": 1.0,
+        "q75": 1.0,
+        "max": 15
+      },
+      {
+        "metric": "monetary_cents",
+        "count": 93104,
+        "min": 85,
+        "q25": 4765.0,
+        "median": 8970.0,
+        "q75": 15417.5,
+        "max": 1344000
+      }
+    ],
+    "frequency_distribution": [
+      {
+        "frequency": 1,
+        "customer_count": 90315,
+        "customer_contribution_pct": 97.00442515896202
+      },
+      {
+        "frequency": 2,
+        "customer_count": 2562,
+        "customer_contribution_pct": 2.7517614710431344
+      },
+      {
+        "frequency": 3,
+        "customer_count": 180,
+        "customer_contribution_pct": 0.19333218766111016
+      },
+      {
+        "frequency": 4,
+        "customer_count": 28,
+        "customer_contribution_pct": 0.030073895858394914
+      },
+      {
+        "frequency": 5,
+        "customer_count": 9,
+        "customer_contribution_pct": 0.009666609383055507
+      },
+      {
+        "frequency": 6,
+        "customer_count": 5,
+        "customer_contribution_pct": 0.005370338546141949
+      },
+      {
+        "frequency": 7,
+        "customer_count": 3,
+        "customer_contribution_pct": 0.003222203127685169
+      },
+      {
+        "frequency": 9,
+        "customer_count": 1,
+        "customer_contribution_pct": 0.0010740677092283897
+      },
+      {
+        "frequency": 15,
+        "customer_count": 1,
+        "customer_contribution_pct": 0.0010740677092283897
+      }
+    ],
+    "notes": [
+      "Ambang 30/90 hari merupakan heuristik operasional, bukan prediksi churn.",
+      "Recency/frequency/monetary dibatasi jendela observasi dan status delivered pada snapshot dataset.",
+      "Pembeli sekali tidak otomatis pelanggan churn; tidak ada qcut frequency, bobot skor RFM, atau machine learning.",
+      "Ambang monetary P75 global dihitung sekali; ties dapat menghasilkan lebih dari 25% pelanggan bernilai tinggi.",
+      "Filter wilayah hanya memilih pelanggan menurut pesanan terakhir; R/F/M tetap mencakup seluruh order acuan pelanggan.",
+      "Persentase segmen memakai pelanggan/monetary dalam filter aktif; ambang nilai tinggi memakai populasi global.",
+      "Kuartil pada distribusi deskriptif mengikuti filter aktif dan tidak dipakai mengganti ambang label nilai tinggi global."
+    ],
+    "rfm_metadata": {
+      "reference_date": "2018-09-01",
+      "analysis_period": {
+        "start_inclusive": "2017-01-01",
+        "end_exclusive": "2018-09-01"
+      },
+      "segment_rules": {
+        "new_days_inclusive": 30,
+        "active_days_inclusive": 90,
+        "labels": [
+          "Pembeli sekali yang baru",
+          "Pembeli sekali yang masih baru",
+          "Pembeli sekali yang lama tidak membeli",
+          "Pelanggan berulang aktif",
+          "Pelanggan berulang yang lama tidak membeli"
+        ]
+      },
+      "high_value": {
+        "quantile": 0.75,
+        "interpolation": "linear",
+        "population": "Seluruh pelanggan eligible RFM dalam periode acuan, sebelum filter wilayah",
+        "population_customer_count": 93104,
+        "threshold_cents": 15417.5,
+        "threshold_cents_exact": {
+          "numerator": 30835,
+          "denominator": 2
+        },
+        "comparison": "monetary_cents * denominator >= numerator; ties termasuk nilai tinggi",
+        "customers_at_threshold": 0,
+        "high_value_customers": 23276
+      },
+      "reconciliation": {
+        "eligible_sales_orders": 96211,
+        "eligible_rfm_orders": 96211,
+        "eligible_sales_value_cents": 1318102713,
+        "eligible_rfm_value_cents": 1318102713,
+        "rfm_frequency_sum": 96211,
+        "rfm_monetary_sum_cents": 1318102713,
+        "excluded_identity_orders": 0,
+        "excluded_identity_value_cents": 0,
+        "customer_count": 93104
+      },
+      "state_filter_label": "Wilayah pesanan terakhir",
+      "last_order_policy": "Timestamp pembelian terbaru, lalu order_id leksikografis terbesar; wilayah kosong tidak diganti order lama",
+      "notes": [
+        "Ambang 30/90 hari merupakan heuristik operasional, bukan prediksi churn.",
+        "Recency/frequency/monetary dibatasi jendela observasi dan status delivered pada snapshot dataset.",
+        "Pembeli sekali tidak otomatis pelanggan churn; tidak ada qcut frequency, bobot skor RFM, atau machine learning.",
+        "Ambang monetary P75 global dihitung sekali; ties dapat menghasilkan lebih dari 25% pelanggan bernilai tinggi."
+      ]
+    },
+    "filter_scenario_summaries": {
+      "default": {
+        "filters": {
+          "states": null,
+          "state_filter_label": "Wilayah pesanan terakhir",
+          "metrics_period": {
+            "start_inclusive": "2017-01-01",
+            "end_exclusive": "2018-09-01"
+          },
+          "reference_date": "2018-09-01"
+        },
+        "summary": {
+          "customer_count": 93104,
+          "order_count": 96211,
+          "monetary_cents": 1318102713,
+          "one_time_customers": 90315,
+          "repeat_customers": 2789,
+          "repeat_customer_pct": 2.995574841037979,
+          "high_value_customers": 23276,
+          "high_value_customer_pct": 25.0
+        }
+      },
+      "SP": {
+        "filters": {
+          "states": [
+            "SP"
+          ],
+          "state_filter_label": "Wilayah pesanan terakhir",
+          "metrics_period": {
+            "start_inclusive": "2017-01-01",
+            "end_exclusive": "2018-09-01"
+          },
+          "reference_date": "2018-09-01"
+        },
+        "summary": {
+          "customer_count": 39059,
+          "order_count": 40410,
+          "monetary_cents": 505738181,
+          "one_time_customers": 37839,
+          "repeat_customers": 1220,
+          "repeat_customer_pct": 3.123479863795796,
+          "high_value_customers": 8770,
+          "high_value_customer_pct": 22.453211807777976
+        }
+      },
+      "RJ": {
+        "filters": {
+          "states": [
+            "RJ"
+          ],
+          "state_filter_label": "Wilayah pesanan terakhir",
+          "metrics_period": {
+            "start_inclusive": "2017-01-01",
+            "end_exclusive": "2018-09-01"
+          },
+          "reference_date": "2018-09-01"
+        },
+        "summary": {
+          "customer_count": 11877,
+          "order_count": 12312,
+          "monetary_cents": 175141446,
+          "one_time_customers": 11488,
+          "repeat_customers": 389,
+          "repeat_customer_pct": 3.275237854677107,
+          "high_value_customers": 3135,
+          "high_value_customer_pct": 26.39555443293761
+        }
+      },
+      "RR": {
+        "filters": {
+          "states": [
+            "RR"
+          ],
+          "state_filter_label": "Wilayah pesanan terakhir",
+          "metrics_period": {
+            "start_inclusive": "2017-01-01",
+            "end_exclusive": "2018-09-01"
+          },
+          "reference_date": "2018-09-01"
+        },
+        "summary": {
+          "customer_count": 39,
+          "order_count": 40,
+          "monetary_cents": 701777,
+          "one_time_customers": 38,
+          "repeat_customers": 1,
+          "repeat_customer_pct": 2.5641025641025643,
+          "high_value_customers": 15,
+          "high_value_customer_pct": 38.46153846153846
+        }
+      },
+      "empty_states": {
+        "filters": {
+          "states": [],
+          "state_filter_label": "Wilayah pesanan terakhir",
+          "metrics_period": {
+            "start_inclusive": "2017-01-01",
+            "end_exclusive": "2018-09-01"
+          },
+          "reference_date": "2018-09-01"
+        },
+        "summary": {
+          "customer_count": 0,
+          "order_count": 0,
+          "monetary_cents": 0,
+          "one_time_customers": 0,
+          "repeat_customers": 0,
+          "repeat_customer_pct": null,
+          "high_value_customers": 0,
+          "high_value_customer_pct": null
+        }
+      },
+      "unknown_state": {
+        "filters": {
+          "states": [
+            "XX"
+          ],
+          "state_filter_label": "Wilayah pesanan terakhir",
+          "metrics_period": {
+            "start_inclusive": "2017-01-01",
+            "end_exclusive": "2018-09-01"
+          },
+          "reference_date": "2018-09-01"
+        },
+        "summary": {
+          "customer_count": 0,
+          "order_count": 0,
+          "monetary_cents": 0,
+          "one_time_customers": 0,
+          "repeat_customers": 0,
+          "repeat_customer_pct": null,
+          "high_value_customers": 0,
+          "high_value_customer_pct": null
+        }
+      }
+    },
+    "data_dictionary": {
+      "path": "reports/rfm_data_dictionary.json",
+      "sha256": "981e1bbf48d4e0d5ffd0940b999d218d5d99d7e32b2d00f756507e603f57ced6"
+    }
+  }
 }

@@ -213,3 +213,182 @@ def analyze_q2(orders, *, start=None, end_exclusive=None, states=None):
                  'Seluruh wilayah tetap ditampilkan; hanya wilayah dengan sampel comparison minimal sesuai config yang diperingkat.',
                  'Prioritas adalah aturan investigasi operasional; hubungan teramati tidak membuktikan sebab-akibat.'],
     }
+
+
+# P06: RFM selalu dibangun dari populasi acuan penuh, bukan hasil filter UI.
+def segment_rfm(customers):
+    from .config import RECENCY_NEW_DAYS, RECENCY_ACTIVE_DAYS, RFM_SEGMENTS
+    r=customers['recency_days']; f=customers['frequency']
+    if r.isna().any() or f.isna().any() or r.lt(0).any() or f.lt(1).any() or r.mod(1).ne(0).any() or f.mod(1).ne(0).any():
+        raise ValueError('Recency harus integer nonnegatif; frequency integer minimal 1')
+    masks=[f.eq(1)&r.le(RECENCY_NEW_DAYS),
+           f.eq(1)&r.gt(RECENCY_NEW_DAYS)&r.le(RECENCY_ACTIVE_DAYS),
+           f.eq(1)&r.gt(RECENCY_ACTIVE_DAYS),
+           f.ge(2)&r.le(RECENCY_ACTIVE_DAYS),f.ge(2)&r.gt(RECENCY_ACTIVE_DAYS)]
+    if not pd.concat(masks,axis=1).sum(axis=1).eq(1).all():
+        raise ValueError('Aturan segmen tidak saling eksklusif/lengkap')
+    result=pd.Series(pd.NA,index=customers.index,dtype='string')
+    for label,mask in zip(RFM_SEGMENTS,masks): result.loc[mask]=label
+    return result
+
+
+def _high_value_metadata(monetary):
+    from fractions import Fraction
+    from .config import HIGH_VALUE_QUANTILE, HIGH_VALUE_INTERPOLATION
+    if HIGH_VALUE_INTERPOLATION!='linear':
+        raise ValueError('Implementasi ambang tepat hanya mendukung interpolasi linear')
+    values=sorted(int(v) for v in monetary)
+    metadata={'quantile':HIGH_VALUE_QUANTILE,'interpolation':HIGH_VALUE_INTERPOLATION,
+              'population':'Seluruh pelanggan eligible RFM dalam periode acuan, sebelum filter wilayah',
+              'population_customer_count':len(values),'threshold_cents':None,'threshold_cents_exact':None,
+              'comparison':'monetary_cents * denominator >= numerator; ties termasuk nilai tinggi'}
+    if values:
+        position=Fraction(str(HIGH_VALUE_QUANTILE))*(len(values)-1)
+        lower=position.numerator//position.denominator
+        upper=min(lower+1,len(values)-1)
+        threshold=Fraction(values[lower])+(position-lower)*(values[upper]-values[lower])
+        metadata['threshold_cents']=int(threshold) if threshold.denominator==1 else float(threshold)
+        metadata['threshold_cents_exact']={'numerator':threshold.numerator,'denominator':threshold.denominator}
+    return metadata
+
+
+def _high_value_flags(monetary, metadata):
+    exact=metadata['threshold_cents_exact']
+    if exact is None:
+        if len(monetary): raise ValueError('Ambang populasi kosong tidak boleh melabeli pelanggan nonkosong')
+        return pd.Series([],index=monetary.index,dtype='boolean')
+    # Python integer menjaga perbandingan tepat bahkan bila angka melebihi 2**53.
+    return pd.Series([int(v)*exact['denominator']>=exact['numerator'] for v in monetary],
+                     index=monetary.index,dtype='boolean')
+
+
+def build_rfm(orders):
+    """Kembalikan (rfm_customers, metadata) dari order_level periode acuan penuh.
+
+    Filter tanggal/wilayah tidak diterima di sini. Gunakan analyze_q3/filter_rfm
+    setelah membangun populasi penuh dan menghitung ambang global sekali.
+    """
+    from .config import (RFM_REFERENCE_DATE, RECENCY_NEW_DAYS, RECENCY_ACTIVE_DAYS, RFM_SEGMENTS)
+    from .data_contracts import RFM_CUSTOMER_CONTRACT
+    if orders['order_id'].duplicated().any(): raise ValueError('RFM memerlukan satu baris per order')
+    expected=(orders['eligible_sales'].fillna(False)&orders['customer_identity_valid'].fillna(False))
+    if not orders['eligible_rfm'].fillna(False).equals(expected):
+        raise ValueError('Eligibility RFM tidak konsisten dengan sales/identitas P04')
+    eligible=orders.loc[orders['eligible_rfm'].fillna(False)].copy()
+    uid=eligible['customer_unique_id'].astype('string')
+    if (uid.isna()|uid.str.strip().eq('').fillna(False)).any(): raise ValueError('Identitas eligible RFM kosong')
+    if eligible['order_value_cents'].isna().any() or eligible['order_value_cents'].lt(0).any():
+        raise ValueError('Monetary order eligible RFM harus tersedia dan nonnegatif')
+    purchase=eligible['order_purchase_timestamp']
+    if (purchase.isna()|purchase.lt(pd.Timestamp(ANALYSIS_START))|purchase.ge(pd.Timestamp(ANALYSIS_END_EXCLUSIVE))).any():
+        raise ValueError('Order eligible RFM di luar periode acuan/tanggal tidak valid')
+    latest=(eligible.sort_values(['customer_unique_id','order_purchase_timestamp','order_id'],kind='stable')
+            .drop_duplicates('customer_unique_id',keep='last')
+            [['customer_unique_id','order_id','order_purchase_timestamp','customer_state']]
+            .rename(columns={'order_id':'last_order_id','order_purchase_timestamp':'last_purchase_timestamp','customer_state':'last_order_state'})
+            .set_index('customer_unique_id'))
+    grouped=eligible.groupby('customer_unique_id',sort=False)
+    latest['frequency']=grouped['order_id'].nunique().astype('Int64')
+    monetary=(eligible['order_value_cents'].astype(object).groupby(eligible['customer_unique_id'],sort=False).sum())
+    try: latest['monetary_cents']=pd.array(monetary.reindex(latest.index),dtype='Int64')
+    except (OverflowError,TypeError) as exc: raise ValueError('Monetary pelanggan melampaui Int64 sen') from exc
+    latest['last_purchase_date']=latest['last_purchase_timestamp'].dt.normalize()
+    latest['recency_days']=(pd.Timestamp(RFM_REFERENCE_DATE)-latest['last_purchase_date']).dt.days.astype('Int64')
+    latest['segment']=segment_rfm(latest)
+    threshold=_high_value_metadata(latest['monetary_cents'])
+    latest['is_high_value']=_high_value_flags(latest['monetary_cents'],threshold)
+    result=latest.reset_index()
+    result['last_order_state']=result['last_order_state'].astype('string')
+    result['last_order_state']=result['last_order_state'].mask(result['last_order_state'].str.strip().eq('').fillna(False))
+    fields=RFM_CUSTOMER_CONTRACT['fields']
+    result=result[list(fields)].astype({name:spec['dtype'] for name,spec in fields.items()})
+    for name,spec in fields.items():
+        if not spec['nullable'] and result[name].isna().any(): raise ValueError(f'RFM {name}: null melanggar kontrak')
+    if result['customer_unique_id'].duplicated().any(): raise ValueError('Pelanggan RFM tidak unik')
+    result=result.sort_values('customer_unique_id',kind='stable').reset_index(drop=True)
+    order_value=sum(int(v) for v in eligible['order_value_cents'])
+    if int(result['frequency'].sum())!=len(eligible) or sum(int(v) for v in result['monetary_cents'])!=order_value:
+        raise ValueError('Rekonsiliasi frequency/monetary RFM gagal')
+    sales=orders.loc[orders['eligible_sales'].fillna(False)]
+    excluded=sales.loc[~sales['eligible_rfm'].fillna(False)]
+    exact=threshold['threshold_cents_exact']
+    ties=sum(int(v)*exact['denominator']==exact['numerator'] for v in result['monetary_cents']) if exact else 0
+    metadata={
+        'reference_date':str(RFM_REFERENCE_DATE),
+        'analysis_period':{'start_inclusive':str(ANALYSIS_START),'end_exclusive':str(ANALYSIS_END_EXCLUSIVE)},
+        'segment_rules':{'new_days_inclusive':RECENCY_NEW_DAYS,'active_days_inclusive':RECENCY_ACTIVE_DAYS,'labels':list(RFM_SEGMENTS)},
+        'high_value':{**threshold,'customers_at_threshold':ties,'high_value_customers':int(result['is_high_value'].sum())},
+        'reconciliation':{'eligible_sales_orders':len(sales),'eligible_rfm_orders':len(eligible),
+                          'eligible_sales_value_cents':sum(int(v) for v in sales['order_value_cents']),
+                          'eligible_rfm_value_cents':order_value,'rfm_frequency_sum':int(result['frequency'].sum()),
+                          'rfm_monetary_sum_cents':sum(int(v) for v in result['monetary_cents']),
+                          'excluded_identity_orders':len(excluded),
+                          'excluded_identity_value_cents':sum(int(v) for v in excluded['order_value_cents']),
+                          'customer_count':len(result)},
+        'state_filter_label':'Wilayah pesanan terakhir',
+        'last_order_policy':'Timestamp pembelian terbaru, lalu order_id leksikografis terbesar; wilayah kosong tidak diganti order lama',
+        'notes':['Ambang 30/90 hari merupakan heuristik operasional, bukan prediksi churn.',
+                 'Recency/frequency/monetary dibatasi jendela observasi dan status delivered pada snapshot dataset.',
+                 'Pembeli sekali tidak otomatis pelanggan churn; tidak ada qcut frequency, bobot skor RFM, atau machine learning.',
+                 'Ambang monetary P75 global dihitung sekali; ties dapat menghasilkan lebih dari 25% pelanggan bernilai tinggi.'],
+    }
+    return result,metadata
+
+
+def filter_rfm(customers, *, states=None):
+    """Filter state pesanan terakhir; tidak menghitung ulang R/F/M atau ambang."""
+    if customers['customer_unique_id'].duplicated().any(): raise ValueError('Tabel RFM harus unik per pelanggan')
+    if states is None: return customers.copy()
+    chosen=[states] if isinstance(states,str) else list(states)
+    if any(not isinstance(s,str) or not s.strip() for s in chosen): raise ValueError('Kode state filter tidak valid')
+    return customers.loc[customers['last_order_state'].isin(chosen)].copy()
+
+
+def analyze_q3(customers, metadata, *, states=None):
+    """Ringkasan segmen/filter dari tabel acuan dengan ambang global yang sama."""
+    from .config import RFM_SEGMENTS, HIGH_VALUE_INTERPOLATION
+    if not customers['is_high_value'].equals(_high_value_flags(customers['monetary_cents'],metadata['high_value'])):
+        raise ValueError('Label nilai tinggi tidak cocok dengan ambang global')
+    chosen=None if states is None else list([states] if isinstance(states,str) else states)
+    selected=filter_rfm(customers,states=chosen)
+    count=len(selected);total=sum(int(v) for v in selected['monetary_cents']);rows=[]
+    median=lambda series:float(series.median()) if len(series) else None
+    for label in RFM_SEGMENTS:
+        group=selected.loc[selected['segment'].eq(label)];value=sum(int(v) for v in group['monetary_cents'])
+        rows.append({'segment':label,'customer_count':len(group),'customer_contribution_pct':_pct(len(group),count),
+                     'order_count':int(group['frequency'].sum()),'monetary_cents':value,'monetary_contribution_pct':_pct(value,total),
+                     'median_recency_days':median(group['recency_days']),'median_frequency':median(group['frequency']),
+                     'median_monetary_cents':median(group['monetary_cents']),'high_value_customers':int(group['is_high_value'].sum()),
+                     'high_value_customer_pct':_pct(int(group['is_high_value'].sum()),len(group))})
+    segments=pd.DataFrame(rows).astype({'segment':'string',**{c:'Int64' for c in ['customer_count','order_count','monetary_cents','high_value_customers']},
+        **{c:'Float64' for c in ['customer_contribution_pct','monetary_contribution_pct','median_recency_days','median_frequency','median_monetary_cents','high_value_customer_pct']}})
+    if int(segments['customer_count'].sum())!=count or sum(int(v) for v in segments['monetary_cents'])!=total:
+        raise ValueError('Rekonsiliasi ringkasan segmen gagal')
+    if count and not math.isclose(float(segments['customer_contribution_pct'].sum()),100,abs_tol=1e-9):
+        raise ValueError('Kontribusi pelanggan bukan 100%')
+    if total and not math.isclose(float(segments['monetary_contribution_pct'].sum()),100,abs_tol=1e-9):
+        raise ValueError('Kontribusi monetary bukan 100%')
+    distributions=[]
+    for metric in ['recency_days','frequency','monetary_cents']:
+        series=selected[metric]
+        distributions.append({'metric':metric,'count':count,'min':int(series.min()) if count else None,
+            'q25':float(series.quantile(.25,interpolation=HIGH_VALUE_INTERPOLATION)) if count else None,
+            'median':median(series),'q75':float(series.quantile(.75,interpolation=HIGH_VALUE_INTERPOLATION)) if count else None,
+            'max':int(series.max()) if count else None})
+    frequency_rows=[{'frequency':int(f),'customer_count':int(n),'customer_contribution_pct':_pct(int(n),count)}
+                    for f,n in selected['frequency'].value_counts().sort_index().items()]
+    frequencies=pd.DataFrame(frequency_rows,columns=['frequency','customer_count','customer_contribution_pct']).astype({
+        'frequency':'Int64','customer_count':'Int64','customer_contribution_pct':'Float64'})
+    chosen=None if chosen is None else sorted(set(chosen))
+    repeat=int(selected['frequency'].ge(2).sum())
+    return {'filters':{'states':chosen,'state_filter_label':metadata['state_filter_label'],
+                       'metrics_period':metadata['analysis_period'],'reference_date':metadata['reference_date']},
+            'summary':{'customer_count':count,'order_count':int(selected['frequency'].sum()),'monetary_cents':total,
+                       'one_time_customers':count-repeat,'repeat_customers':repeat,'repeat_customer_pct':_pct(repeat,count),
+                       'high_value_customers':int(selected['is_high_value'].sum()),
+                       'high_value_customer_pct':_pct(int(selected['is_high_value'].sum()),count)},
+            'high_value':metadata['high_value'].copy(),'segments':segments,'metric_distributions':pd.DataFrame(distributions),
+            'frequency_distribution':frequencies,'notes':metadata['notes']+[
+                'Filter wilayah hanya memilih pelanggan menurut pesanan terakhir; R/F/M tetap mencakup seluruh order acuan pelanggan.',
+                'Persentase segmen memakai pelanggan/monetary dalam filter aktif; ambang nilai tinggi memakai populasi global.',
+                'Kuartil pada distribusi deskriptif mengikuti filter aktif dan tidak dipakai mengganti ambang label nilai tinggi global.']}

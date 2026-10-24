@@ -2,7 +2,7 @@
 
 Proyek analisis dataset E-Commerce untuk submission Dicoding. Pemilik: **Bagus Uswanto**, ID Dicoding **DS013B6Y0318**.
 
-Saat ini tersedia inventaris sumber (P00), fondasi (P01), assessment (P02), cleaning (P03), integrasi/kontrak data (P04), serta agregasi penjualan dan pengiriman/ulasan Q1–Q2 (P05). RFM/Q3, notebook, dan dashboard mengikuti phase berikutnya pada [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). Status aktual dicatat di [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
+Saat ini tersedia inventaris sumber (P00), fondasi (P01), assessment (P02), cleaning (P03), integrasi/kontrak data (P04), agregasi Q1–Q2 (P05), serta RFM dan segmentasi Q3 (P06). Notebook, visualisasi, dan dashboard mengikuti phase berikutnya pada [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). Status aktual dicatat di [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
 
 ## Setup lingkungan
 
@@ -132,6 +132,33 @@ Q1 menghasilkan kategori, top lima, kalender bulan, serta seri bulanan kategori 
 Q2 menghasilkan coverage delivered/delivery/review, perbandingan terlambat–tepat waktu (dengan n masing-masing), dan tabel seluruh wilayah. Tingkat keterlambatan memakai eligible delivery; proporsi ulasan buruk memakai eligible review comparison. Selisih dinyatakan dalam persentase poin. Wilayah dengan minimal 50 order comparison diperingkat menurut keterlambatan, ulasan buruk, ukuran sampel (semuanya menurun), lalu kode state menaik. Kelompok kecil tetap ditampilkan; wilayah tidak diketahui tidak diperingkat. Ini aturan prioritas investigasi dan tidak membuktikan sebab-akibat.
 
 [Hasil numerik Q1–Q2](reports/analytical_results.json) mencakup seluruh kategori, 20 bulan periode utama, perbandingan ulasan, peringkat wilayah, dan summary enam skenario filter. [Laporan verifikasi](reports/analytics_validation.json) memuat referensi independen berbasis CSV/datetime/Decimal, pencocokan dengan P04, determinisme, serta hash sumber. Visualisasi dan narasi akhir dikerjakan P07; hasil RFM/Q3 menjadi milik P06.
+
+## Menjalankan RFM dan segmentasi Q3 (P06)
+
+```bash
+.venv/bin/python -m pytest tests/test_analytics.py tests/test_pipeline.py -q
+.venv/bin/python scripts/check_rfm.py
+```
+
+```python
+from src.analytics import build_rfm, analyze_q3
+from src.data_pipeline import build_analysis_tables
+
+tables, audit = build_analysis_tables()
+rfm_customers, rfm_metadata = build_rfm(tables["order_level"])
+q3 = analyze_q3(rfm_customers, rfm_metadata)
+q3_rj = analyze_q3(rfm_customers, rfm_metadata, states=["RJ"])
+```
+
+Bangun RFM dari seluruh `order_level` periode acuan sebelum memfilter wilayah. Satu baris merepresentasikan `customer_unique_id`: recency berupa hari kalender ke tanggal acuan 1 September 2018, frequency berupa order unik, dan monetary berupa jumlah nilai barang dalam sen BRL tanpa freight. Setiap baris masuk satu dari lima segmen manual menurut ambang 30/90 hari di config. Pembeli sekali bukan otomatis churn; hasil dibatasi periode observasi dan status delivered pada snapshot, tanpa machine learning atau skor berbobot.
+
+`last_order_state` berasal dari order eligible terakhir, dengan tie-break timestamp pembelian lalu order_id leksikografis terbesar. Label filter adalah **Wilayah pesanan terakhir**. Filter ini hanya memilih pelanggan; seluruh pembelian eligible mereka di wilayah lain tetap tercakup dalam R/F/M. Wilayah kosong pada order terakhir tetap kosong dan tidak diganti wilayah dari order lama. API Q3 tidak menerima filter tanggal yang mengubah periode acuan.
+
+Ambang nilai tinggi P75 global dihitung sekali di `build_rfm`, dengan interpolasi linear, lalu diteruskan lewat metadata. Flag memakai monetary >= ambang, termasuk ties. Nilai statistik ambang dapat berupa pecahan sen; pembanding memakai rasio integer tepat (`threshold_cents_exact`) dan tidak membulatkan ambang atau monetary. Jumlah pelanggan bernilai tinggi tidak selalu tepat 25%. Filter wilayah tidak menghitung ulang ambang. Kuartil distribusi deskriptif dalam filter boleh berubah, tetapi tidak menggantikan cutoff label global.
+
+`analyze_q3` mengembalikan summary, lima baris segmen (termasuk segmen kosong), kontribusi pelanggan/monetary, median R/F/M, hitungan nilai tinggi, dan distribusi R/F/M. Filter kosong menghasilkan persentase/median unavailable, sedangkan total monetary nol hanya membuat kontribusi monetary unavailable. Tabel pelanggan tetap dalam memori sampai ekspor P08.
+
+[Hasil analisis bersama](reports/analytical_results.json) kini memuat Q1–Q3. [Kontrak RFM](reports/rfm_data_dictionary.json) dan [verifikasi RFM](reports/rfm_validation.json) mencatat schema, ambang, rekonsiliasi, serta enam skenario wilayah. Dictionary P04 order/item tetap terpisah untuk digabung pada metadata ekspor P08. Skrip P06 memeriksa ulang Q1/Q2 beserta enam summary filter P05 dan mempertahankan payload tersebut saat menambahkan Q3; lineage hash laporan bersama dicatat dalam verifikasi P05/P06. Bila P05 dijalankan ulang sehingga laporan Q1/Q2 dihasilkan kembali, jalankan P06 kembali sebelum memakai hasil Q3 pada notebook/dashboard.
 
 ## Konfigurasi dan sumber
 

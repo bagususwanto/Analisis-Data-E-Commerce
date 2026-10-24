@@ -1,0 +1,161 @@
+{
+  "phase": "P06",
+  "generated_at": "2026-10-24T13:08:32+07:00",
+  "grain": "Satu baris per customer_unique_id; metrik seluruh periode acuan",
+  "primary_key": [
+    "customer_unique_id"
+  ],
+  "fields": {
+    "customer_unique_id": {
+      "dtype": "string",
+      "unit": "ID",
+      "meaning": "Identitas pelanggan lintas pesanan",
+      "source": "order_level.customer_unique_id",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "string",
+      "observed_null_count": 0
+    },
+    "last_order_id": {
+      "dtype": "string",
+      "unit": "ID",
+      "meaning": "Order eligible terakhir; tie timestamp lalu order_id leksikografis terbesar",
+      "source": "order_level.order_id",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "string",
+      "observed_null_count": 0
+    },
+    "last_purchase_timestamp": {
+      "dtype": "datetime64[ns]",
+      "unit": "timestamp tanpa timezone",
+      "meaning": "Waktu pembelian eligible terakhir",
+      "source": "order_level.order_purchase_timestamp",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "datetime64[ns]",
+      "observed_null_count": 0
+    },
+    "last_purchase_date": {
+      "dtype": "datetime64[ns]",
+      "unit": "tanggal kalender",
+      "meaning": "Tanggal pembelian eligible terakhir, dinormalisasi",
+      "source": "last_purchase_timestamp",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "datetime64[ns]",
+      "observed_null_count": 0
+    },
+    "last_order_state": {
+      "dtype": "string",
+      "unit": "kode negara bagian",
+      "meaning": "Wilayah pesanan terakhir; filter tidak menghitung ulang R/F/M",
+      "source": "order_level.customer_state pada last_order_id",
+      "nullable": true,
+      "null_meaning": "Wilayah pesanan terakhir tidak tersedia; tidak diganti wilayah order lama",
+      "observed_dtype": "string",
+      "observed_null_count": 0
+    },
+    "recency_days": {
+      "dtype": "Int64",
+      "unit": "hari kalender",
+      "meaning": "Tanggal acuan dikurangi last_purchase_date",
+      "source": "src.config.RFM_REFERENCE_DATE; last_purchase_date",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "Int64",
+      "observed_null_count": 0
+    },
+    "frequency": {
+      "dtype": "Int64",
+      "unit": "pesanan unik",
+      "meaning": "Jumlah order eligible pelanggan dalam periode acuan",
+      "source": "order_level.order_id dengan eligible_rfm",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "Int64",
+      "observed_null_count": 0
+    },
+    "monetary_cents": {
+      "dtype": "Int64",
+      "unit": "sen BRL",
+      "meaning": "Jumlah nilai barang seluruh order eligible pelanggan, tidak termasuk freight",
+      "source": "order_level.order_value_cents dengan eligible_rfm",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "Int64",
+      "observed_null_count": 0
+    },
+    "segment": {
+      "dtype": "string",
+      "unit": "segmen manual",
+      "meaning": "Satu dari lima segmen mutually exclusive menurut recency/frequency",
+      "source": "src.config.RFM_SEGMENTS; RECENCY_NEW_DAYS; RECENCY_ACTIVE_DAYS",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "string",
+      "observed_null_count": 0
+    },
+    "is_high_value": {
+      "dtype": "boolean",
+      "unit": "flag",
+      "meaning": "Monetary >= P75 global; pembandingan rasio integer tanpa pembulatan",
+      "source": "monetary_cents; metadata ambang dari build_rfm",
+      "nullable": false,
+      "null_meaning": "Tidak boleh kosong",
+      "observed_dtype": "boolean",
+      "observed_null_count": 0
+    }
+  },
+  "metadata": {
+    "reference_date": "2018-09-01",
+    "analysis_period": {
+      "start_inclusive": "2017-01-01",
+      "end_exclusive": "2018-09-01"
+    },
+    "segment_rules": {
+      "new_days_inclusive": 30,
+      "active_days_inclusive": 90,
+      "labels": [
+        "Pembeli sekali yang baru",
+        "Pembeli sekali yang masih baru",
+        "Pembeli sekali yang lama tidak membeli",
+        "Pelanggan berulang aktif",
+        "Pelanggan berulang yang lama tidak membeli"
+      ]
+    },
+    "high_value": {
+      "quantile": 0.75,
+      "interpolation": "linear",
+      "population": "Seluruh pelanggan eligible RFM dalam periode acuan, sebelum filter wilayah",
+      "population_customer_count": 93104,
+      "threshold_cents": 15417.5,
+      "threshold_cents_exact": {
+        "numerator": 30835,
+        "denominator": 2
+      },
+      "comparison": "monetary_cents * denominator >= numerator; ties termasuk nilai tinggi",
+      "customers_at_threshold": 0,
+      "high_value_customers": 23276
+    },
+    "reconciliation": {
+      "eligible_sales_orders": 96211,
+      "eligible_rfm_orders": 96211,
+      "eligible_sales_value_cents": 1318102713,
+      "eligible_rfm_value_cents": 1318102713,
+      "rfm_frequency_sum": 96211,
+      "rfm_monetary_sum_cents": 1318102713,
+      "excluded_identity_orders": 0,
+      "excluded_identity_value_cents": 0,
+      "customer_count": 93104
+    },
+    "state_filter_label": "Wilayah pesanan terakhir",
+    "last_order_policy": "Timestamp pembelian terbaru, lalu order_id leksikografis terbesar; wilayah kosong tidak diganti order lama",
+    "notes": [
+      "Ambang 30/90 hari merupakan heuristik operasional, bukan prediksi churn.",
+      "Recency/frequency/monetary dibatasi jendela observasi dan status delivered pada snapshot dataset.",
+      "Pembeli sekali tidak otomatis pelanggan churn; tidak ada qcut frequency, bobot skor RFM, atau machine learning.",
+      "Ambang monetary P75 global dihitung sekali; ties dapat menghasilkan lebih dari 25% pelanggan bernilai tinggi."
+    ]
+  }
+}

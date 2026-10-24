@@ -186,3 +186,150 @@ def test_q2_rejects_item_grain_duplicate_order():
                                    {'start':'2018-01-01 12:00:00'},{'states':[None]}])
 def test_invalid_filters_fail_clearly(kwargs):
     with pytest.raises(ValueError): analyze_q1(sales_items([{}]),**kwargs)
+
+
+# P06 — RFM
+from src.analytics import build_rfm, segment_rfm, filter_rfm, analyze_q3
+from src.config import RFM_REFERENCE_DATE, RFM_SEGMENTS
+
+
+def rfm_orders(records):
+    defaults={'order_id':'o1','customer_id':'c1','customer_unique_id':'u1','customer_state':'SP',
+              'order_purchase_timestamp':'2018-08-01 23:59:00','order_value_cents':100,
+              'eligible_sales':True,'eligible_rfm':True,'customer_identity_valid':True}
+    frame=pd.DataFrame([defaults|row for row in records])
+    frame['order_purchase_timestamp']=pd.to_datetime(frame['order_purchase_timestamp'],format='ISO8601')
+    for col in ['order_id','customer_id','customer_unique_id','customer_state']: frame[col]=frame[col].astype('string')
+    for col in ['eligible_sales','eligible_rfm','customer_identity_valid']: frame[col]=frame[col].astype('boolean')
+    frame['order_value_cents']=frame['order_value_cents'].astype('Int64')
+    return frame
+
+
+@pytest.mark.parametrize('recency,frequency,label',[(30,1,0),(31,1,1),(90,1,1),(91,1,2),
+                                                   (30,2,3),(31,2,3),(90,2,3),(91,2,4)])
+def test_rfm_segment_boundaries_are_calendar_days(recency,frequency,label):
+    purchase=(pd.Timestamp(RFM_REFERENCE_DATE)-pd.Timedelta(days=recency)).strftime('%Y-%m-%d')+' 23:59:00'
+    records=[{'order_id':str(k),'order_purchase_timestamp':purchase} for k in range(frequency)]
+    rfm,meta=build_rfm(rfm_orders(records))
+    assert rfm.loc[0,'recency_days']==recency
+    assert rfm.loc[0,'frequency']==frequency and rfm.loc[0,'segment']==RFM_SEGMENTS[label]
+    assert meta['reconciliation']['rfm_frequency_sum']==frequency
+
+
+def test_two_customer_ids_same_unique_customer_with_multiple_items_counts_two_orders():
+    from test_pipeline import integration_sources, order, item, review
+    from src.data_pipeline import build_analysis_tables
+    cleaned=integration_sources(
+        order_records=[order(order_id='o1',customer_id='c1'),
+                       order(order_id='o2',customer_id='c2',order_purchase_timestamp='2018-02-01 12:00:00')],
+        item_records=[item(order_id='o1',price='10.00'),item(order_id='o1',order_item_id='2',price='20.00'),
+                      item(order_id='o2',price='30.00'),item(order_id='o2',order_item_id='2',price='40.00')],
+        customer_records=[{'customer_id':'c1','customer_unique_id':'u1','customer_state':'SP'},
+                          {'customer_id':'c2','customer_unique_id':'u1','customer_state':'RJ'}],
+        review_records=[review()])
+    tables,_=build_analysis_tables(cleaned)
+    rfm,_=build_rfm(tables['order_level'])
+    assert len(rfm)==1 and rfm.loc[0,'frequency']==2 and rfm.loc[0,'monetary_cents']==10000
+    assert rfm.loc[0,'last_order_state']=='RJ' and rfm.loc[0,'last_order_id']=='o2'
+
+
+def test_last_order_tie_break_uses_timestamp_then_lexical_order_id_and_ignores_input_order():
+    orders=rfm_orders([{'order_id':'z','customer_state':'RJ'}, {'order_id':'a','customer_state':'SP'},
+                      {'order_id':'zz','customer_state':'AM','order_purchase_timestamp':'2018-07-01 00:00:00'}])
+    first,_=build_rfm(orders);second,_=build_rfm(orders.iloc[::-1])
+    assert_frame_equal(first,second)
+    assert first.loc[0,'last_order_id']=='z' and first.loc[0,'last_order_state']=='RJ'
+
+
+def test_last_order_missing_state_does_not_fall_back_to_old_state():
+    orders=rfm_orders([{'order_id':'o1'}, {'order_id':'o2','order_purchase_timestamp':'2018-08-02','customer_state':pd.NA}])
+    rfm,meta=build_rfm(orders)
+    assert pd.isna(rfm.loc[0,'last_order_state']) and filter_rfm(rfm,states=['SP']).empty
+    assert analyze_q3(rfm,meta)['summary']['customer_count']==1
+
+
+def test_region_filter_keeps_all_customer_orders_and_global_high_value_threshold():
+    orders=rfm_orders([
+        {'order_id':'a','order_value_cents':100,'order_purchase_timestamp':'2018-07-01','customer_state':'SP'},
+        {'order_id':'b','order_value_cents':100,'customer_state':'RJ'},
+        {'order_id':'c','customer_unique_id':'u2','order_value_cents':1000},
+        {'order_id':'d','customer_unique_id':'u3','order_value_cents':2000},
+        {'order_id':'e','customer_unique_id':'u4','order_value_cents':3000},
+    ])
+    original=orders.copy(deep=True);rfm,meta=build_rfm(orders)
+    selected=filter_rfm(rfm,states=['RJ']);q3=analyze_q3(rfm,meta,states=['RJ'])
+    assert len(selected)==1 and selected.iloc[0]['frequency']==2 and selected.iloc[0]['monetary_cents']==200
+    assert q3['high_value']['threshold_cents']==2250
+    assert q3['summary']['high_value_customers']==0  # local one-customer P75 would falsely label it high.
+    assert q3['summary']['order_count']==2 and q3['summary']['monetary_cents']==200
+    assert_frame_equal(orders,original)
+
+
+def test_fractional_cent_quantile_is_not_rounded_and_comparison_is_inclusive():
+    rfm,meta=build_rfm(rfm_orders([{'order_id':str(k),'customer_unique_id':str(k),'order_value_cents':v}
+                                  for k,v in enumerate([100,101,102,103])]))
+    assert meta['high_value']['threshold_cents']==102.25
+    assert meta['high_value']['threshold_cents_exact']=={'numerator':409,'denominator':4}
+    assert rfm['is_high_value'].tolist()==[False,False,False,True]
+    ties,meta=build_rfm(rfm_orders([{'order_id':str(k),'customer_unique_id':str(k),'order_value_cents':200} for k in range(4)]))
+    assert ties['is_high_value'].all() and meta['high_value']['customers_at_threshold']==4
+    assert analyze_q3(ties,meta)['summary']['high_value_customer_pct']==100
+
+
+def test_high_value_comparison_does_not_lose_fraction_beyond_float_integer_precision():
+    rfm,_=build_rfm(rfm_orders([{'order_id':str(k),'customer_unique_id':str(k),'order_value_cents':2**53+k} for k in range(4)]))
+    assert rfm['is_high_value'].tolist()==[False,False,False,True]
+
+
+def test_empty_rfm_population_is_typed_and_summary_percentages_unavailable():
+    rfm,meta=build_rfm(rfm_orders([{'eligible_sales':False,'eligible_rfm':False}]))
+    q3=analyze_q3(rfm,meta)
+    assert rfm.empty and meta['high_value']['threshold_cents'] is None
+    assert q3['summary']['repeat_customer_pct'] is None and len(q3['segments'])==5
+    assert q3['segments']['median_recency_days'].isna().all()
+    assert q3['segments']['customer_contribution_pct'].isna().all()
+    assert q3['frequency_distribution'].empty
+
+
+def test_empty_region_filter_retains_global_threshold_and_empty_segment_medians():
+    rfm,meta=build_rfm(rfm_orders([{}]))
+    q3=analyze_q3(rfm,meta,states=[])
+    assert q3['summary']['customer_count']==0 and q3['high_value']==meta['high_value']
+    assert q3['segments']['median_monetary_cents'].isna().all()
+
+
+def test_zero_monetary_has_unavailable_value_shares_but_valid_customer_shares():
+    rfm,meta=build_rfm(rfm_orders([{'order_value_cents':0}]))
+    q3=analyze_q3(rfm,meta)
+    assert q3['summary']['monetary_cents']==0 and rfm.loc[0,'is_high_value']
+    assert q3['segments']['monetary_contribution_pct'].isna().all()
+    assert q3['segments']['customer_contribution_pct'].sum()==100
+
+
+def test_identity_exclusions_explain_rfm_sales_difference_without_dropping_global_sales():
+    rfm,meta=build_rfm(rfm_orders([{}, {'order_id':'o2','customer_unique_id':pd.NA,'customer_identity_valid':False,'eligible_rfm':False,'order_value_cents':500}]))
+    assert len(rfm)==1 and meta['reconciliation']['excluded_identity_orders']==1
+    assert meta['reconciliation']['excluded_identity_value_cents']==500
+    assert meta['reconciliation']['eligible_sales_value_cents']==600 and meta['reconciliation']['rfm_monetary_sum_cents']==100
+
+
+@pytest.mark.parametrize('r,f',[(-1,1),(30,0),(30.5,1),(30,1.5)])
+def test_invalid_rfm_dimensions_are_rejected(r,f):
+    with pytest.raises(ValueError): segment_rfm(pd.DataFrame({'recency_days':[r],'frequency':[f]}))
+
+
+def test_duplicate_order_grain_and_invalid_eligible_dates_are_rejected():
+    with pytest.raises(ValueError,match='satu baris'):build_rfm(rfm_orders([{},{}]))
+    with pytest.raises(ValueError,match='periode acuan'):build_rfm(rfm_orders([{'order_purchase_timestamp':'2018-09-02'}]))
+
+
+def test_rfm_monetary_overflow_is_rejected():
+    with pytest.raises(ValueError,match='Int64'):build_rfm(rfm_orders([{'order_id':'a','order_value_cents':2**63-1},
+                                                                    {'order_id':'b','order_value_cents':2**63-1}]))
+
+
+def test_latest_ineligible_order_does_not_change_rfm_or_last_state():
+    rfm,_=build_rfm(rfm_orders([{}, {'order_id':'o2','eligible_sales':False,'eligible_rfm':False,
+                                    'order_purchase_timestamp':'2018-08-02','customer_state':'RJ','order_value_cents':999}]))
+    assert rfm.loc[0,'last_order_id']=='o1' and rfm.loc[0,'last_order_state']=='SP'
+    assert rfm.loc[0,'frequency']==1 and rfm.loc[0,'monetary_cents']==100

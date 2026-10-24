@@ -17,6 +17,13 @@ CURRENCY = "BRL"
 MONEY_SCALE = 100
 HIGH_VALUE_QUANTILE = 0.75
 HIGH_VALUE_INTERPOLATION = "linear"
+RFM_SEGMENTS = (
+    "Pembeli sekali yang baru",
+    "Pembeli sekali yang masih baru",
+    "Pembeli sekali yang lama tidak membeli",
+    "Pelanggan berulang aktif",
+    "Pelanggan berulang yang lama tidak membeli",
+)
 VALID_REVIEW_SCORES = (1, 2, 3, 4, 5)
 BAD_REVIEW_SCORES = (1, 2)
 

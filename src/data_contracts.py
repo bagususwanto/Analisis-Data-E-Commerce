@@ -95,3 +95,22 @@ def conform_table(frame, table):
     if result.duplicated(contract['primary_key']).any():
         raise DataQualityError(f'{table}: kunci keluaran tidak unik')
     return result.reset_index(drop=True)
+
+
+# Kontrak RFM terpisah: registry P04 tetap hanya order/item yang dibangunnya.
+RFM_CUSTOMER_CONTRACT = {
+    'grain':'Satu baris per customer_unique_id; metrik seluruh periode acuan',
+    'primary_key':['customer_unique_id'],
+    'fields':{
+        'customer_unique_id':field('string','ID','Identitas pelanggan lintas pesanan','order_level.customer_unique_id'),
+        'last_order_id':field('string','ID','Order eligible terakhir; tie timestamp lalu order_id leksikografis terbesar','order_level.order_id'),
+        'last_purchase_timestamp':field('datetime64[ns]','timestamp tanpa timezone','Waktu pembelian eligible terakhir','order_level.order_purchase_timestamp'),
+        'last_purchase_date':field('datetime64[ns]','tanggal kalender','Tanggal pembelian eligible terakhir, dinormalisasi','last_purchase_timestamp'),
+        'last_order_state':field('string','kode negara bagian','Wilayah pesanan terakhir; filter tidak menghitung ulang R/F/M','order_level.customer_state pada last_order_id','Wilayah pesanan terakhir tidak tersedia; tidak diganti wilayah order lama'),
+        'recency_days':field('Int64','hari kalender','Tanggal acuan dikurangi last_purchase_date','src.config.RFM_REFERENCE_DATE; last_purchase_date'),
+        'frequency':field('Int64','pesanan unik','Jumlah order eligible pelanggan dalam periode acuan','order_level.order_id dengan eligible_rfm'),
+        'monetary_cents':field('Int64',f'sen {CURRENCY}','Jumlah nilai barang seluruh order eligible pelanggan, tidak termasuk freight','order_level.order_value_cents dengan eligible_rfm'),
+        'segment':field('string','segmen manual','Satu dari lima segmen mutually exclusive menurut recency/frequency','src.config.RFM_SEGMENTS; RECENCY_NEW_DAYS; RECENCY_ACTIVE_DAYS'),
+        'is_high_value':field('boolean','flag','Monetary >= P75 global; pembandingan rasio integer tanpa pembulatan','monetary_cents; metadata ambang dari build_rfm'),
+    },
+}

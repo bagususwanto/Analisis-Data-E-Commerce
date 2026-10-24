@@ -3,7 +3,7 @@
   "status": "passed",
   "verified_at": "2026-10-24T10:03:51+07:00",
   "invocation_cwd": "/private/tmp",
-  "analytical_results_sha256": "9bfe746d6ed13e50e120aff913a4f18d1d381feeefd1417c3d46c7b17ac0d289",
+  "analytical_results_sha256": "1bf07034d9e501b36e1dd501008621763c20523d72a31153cca511dc995aa160",
   "join_audit_sha256": "2b32a1b9132bb6ccf615bf6acc7a0b48274da9619dc759a571a67ab37facfb9a",
   "nine_source_hashes_unchanged": true,
   "template_hash_unchanged": true,
@@ -205,5 +205,12 @@
     "exit_code": 0,
     "additional_targeted_check": "state priority fixture clarified without changing its data; targeted test passed"
   },
-  "final_artifact_check_at": "2026-10-24T10:04:58+07:00"
+  "final_artifact_check_at": "2026-10-24T10:04:58+07:00",
+  "p05_original_report_sha256": "9bfe746d6ed13e50e120aff913a4f18d1d381feeefd1417c3d46c7b17ac0d289",
+  "extended_by_P06": {
+    "verified_at": "2026-10-24T13:08:32+07:00",
+    "q1_q2_payload_sha256": "5ac1f1a010903935c60b561bd8004eaa541230f1157f76e4b80b5c36e245da4f",
+    "q1_q2_and_six_filter_summaries_unchanged": true,
+    "shared_report_includes_q3": true
+  }
 }

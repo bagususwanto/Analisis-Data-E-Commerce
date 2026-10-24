@@ -1,0 +1,95 @@
+{
+  "phase": "P06",
+  "status": "passed",
+  "verified_at": "2026-10-24T13:08:32+07:00",
+  "invocation_cwd": "/private/tmp",
+  "analytical_results_sha256": "1bf07034d9e501b36e1dd501008621763c20523d72a31153cca511dc995aa160",
+  "rfm_data_dictionary_sha256": "981e1bbf48d4e0d5ffd0940b999d218d5d99d7e32b2d00f756507e603f57ced6",
+  "source_sha256": {
+    "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+    "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+    "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+    "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+    "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+    "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+    "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+    "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+    "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+  },
+  "template_hash_unchanged": true,
+  "q1_q2_preserved_and_reverified": true,
+  "deterministic_on_shuffled_orders": true,
+  "independent_customer_count": 93104,
+  "independent_field_comparisons": 837936,
+  "independent_threshold_cents": 15417.5,
+  "reconciliation": {
+    "eligible_sales_orders": 96211,
+    "eligible_rfm_orders": 96211,
+    "eligible_sales_value_cents": 1318102713,
+    "eligible_rfm_value_cents": 1318102713,
+    "rfm_frequency_sum": 96211,
+    "rfm_monetary_sum_cents": 1318102713,
+    "excluded_identity_orders": 0,
+    "excluded_identity_value_cents": 0,
+    "customer_count": 93104
+  },
+  "scenarios": {
+    "default": {
+      "customer_count": 93104,
+      "order_count": 96211,
+      "monetary_cents": 1318102713,
+      "repeat_customers": 2789,
+      "high_value_customers": 23276,
+      "reference_matches": true
+    },
+    "SP": {
+      "customer_count": 39059,
+      "order_count": 40410,
+      "monetary_cents": 505738181,
+      "repeat_customers": 1220,
+      "high_value_customers": 8770,
+      "reference_matches": true
+    },
+    "RJ": {
+      "customer_count": 11877,
+      "order_count": 12312,
+      "monetary_cents": 175141446,
+      "repeat_customers": 389,
+      "high_value_customers": 3135,
+      "reference_matches": true
+    },
+    "RR": {
+      "customer_count": 39,
+      "order_count": 40,
+      "monetary_cents": 701777,
+      "repeat_customers": 1,
+      "high_value_customers": 15,
+      "reference_matches": true
+    },
+    "empty_states": {
+      "customer_count": 0,
+      "order_count": 0,
+      "monetary_cents": 0,
+      "repeat_customers": 0,
+      "high_value_customers": 0,
+      "reference_matches": true
+    },
+    "unknown_state": {
+      "customer_count": 0,
+      "order_count": 0,
+      "monetary_cents": 0,
+      "repeat_customers": 0,
+      "high_value_customers": 0,
+      "reference_matches": true
+    }
+  },
+  "risk_tests_note": "Hasil pytest aktual dicatat pada EXECUTION_STATUS.md.",
+  "risk_tests": {
+    "command": ".venv/bin/python -m pytest tests/test_analytics.py tests/test_pipeline.py -q",
+    "result": "98 passed",
+    "exit_code": 0,
+    "scope": "25 P06 + 73 P03/P04/P05 regression tests"
+  },
+  "final_artifact_check_at": "2026-10-24T13:10:48+07:00",
+  "q1_q2_and_filter_summaries_match_previous_git_revision": true
+}
