@@ -22,7 +22,128 @@
         "order_estimated_delivery_date"
       ],
       "plan_row_count": 99441,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "formal",
+        "row_count": 99441,
+        "column_count": 8,
+        "columns": [
+          "order_id",
+          "customer_id",
+          "order_status",
+          "order_purchase_timestamp",
+          "order_approved_at",
+          "order_delivered_carrier_date",
+          "order_delivered_customer_date",
+          "order_estimated_delivery_date"
+        ],
+        "raw_dtypes": {
+          "order_id": "string",
+          "customer_id": "string",
+          "order_status": "string",
+          "order_purchase_timestamp": "string",
+          "order_approved_at": "string",
+          "order_delivered_carrier_date": "string",
+          "order_delivered_customer_date": "string",
+          "order_estimated_delivery_date": "string"
+        },
+        "empty_field_counts": {
+          "order_id": 0,
+          "customer_id": 0,
+          "order_status": 0,
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 160,
+          "order_delivered_carrier_date": 1783,
+          "order_delivered_customer_date": 2965,
+          "order_estimated_delivery_date": 0
+        },
+        "missing_including_whitespace": {
+          "order_id": 0,
+          "customer_id": 0,
+          "order_status": 0,
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 160,
+          "order_delivered_carrier_date": 1783,
+          "order_delivered_customer_date": 2965,
+          "order_estimated_delivery_date": 0
+        },
+        "whitespace_only_counts": {
+          "order_id": 0,
+          "customer_id": 0,
+          "order_status": 0,
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 0,
+          "order_delivered_carrier_date": 0,
+          "order_delivered_customer_date": 0,
+          "order_estimated_delivery_date": 0
+        },
+        "surrounding_whitespace_counts": {
+          "order_id": 0,
+          "customer_id": 0,
+          "order_status": 0,
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 0,
+          "order_delivered_carrier_date": 0,
+          "order_delivered_customer_date": 0,
+          "order_estimated_delivery_date": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {
+          "order_purchase_timestamp": {
+            "missing": 0,
+            "parse_failures": 0,
+            "min": "2016-09-04 21:15:19",
+            "max": "2018-10-17 17:30:18"
+          },
+          "order_approved_at": {
+            "missing": 160,
+            "parse_failures": 0,
+            "min": "2016-09-15 12:16:38",
+            "max": "2018-09-03 17:40:06"
+          },
+          "order_delivered_carrier_date": {
+            "missing": 1783,
+            "parse_failures": 0,
+            "min": "2016-10-08 10:34:01",
+            "max": "2018-09-11 19:48:28"
+          },
+          "order_delivered_customer_date": {
+            "missing": 2965,
+            "parse_failures": 0,
+            "min": "2016-10-11 13:46:32",
+            "max": "2018-10-17 13:22:46"
+          },
+          "order_estimated_delivery_date": {
+            "missing": 0,
+            "parse_failures": 0,
+            "min": "2016-09-30 00:00:00",
+            "max": "2018-11-12 00:00:00"
+          }
+        },
+        "numeric": {},
+        "key": {
+          "columns": [
+            "order_id"
+          ],
+          "rows_with_missing_key": 0,
+          "distinct_nonmissing_keys": 99441,
+          "rows_in_duplicate_keys": 0,
+          "additional_duplicate_keys": 0,
+          "duplicate_key_groups": 0,
+          "unique_and_complete": true
+        },
+        "status_counts": {
+          "approved": 2,
+          "canceled": 625,
+          "created": 5,
+          "delivered": 96478,
+          "invoiced": 314,
+          "processing": 301,
+          "shipped": 1107,
+          "unavailable": 609
+        }
+      }
     },
     {
       "path": "data/customers_dataset.csv",
@@ -38,7 +159,69 @@
         "customer_state"
       ],
       "plan_row_count": 99441,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "formal",
+        "row_count": 99441,
+        "column_count": 5,
+        "columns": [
+          "customer_id",
+          "customer_unique_id",
+          "customer_zip_code_prefix",
+          "customer_city",
+          "customer_state"
+        ],
+        "raw_dtypes": {
+          "customer_id": "string",
+          "customer_unique_id": "string",
+          "customer_zip_code_prefix": "string",
+          "customer_city": "string",
+          "customer_state": "string"
+        },
+        "empty_field_counts": {
+          "customer_id": 0,
+          "customer_unique_id": 0,
+          "customer_zip_code_prefix": 0,
+          "customer_city": 0,
+          "customer_state": 0
+        },
+        "missing_including_whitespace": {
+          "customer_id": 0,
+          "customer_unique_id": 0,
+          "customer_zip_code_prefix": 0,
+          "customer_city": 0,
+          "customer_state": 0
+        },
+        "whitespace_only_counts": {
+          "customer_id": 0,
+          "customer_unique_id": 0,
+          "customer_zip_code_prefix": 0,
+          "customer_city": 0,
+          "customer_state": 0
+        },
+        "surrounding_whitespace_counts": {
+          "customer_id": 0,
+          "customer_unique_id": 0,
+          "customer_zip_code_prefix": 0,
+          "customer_city": 0,
+          "customer_state": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {},
+        "numeric": {},
+        "key": {
+          "columns": [
+            "customer_id"
+          ],
+          "rows_with_missing_key": 0,
+          "distinct_nonmissing_keys": 99441,
+          "rows_in_duplicate_keys": 0,
+          "additional_duplicate_keys": 0,
+          "duplicate_key_groups": 0,
+          "unique_and_complete": true
+        }
+      }
     },
     {
       "path": "data/order_items_dataset.csv",
@@ -56,7 +239,125 @@
         "freight_value"
       ],
       "plan_row_count": 112650,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "formal",
+        "row_count": 112650,
+        "column_count": 7,
+        "columns": [
+          "order_id",
+          "order_item_id",
+          "product_id",
+          "seller_id",
+          "shipping_limit_date",
+          "price",
+          "freight_value"
+        ],
+        "raw_dtypes": {
+          "order_id": "string",
+          "order_item_id": "string",
+          "product_id": "string",
+          "seller_id": "string",
+          "shipping_limit_date": "string",
+          "price": "string",
+          "freight_value": "string"
+        },
+        "empty_field_counts": {
+          "order_id": 0,
+          "order_item_id": 0,
+          "product_id": 0,
+          "seller_id": 0,
+          "shipping_limit_date": 0,
+          "price": 0,
+          "freight_value": 0
+        },
+        "missing_including_whitespace": {
+          "order_id": 0,
+          "order_item_id": 0,
+          "product_id": 0,
+          "seller_id": 0,
+          "shipping_limit_date": 0,
+          "price": 0,
+          "freight_value": 0
+        },
+        "whitespace_only_counts": {
+          "order_id": 0,
+          "order_item_id": 0,
+          "product_id": 0,
+          "seller_id": 0,
+          "shipping_limit_date": 0,
+          "price": 0,
+          "freight_value": 0
+        },
+        "surrounding_whitespace_counts": {
+          "order_id": 0,
+          "order_item_id": 0,
+          "product_id": 0,
+          "seller_id": 0,
+          "shipping_limit_date": 0,
+          "price": 0,
+          "freight_value": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {
+          "shipping_limit_date": {
+            "missing": 0,
+            "parse_failures": 0,
+            "min": "2016-09-19 00:15:34",
+            "max": "2020-04-09 22:35:08"
+          }
+        },
+        "numeric": {
+          "order_item_id": {
+            "nonmissing": 112650,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "1",
+            "max": "21"
+          },
+          "price": {
+            "nonmissing": 112650,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 79862,
+            "beyond_cent_precision": 0,
+            "min": "0.85",
+            "max": "6735.00"
+          },
+          "freight_value": {
+            "nonmissing": 112650,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 383,
+            "noninteger": 111015,
+            "beyond_cent_precision": 0,
+            "min": "0.00",
+            "max": "409.68"
+          }
+        },
+        "key": {
+          "columns": [
+            "order_id",
+            "order_item_id"
+          ],
+          "rows_with_missing_key": 0,
+          "distinct_nonmissing_keys": 112650,
+          "rows_in_duplicate_keys": 0,
+          "additional_duplicate_keys": 0,
+          "duplicate_key_groups": 0,
+          "unique_and_complete": true
+        }
+      }
     },
     {
       "path": "data/products_dataset.csv",
@@ -76,7 +377,171 @@
         "product_width_cm"
       ],
       "plan_row_count": 32951,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "formal",
+        "row_count": 32951,
+        "column_count": 9,
+        "columns": [
+          "product_id",
+          "product_category_name",
+          "product_name_lenght",
+          "product_description_lenght",
+          "product_photos_qty",
+          "product_weight_g",
+          "product_length_cm",
+          "product_height_cm",
+          "product_width_cm"
+        ],
+        "raw_dtypes": {
+          "product_id": "string",
+          "product_category_name": "string",
+          "product_name_lenght": "string",
+          "product_description_lenght": "string",
+          "product_photos_qty": "string",
+          "product_weight_g": "string",
+          "product_length_cm": "string",
+          "product_height_cm": "string",
+          "product_width_cm": "string"
+        },
+        "empty_field_counts": {
+          "product_id": 0,
+          "product_category_name": 610,
+          "product_name_lenght": 610,
+          "product_description_lenght": 610,
+          "product_photos_qty": 610,
+          "product_weight_g": 2,
+          "product_length_cm": 2,
+          "product_height_cm": 2,
+          "product_width_cm": 2
+        },
+        "missing_including_whitespace": {
+          "product_id": 0,
+          "product_category_name": 610,
+          "product_name_lenght": 610,
+          "product_description_lenght": 610,
+          "product_photos_qty": 610,
+          "product_weight_g": 2,
+          "product_length_cm": 2,
+          "product_height_cm": 2,
+          "product_width_cm": 2
+        },
+        "whitespace_only_counts": {
+          "product_id": 0,
+          "product_category_name": 0,
+          "product_name_lenght": 0,
+          "product_description_lenght": 0,
+          "product_photos_qty": 0,
+          "product_weight_g": 0,
+          "product_length_cm": 0,
+          "product_height_cm": 0,
+          "product_width_cm": 0
+        },
+        "surrounding_whitespace_counts": {
+          "product_id": 0,
+          "product_category_name": 0,
+          "product_name_lenght": 0,
+          "product_description_lenght": 0,
+          "product_photos_qty": 0,
+          "product_weight_g": 0,
+          "product_length_cm": 0,
+          "product_height_cm": 0,
+          "product_width_cm": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {},
+        "numeric": {
+          "product_name_lenght": {
+            "nonmissing": 32341,
+            "missing": 610,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "5",
+            "max": "76"
+          },
+          "product_description_lenght": {
+            "nonmissing": 32341,
+            "missing": 610,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "4",
+            "max": "3992"
+          },
+          "product_photos_qty": {
+            "nonmissing": 32341,
+            "missing": 610,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "1",
+            "max": "20"
+          },
+          "product_weight_g": {
+            "nonmissing": 32949,
+            "missing": 2,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 4,
+            "noninteger": 0,
+            "min": "0",
+            "max": "40425"
+          },
+          "product_length_cm": {
+            "nonmissing": 32949,
+            "missing": 2,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "7",
+            "max": "105"
+          },
+          "product_height_cm": {
+            "nonmissing": 32949,
+            "missing": 2,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "2",
+            "max": "105"
+          },
+          "product_width_cm": {
+            "nonmissing": 32949,
+            "missing": 2,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "6",
+            "max": "118"
+          }
+        },
+        "key": {
+          "columns": [
+            "product_id"
+          ],
+          "rows_with_missing_key": 0,
+          "distinct_nonmissing_keys": 32951,
+          "rows_in_duplicate_keys": 0,
+          "additional_duplicate_keys": 0,
+          "duplicate_key_groups": 0,
+          "unique_and_complete": true
+        }
+      }
     },
     {
       "path": "data/order_reviews_dataset.csv",
@@ -94,7 +559,95 @@
         "review_answer_timestamp"
       ],
       "plan_row_count": 99224,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "formal",
+        "row_count": 99224,
+        "column_count": 7,
+        "columns": [
+          "review_id",
+          "order_id",
+          "review_score",
+          "review_comment_title",
+          "review_comment_message",
+          "review_creation_date",
+          "review_answer_timestamp"
+        ],
+        "raw_dtypes": {
+          "review_id": "string",
+          "order_id": "string",
+          "review_score": "string",
+          "review_comment_title": "string",
+          "review_comment_message": "string",
+          "review_creation_date": "string",
+          "review_answer_timestamp": "string"
+        },
+        "empty_field_counts": {
+          "review_id": 0,
+          "order_id": 0,
+          "review_score": 0,
+          "review_comment_title": 87656,
+          "review_comment_message": 58247,
+          "review_creation_date": 0,
+          "review_answer_timestamp": 0
+        },
+        "missing_including_whitespace": {
+          "review_id": 0,
+          "order_id": 0,
+          "review_score": 0,
+          "review_comment_title": 87658,
+          "review_comment_message": 58274,
+          "review_creation_date": 0,
+          "review_answer_timestamp": 0
+        },
+        "whitespace_only_counts": {
+          "review_id": 0,
+          "order_id": 0,
+          "review_score": 0,
+          "review_comment_title": 2,
+          "review_comment_message": 27,
+          "review_creation_date": 0,
+          "review_answer_timestamp": 0
+        },
+        "surrounding_whitespace_counts": {
+          "review_id": 0,
+          "order_id": 0,
+          "review_score": 0,
+          "review_comment_title": 1998,
+          "review_comment_message": 9451,
+          "review_creation_date": 0,
+          "review_answer_timestamp": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {
+          "review_creation_date": {
+            "missing": 0,
+            "parse_failures": 0,
+            "min": "2016-10-02 00:00:00",
+            "max": "2018-08-31 00:00:00"
+          },
+          "review_answer_timestamp": {
+            "missing": 0,
+            "parse_failures": 0,
+            "min": "2016-10-07 18:32:28",
+            "max": "2018-10-29 12:27:35"
+          }
+        },
+        "numeric": {
+          "review_score": {
+            "nonmissing": 99224,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "1",
+            "max": "5"
+          }
+        }
+      }
     },
     {
       "path": "data/product_category_name_translation.csv",
@@ -107,7 +660,51 @@
         "product_category_name_english"
       ],
       "plan_row_count": 71,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "formal",
+        "row_count": 71,
+        "column_count": 2,
+        "columns": [
+          "product_category_name",
+          "product_category_name_english"
+        ],
+        "raw_dtypes": {
+          "product_category_name": "string",
+          "product_category_name_english": "string"
+        },
+        "empty_field_counts": {
+          "product_category_name": 0,
+          "product_category_name_english": 0
+        },
+        "missing_including_whitespace": {
+          "product_category_name": 0,
+          "product_category_name_english": 0
+        },
+        "whitespace_only_counts": {
+          "product_category_name": 0,
+          "product_category_name_english": 0
+        },
+        "surrounding_whitespace_counts": {
+          "product_category_name": 0,
+          "product_category_name_english": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {},
+        "numeric": {},
+        "key": {
+          "columns": [
+            "product_category_name"
+          ],
+          "rows_with_missing_key": 0,
+          "distinct_nonmissing_keys": 71,
+          "rows_in_duplicate_keys": 0,
+          "additional_duplicate_keys": 0,
+          "duplicate_key_groups": 0,
+          "unique_and_complete": true
+        }
+      }
     },
     {
       "path": "data/order_payments_dataset.csv",
@@ -123,7 +720,93 @@
         "payment_value"
       ],
       "plan_row_count": 103886,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "supporting_summary",
+        "row_count": 103886,
+        "column_count": 5,
+        "columns": [
+          "order_id",
+          "payment_sequential",
+          "payment_type",
+          "payment_installments",
+          "payment_value"
+        ],
+        "raw_dtypes": {
+          "order_id": "string",
+          "payment_sequential": "string",
+          "payment_type": "string",
+          "payment_installments": "string",
+          "payment_value": "string"
+        },
+        "empty_field_counts": {
+          "order_id": 0,
+          "payment_sequential": 0,
+          "payment_type": 0,
+          "payment_installments": 0,
+          "payment_value": 0
+        },
+        "missing_including_whitespace": {
+          "order_id": 0,
+          "payment_sequential": 0,
+          "payment_type": 0,
+          "payment_installments": 0,
+          "payment_value": 0
+        },
+        "whitespace_only_counts": {
+          "order_id": 0,
+          "payment_sequential": 0,
+          "payment_type": 0,
+          "payment_installments": 0,
+          "payment_value": 0
+        },
+        "surrounding_whitespace_counts": {
+          "order_id": 0,
+          "payment_sequential": 0,
+          "payment_type": 0,
+          "payment_installments": 0,
+          "payment_value": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {},
+        "numeric": {
+          "payment_sequential": {
+            "nonmissing": 103886,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 0,
+            "noninteger": 0,
+            "min": "1",
+            "max": "29"
+          },
+          "payment_installments": {
+            "nonmissing": 103886,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 2,
+            "noninteger": 0,
+            "min": "0",
+            "max": "24"
+          },
+          "payment_value": {
+            "nonmissing": 103886,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 0,
+            "zero": 9,
+            "noninteger": 99844,
+            "beyond_cent_precision": 0,
+            "min": "0.00",
+            "max": "13664.08"
+          }
+        }
+      }
     },
     {
       "path": "data/sellers_dataset.csv",
@@ -138,7 +821,63 @@
         "seller_state"
       ],
       "plan_row_count": 3095,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "supporting_summary",
+        "row_count": 3095,
+        "column_count": 4,
+        "columns": [
+          "seller_id",
+          "seller_zip_code_prefix",
+          "seller_city",
+          "seller_state"
+        ],
+        "raw_dtypes": {
+          "seller_id": "string",
+          "seller_zip_code_prefix": "string",
+          "seller_city": "string",
+          "seller_state": "string"
+        },
+        "empty_field_counts": {
+          "seller_id": 0,
+          "seller_zip_code_prefix": 0,
+          "seller_city": 0,
+          "seller_state": 0
+        },
+        "missing_including_whitespace": {
+          "seller_id": 0,
+          "seller_zip_code_prefix": 0,
+          "seller_city": 0,
+          "seller_state": 0
+        },
+        "whitespace_only_counts": {
+          "seller_id": 0,
+          "seller_zip_code_prefix": 0,
+          "seller_city": 0,
+          "seller_state": 0
+        },
+        "surrounding_whitespace_counts": {
+          "seller_id": 0,
+          "seller_zip_code_prefix": 0,
+          "seller_city": 0,
+          "seller_state": 0
+        },
+        "exact_duplicate_additional_rows": 0,
+        "exact_duplicate_all_rows": 0,
+        "dates": {},
+        "numeric": {},
+        "key": {
+          "columns": [
+            "seller_id"
+          ],
+          "rows_with_missing_key": 0,
+          "distinct_nonmissing_keys": 3095,
+          "rows_in_duplicate_keys": 0,
+          "additional_duplicate_keys": 0,
+          "duplicate_key_groups": 0,
+          "unique_and_complete": true
+        }
+      }
     },
     {
       "path": "data/geolocation_dataset.csv",
@@ -154,7 +893,92 @@
         "geolocation_state"
       ],
       "plan_row_count": 1000163,
-      "matches_plan_row_count": true
+      "matches_plan_row_count": true,
+      "assessment_profile": {
+        "scope": "supporting_summary",
+        "row_count": 1000163,
+        "column_count": 5,
+        "columns": [
+          "geolocation_zip_code_prefix",
+          "geolocation_lat",
+          "geolocation_lng",
+          "geolocation_city",
+          "geolocation_state"
+        ],
+        "raw_dtypes": {
+          "geolocation_zip_code_prefix": "string",
+          "geolocation_lat": "string",
+          "geolocation_lng": "string",
+          "geolocation_city": "string",
+          "geolocation_state": "string"
+        },
+        "empty_field_counts": {
+          "geolocation_zip_code_prefix": 0,
+          "geolocation_lat": 0,
+          "geolocation_lng": 0,
+          "geolocation_city": 0,
+          "geolocation_state": 0
+        },
+        "missing_including_whitespace": {
+          "geolocation_zip_code_prefix": 0,
+          "geolocation_lat": 0,
+          "geolocation_lng": 0,
+          "geolocation_city": 0,
+          "geolocation_state": 0
+        },
+        "whitespace_only_counts": {
+          "geolocation_zip_code_prefix": 0,
+          "geolocation_lat": 0,
+          "geolocation_lng": 0,
+          "geolocation_city": 0,
+          "geolocation_state": 0
+        },
+        "surrounding_whitespace_counts": {
+          "geolocation_zip_code_prefix": 0,
+          "geolocation_lat": 0,
+          "geolocation_lng": 0,
+          "geolocation_city": 1,
+          "geolocation_state": 0
+        },
+        "exact_duplicate_additional_rows": 261831,
+        "exact_duplicate_all_rows": 390005,
+        "dates": {},
+        "numeric": {
+          "geolocation_lat": {
+            "nonmissing": 1000163,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 998827,
+            "zero": 0,
+            "noninteger": 1000163,
+            "min": "-36.6053744107061",
+            "max": "45.06593318269697"
+          },
+          "geolocation_lng": {
+            "nonmissing": 1000163,
+            "missing": 0,
+            "parse_failures": 0,
+            "nonfinite": 0,
+            "negative": 1000160,
+            "zero": 0,
+            "noninteger": 1000163,
+            "min": "-101.46676644931476",
+            "max": "121.10539381057764"
+          }
+        },
+        "zip_prefix": {
+          "columns": [
+            "geolocation_zip_code_prefix"
+          ],
+          "rows_with_missing_key": 0,
+          "distinct_nonmissing_keys": 19015,
+          "rows_in_duplicate_keys": 999120,
+          "additional_duplicate_keys": 981148,
+          "duplicate_key_groups": 17972,
+          "unique_and_complete": false
+        }
+      }
     }
   ],
   "initial_plan_comparison": {
@@ -262,5 +1086,12 @@
     ],
     "note": "No source CSV modified; extra data files left untouched."
   },
-  "identity_updated_at": "2026-10-22T20:05:22+07:00"
+  "identity_updated_at": "2026-10-22T20:05:22+07:00",
+  "assessment": {
+    "phase": "P02",
+    "assessed_at": "2026-10-24T09:13:04+07:00",
+    "report": "reports/data_quality.json",
+    "summary_for_notebook": "reports/assessment_summary.md",
+    "source_hashes_match_p00": true
+  }
 }

@@ -2,7 +2,7 @@
 
 Proyek analisis dataset E-Commerce untuk submission Dicoding. Pemilik: **Bagus Uswanto**, ID Dicoding **DS013B6Y0318**.
 
-Saat ini tersedia inventaris sumber (P00), konfigurasi bersama, loader mentah, dan pemeriksaan fondasi (P01). Assessment, cleaning, notebook analisis, dan dashboard mengikuti phase berikutnya pada [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). Status aktual dicatat di [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
+Saat ini tersedia inventaris sumber (P00), konfigurasi bersama, loader mentah, pemeriksaan fondasi (P01), serta assessment formal dan rencana tindakan kualitas data (P02). Cleaning, notebook analisis, dan dashboard mengikuti phase berikutnya pada [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). Status aktual dicatat di [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
 
 ## Setup lingkungan
 
@@ -37,6 +37,18 @@ Nama sumber memakai nama file tanpa `.csv`. Daftar kolom wajib dan sumber utama/
 Path data berasal dari lokasi modul (`__file__`), sehingga tidak mengikuti current working directory. Argumen opsional `data_dir` menerima direktori absolut; direktori relatif dihitung dari root proyek. File atau kolom wajib yang hilang menghasilkan pesan error yang menyebut sumber terkait.
 
 Skrip pemeriksaan dapat dipanggil dari direktori lain dengan path absolut ke `.venv/bin/python` dan `scripts/check_foundation.py`. Skrip menemukan root melalui `__file__`, memeriksa loader beserta kasus file/kolom hilang dan pelestarian nilai mentah, lalu membandingkan checksum sembilan CSV dengan baseline. Bukti terakhir ditulis ke `reports/foundation_validation.json`; skrip berhenti dengan error jika sumber berubah.
+
+## Menjalankan assessment P02
+
+```bash
+.venv/bin/python scripts/assess_data.py
+```
+
+Skrip memuat enam sumber utama melalui loader dan membuat profil ringkas tiga sumber pendukung. Hasilnya mencakup nilai kosong menurut kolom/status, keunikan kunci, duplikasi persis dan ulasan berulang, parsing tanggal/numerik, presisi uang, kronologi, serta foreign key. Uang diperiksa melalui `Decimal` dari teks sumber agar presisi sen tidak bergantung pada floating point.
+
+Laporan lengkap dan rencana tindakan per `issue_id` tersimpan pada [reports/data_quality.json](reports/data_quality.json). Tabel Gathering, Assessing, dan Steps to Take untuk bahan notebook tersedia pada [reports/assessment_summary.md](reports/assessment_summary.md). Profil ditambahkan ke baseline dengan tetap mempertahankan hash dan riwayat P00. Hash sembilan CSV dan templat diperiksa sebelum/sesudah proses; sumber yang berubah menyebabkan skrip berhenti. Entry point juga dapat dipanggil melalui path absolut dari direktori lain.
+
+P02 hanya menilai sumber dan mendokumentasikan tindakan. Seleksi ulasan dan transformasi cleaning dikerjakan di P03; tabel analisis dan flag eligibility dibentuk di P04. Jumlah masalah dapat tumpang tindih, sehingga tidak boleh dijumlahkan sebagai total transaksi bermasalah.
 
 ## Konfigurasi dan sumber
 

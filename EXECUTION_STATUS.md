@@ -1,16 +1,16 @@
 # Execution Status — Proyek Analisis Data E-Commerce
 
-Terakhir diperbarui: 22 Oktober 2026, Asia/Jakarta.  
+Terakhir diperbarui: 24 Oktober 2026, Asia/Jakarta.
 Acuan: [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), versi 2.1.
 
 ## Ringkasan untuk AI berikutnya
 
-- Status pekerjaan: **P00 dan P01 selesai; P02 belum dimulai**.
-- Phase berikutnya: **P02 — Gathering dan Assessing Data**.
-- Permintaan pengguna terakhir: lanjut P01. Lingkungan, konfigurasi, dan loader telah selesai diverifikasi; belum memulai P02.
-- Artefak yang tersedia: plan/tracker, baseline dan templat P00, `src/config.py`, `src/data_pipeline.py`, requirements runtime/dev, README, serta `scripts/check_foundation.py` dan `reports/foundation_validation.json`.
+- Status pekerjaan: **P00, P01, dan P02 selesai; P03 belum dimulai**.
+- Phase berikutnya: **P03 — Cleaning dan penanda kualitas**.
+- Permintaan pengguna terakhir: eksekusi P02 — Gathering dan Assessing Data. Assessment selesai dan gate lulus; P03 belum dimulai.
+- Artefak yang tersedia: plan/tracker, baseline dan templat P00, `src/config.py`, `src/data_pipeline.py`, requirements runtime/dev, README, `scripts/check_foundation.py`, `reports/foundation_validation.json`, modul/skrip assessment, `reports/data_quality.json`, ringkasan notebook, dan laporan verifikasi P02.
 - Kondisi terakhir: sembilan CSV sumber tetap sesuai hash baseline; modul fondasi tersedia dan loader berhasil. Notebook analisis dan dashboard belum dibuat. Runtime terpilih: Python 3.12.13 dalam `.venv`, juga dicatat pada `.python-version`.
-- P00 memverifikasi sembilan CSV, ukuran, SHA-256, jumlah baris, dan profil awal pada 22 Oktober 2026. Seluruh jumlah baris dan temuan numerik yang diperiksa sesuai plan; hash pertama tersimpan pada `reports/baseline.json`. Assessment formal tetap P02.
+- P00 memverifikasi sembilan CSV, ukuran, SHA-256, jumlah baris, dan profil awal pada 22 Oktober 2026. Seluruh jumlah baris dan temuan numerik yang diperiksa sesuai plan; hash pertama tersimpan pada `reports/baseline.json`. Assessment formal selesai pada P02; profil lengkap ditambahkan ke baseline tanpa mengubah hash/riwayat P00.
 - Salinan lokal templat notebook: **terverifikasi**, nbformat 4, 37 sel. URL sumber, waktu pengambilan, heading, dan SHA-256 tersedia dalam baseline; gunakan salinan ini pada P07.
 - Identitas notebook diberikan langsung oleh pengguna: **Bagus Uswanto**, **DS013B6Y0318@student.devacademy.id**, ID Dicoding **DS013B6Y0318**. Tersimpan di `reports/baseline.json`; gunakan pada P07.
 - Deployment: akun/repo/branch/visibilitas belum ditetapkan untuk proyek ini; tidak ada URL deployment yang telah diverifikasi.
@@ -24,8 +24,8 @@ Status yang sah: `not_started`, `in_progress`, `completed`, `blocked`, dan khusu
 | Phase | Fokus | Status | Bukti terakhir | Langkah berikutnya |
 | --- | --- | --- | --- | --- |
 | P00 | Inventaris dan templat | `completed` | Baseline 9 CSV dan templat JSON 37 sel terverifikasi | Gunakan baseline untuk P01/P02 |
-| P01 | Lingkungan dan fondasi | `completed` | Impor, pip check, loader 99.441 order, path dari /tmp, dan 9 hash sumber lulus | Mulai assessment P02 |
-| P02 | Gathering dan assessment | `not_started` | Hanya profil awal pada plan | Profil formal dan issue register |
+| P01 | Lingkungan dan fondasi | `completed` | Impor, pip check, loader 99.441 order, path dari /tmp, dan 9 hash sumber lulus | Fondasi dipakai pada P02/P03 |
+| P02 | Gathering dan assessment | `completed` | 9 profil, 21 issue dengan kebijakan, pemeriksaan CSV independen, entry point /tmp, dan 9 hash sumber lulus | Terapkan handoff P03 |
 | P03 | Cleaning | `not_started` | Belum ada transformasi | Terapkan keputusan dari P02 |
 | P04 | Join dan kontrak data | `not_started` | Belum ada tabel turunan | Bangun order/item-level setelah P03 |
 | P05 | Analisis Q1–Q2 | `not_started` | Belum ada hasil bisnis | Hitung agregasi setelah P04 |
@@ -97,7 +97,7 @@ Langkah berikutnya:
 
 ## Pemeriksaan yang perlu diulang akibat perubahan
 
-Belum ada keluaran implementasi yang perlu diverifikasi ulang. Ketika pipeline, metrik, atau sumber berubah, catat phase terdampak di sini; perbarui statusnya sampai verifikasi ulang lulus. Jangan hanya mengubah narasi notebook agar sesuai hasil baru.
+Tidak ada pemeriksaan ulang tertunda setelah P02. Jika sumber/loader/assessment berubah, hasil P02 dan profil baseline harus dihasilkan serta diverifikasi ulang. Ketika pipeline atau metrik berubah pada phase berikutnya, catat phase terdampak sampai verifikasi ulang lulus.
 
 ## Riwayat perubahan perencanaan
 
@@ -128,3 +128,19 @@ Belum ada keluaran implementasi yang perlu diverifikasi ulang. Ketika pipeline, 
 - Gate: lulus. Lingkungan tercatat dan terisolasi, konfigurasi terpusat, loader membaca data asli, dan entry point terbukti bekerja dari direktori lain. Tidak ada hambatan P01 tersisa.
 - Batas verifikasi: belum menjalankan assessment formal, cleaning, metrik, notebook, atau dashboard; pengujian tahapan tersebut dilakukan oleh phase pemiliknya. Tidak membuat placeholder artefak phase berikutnya.
 - Langkah berikutnya: P02 — muat enam tabel utama melalui loader, lengkapi profil baseline dan susun issue register pada `reports/data_quality.json` sesuai plan.
+
+### P02 — Gathering dan Assessing Data
+
+- Mulai: 2026-10-24T09:09:57+07:00.
+- Verifikasi akhir: 2026-10-24T09:13:32+07:00. Status: `completed`.
+- Prasyarat: plan/tracker dan fondasi P01 dibaca; working tree awal bersih; tidak ditemukan AGENTS.md pada workspace/ancestor. Sembilan hash sumber dan hash templat cocok dengan baseline P00 sebelum/sesudah assessment.
+- Keluaran: `src/data_assessment.py`, `scripts/assess_data.py`, `reports/data_quality.json`, `reports/assessment_summary.md`, dan `reports/assessment_validation.json`. Baseline ditambah `assessment_profile` pada sembilan sumber (baris, kolom, StringDtype awal, null/whitespace, duplikasi, tanggal/numerik/kunci; status orders), tanpa mengganti hash, identitas, atau riwayat P00. README memuat perintah reproduksi.
+- Cakupan: enam sumber utama dimuat melalui loader; tiga pendukung diprofilkan sebagai sumber tambahan. Assessment hanya memakai salinan parsing untuk observasi. Belum ada transformasi cleaning, seleksi ulasan, tabel join, atau metrik bisnis akhir.
+- Temuan aktual: 610 produk tanpa kategori (1.603 baris item), 13 produk dari 2 kode tanpa terjemahan (24 item); 547 order memiliki beberapa review (551 baris tambahan), 814 kemunculan review_id tambahan melintasi 789 ID. Tidak ada duplikasi persis pada enam sumber utama; pasangan review_id/order_id juga unik.
+- Tanggal: 2.965 order tanpa tanggal penerimaan, termasuk 8 delivered (semuanya dalam periode utama); 1.382 order memiliki setidaknya satu inversi urutan lifecycle. Tidak ada penerimaan sebelum pembelian. Sebanyak 64 review mempunyai tanggal pembuatan kalender sebelum pembelian; 4 item pada 3 order mempunyai shipping_limit pada 2020. Rincian pasangan tanggal, populasi, dan jumlah menurut status ada dalam JSON.
+- Cakupan tambahan: 775 order tanpa item (0 delivered), 768 order tanpa review (646 delivered); 2.961 order memiliki beberapa pembayaran. Geolocation memuat 261.831 baris identik tambahan dan kode pos berulang; tetap sumber pendukung yang tidak dipakai Q1–Q3.
+- Pemeriksaan tanpa pelanggaran: kunci orders/customer/product/translation dan order-item lengkap serta unik; tidak ada kegagalan parsing tanggal/numerik, harga negatif/nol, presisi uang di luar sen, atau skor di luar integer 1–5. Semua foreign key yang diuji cocok, kecuali 2 kode kategori tanpa terjemahan yang dicatat terpisah. Freight nol sebanyak 383 tetap valid.
+- Verifikasi aktual (exit 0): `.venv/bin/python scripts/assess_data.py` dari root; kemudian executable dan skrip berpath absolut dari `/tmp` (invocation cwd `/private/tmp`). Eksekusi terakhir menghasilkan 9 profil dan 21 issue dengan kebijakan. Pemeriksaan CSV independen menggunakan `csv.DictReader` mengonfirmasi baris/skema/missing/duplikasi enam sumber, status/kunci, multiplicity review, kategori, dan kronologi review. Kasus kecil memeriksa Decimal 1.230 versus 1.234, invalid/nonfinite, whitespace, kunci komposit, review ID berulang, dan parsing tanggal. Hash mismatch sengaja disimulasikan pada salinan baseline di memori dan ditolak sebelum penulisan laporan, tanpa mengubah CSV. Pemeriksaan akhir membandingkan profil baseline dengan laporan, total status/bulan 99.441, keunikan 21 issue, hash laporan, dan 9 hash sumber; `git diff --check` lulus.
+- Gate: lulus. Masalah aktual dan tindakan per issue tersedia, jumlah baris/status dapat direproduksi, serta bahan sel Gathering/Assessing/Steps to Take tersedia. Tidak ada hambatan P02.
+- Handoff P03: terapkan tindakan per `issue_id` dalam JSON; bedakan kategori kosong dan belum diterjemahkan; pilih review deterministik sebelum validasi skor; pertahankan null; flag anomali lifecycle/review tanpa menebak tanggal. Inversi approval/carrier atau metadata review tidak otomatis membatalkan sales/RFM maupun skor valid. Review tie-breaker dioperasionalkan dengan urutan menurun creation/answer/review_id/nomor baris sumber (null tanggal sebelum tanggal valid), konsisten dengan pemilihan nilai terbaru pada plan. Isu cakupan tanpa item/review ditangani kontrak eligibility P04; sumber pendukung hanya didokumentasikan sampai dipakai.
+- Langkah berikutnya: P03 — implementasikan fungsi cleaning yang mengembalikan data dan audit dampak per issue, lalu verifikasi kasus berisiko sesuai plan. P03 belum dimulai.

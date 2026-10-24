@@ -1,0 +1,1657 @@
+{
+  "phase": "P02",
+  "status": "completed",
+  "assessed_at": "2026-10-24T09:13:04+07:00",
+  "generator": "scripts/assess_data.py",
+  "runtime": {
+    "python": "3.12.13",
+    "pandas": "3.1.0",
+    "invocation_cwd": "/private/tmp"
+  },
+  "definitions": {
+    "raw_dtype": "StringDtype; loader menjaga representasi sumber",
+    "missing": "pd.NA atau teks hanya whitespace; empty_field_counts hanya pd.NA",
+    "duplicate_additional_rows": "duplicated(keep=first); all_rows memakai keep=False",
+    "date_format": "%Y-%m-%d %H:%M:%S; parse failures mengecualikan field kosong",
+    "numeric": "Decimal dari teks asli; nilai nonfinite terpisah dari parse failure; presisi sen diuji tanpa pembulatan",
+    "scope": "Semua baris mentah kecuali fakta berlabel analysis_period; tidak ada filter/cleaning sumber",
+    "chronology": "Timestamp penuh untuk urutan lifecycle; calendar_date_affected_rows disertakan. Estimasi diuji sebagai tanggal kalender.",
+    "analysis_period": {
+      "start_inclusive": "2017-01-01",
+      "end_exclusive": "2018-09-01"
+    },
+    "counts_overlap": "Issue dapat tumpang tindih; affected_unit dan denominator wajib diperhatikan",
+    "foreign_key": "missing_key_rows terpisah dari unmatched_nonmissing_rows; bukan hasil join tabel analisis"
+  },
+  "profiles": {
+    "orders_dataset": {
+      "scope": "formal",
+      "row_count": 99441,
+      "column_count": 8,
+      "columns": [
+        "order_id",
+        "customer_id",
+        "order_status",
+        "order_purchase_timestamp",
+        "order_approved_at",
+        "order_delivered_carrier_date",
+        "order_delivered_customer_date",
+        "order_estimated_delivery_date"
+      ],
+      "raw_dtypes": {
+        "order_id": "string",
+        "customer_id": "string",
+        "order_status": "string",
+        "order_purchase_timestamp": "string",
+        "order_approved_at": "string",
+        "order_delivered_carrier_date": "string",
+        "order_delivered_customer_date": "string",
+        "order_estimated_delivery_date": "string"
+      },
+      "empty_field_counts": {
+        "order_id": 0,
+        "customer_id": 0,
+        "order_status": 0,
+        "order_purchase_timestamp": 0,
+        "order_approved_at": 160,
+        "order_delivered_carrier_date": 1783,
+        "order_delivered_customer_date": 2965,
+        "order_estimated_delivery_date": 0
+      },
+      "missing_including_whitespace": {
+        "order_id": 0,
+        "customer_id": 0,
+        "order_status": 0,
+        "order_purchase_timestamp": 0,
+        "order_approved_at": 160,
+        "order_delivered_carrier_date": 1783,
+        "order_delivered_customer_date": 2965,
+        "order_estimated_delivery_date": 0
+      },
+      "whitespace_only_counts": {
+        "order_id": 0,
+        "customer_id": 0,
+        "order_status": 0,
+        "order_purchase_timestamp": 0,
+        "order_approved_at": 0,
+        "order_delivered_carrier_date": 0,
+        "order_delivered_customer_date": 0,
+        "order_estimated_delivery_date": 0
+      },
+      "surrounding_whitespace_counts": {
+        "order_id": 0,
+        "customer_id": 0,
+        "order_status": 0,
+        "order_purchase_timestamp": 0,
+        "order_approved_at": 0,
+        "order_delivered_carrier_date": 0,
+        "order_delivered_customer_date": 0,
+        "order_estimated_delivery_date": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {
+        "order_purchase_timestamp": {
+          "missing": 0,
+          "parse_failures": 0,
+          "min": "2016-09-04 21:15:19",
+          "max": "2018-10-17 17:30:18"
+        },
+        "order_approved_at": {
+          "missing": 160,
+          "parse_failures": 0,
+          "min": "2016-09-15 12:16:38",
+          "max": "2018-09-03 17:40:06"
+        },
+        "order_delivered_carrier_date": {
+          "missing": 1783,
+          "parse_failures": 0,
+          "min": "2016-10-08 10:34:01",
+          "max": "2018-09-11 19:48:28"
+        },
+        "order_delivered_customer_date": {
+          "missing": 2965,
+          "parse_failures": 0,
+          "min": "2016-10-11 13:46:32",
+          "max": "2018-10-17 13:22:46"
+        },
+        "order_estimated_delivery_date": {
+          "missing": 0,
+          "parse_failures": 0,
+          "min": "2016-09-30 00:00:00",
+          "max": "2018-11-12 00:00:00"
+        }
+      },
+      "numeric": {},
+      "key": {
+        "columns": [
+          "order_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 99441,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      },
+      "status_counts": {
+        "approved": 2,
+        "canceled": 625,
+        "created": 5,
+        "delivered": 96478,
+        "invoiced": 314,
+        "processing": 301,
+        "shipped": 1107,
+        "unavailable": 609
+      }
+    },
+    "customers_dataset": {
+      "scope": "formal",
+      "row_count": 99441,
+      "column_count": 5,
+      "columns": [
+        "customer_id",
+        "customer_unique_id",
+        "customer_zip_code_prefix",
+        "customer_city",
+        "customer_state"
+      ],
+      "raw_dtypes": {
+        "customer_id": "string",
+        "customer_unique_id": "string",
+        "customer_zip_code_prefix": "string",
+        "customer_city": "string",
+        "customer_state": "string"
+      },
+      "empty_field_counts": {
+        "customer_id": 0,
+        "customer_unique_id": 0,
+        "customer_zip_code_prefix": 0,
+        "customer_city": 0,
+        "customer_state": 0
+      },
+      "missing_including_whitespace": {
+        "customer_id": 0,
+        "customer_unique_id": 0,
+        "customer_zip_code_prefix": 0,
+        "customer_city": 0,
+        "customer_state": 0
+      },
+      "whitespace_only_counts": {
+        "customer_id": 0,
+        "customer_unique_id": 0,
+        "customer_zip_code_prefix": 0,
+        "customer_city": 0,
+        "customer_state": 0
+      },
+      "surrounding_whitespace_counts": {
+        "customer_id": 0,
+        "customer_unique_id": 0,
+        "customer_zip_code_prefix": 0,
+        "customer_city": 0,
+        "customer_state": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {},
+      "numeric": {},
+      "key": {
+        "columns": [
+          "customer_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 99441,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      }
+    },
+    "order_items_dataset": {
+      "scope": "formal",
+      "row_count": 112650,
+      "column_count": 7,
+      "columns": [
+        "order_id",
+        "order_item_id",
+        "product_id",
+        "seller_id",
+        "shipping_limit_date",
+        "price",
+        "freight_value"
+      ],
+      "raw_dtypes": {
+        "order_id": "string",
+        "order_item_id": "string",
+        "product_id": "string",
+        "seller_id": "string",
+        "shipping_limit_date": "string",
+        "price": "string",
+        "freight_value": "string"
+      },
+      "empty_field_counts": {
+        "order_id": 0,
+        "order_item_id": 0,
+        "product_id": 0,
+        "seller_id": 0,
+        "shipping_limit_date": 0,
+        "price": 0,
+        "freight_value": 0
+      },
+      "missing_including_whitespace": {
+        "order_id": 0,
+        "order_item_id": 0,
+        "product_id": 0,
+        "seller_id": 0,
+        "shipping_limit_date": 0,
+        "price": 0,
+        "freight_value": 0
+      },
+      "whitespace_only_counts": {
+        "order_id": 0,
+        "order_item_id": 0,
+        "product_id": 0,
+        "seller_id": 0,
+        "shipping_limit_date": 0,
+        "price": 0,
+        "freight_value": 0
+      },
+      "surrounding_whitespace_counts": {
+        "order_id": 0,
+        "order_item_id": 0,
+        "product_id": 0,
+        "seller_id": 0,
+        "shipping_limit_date": 0,
+        "price": 0,
+        "freight_value": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {
+        "shipping_limit_date": {
+          "missing": 0,
+          "parse_failures": 0,
+          "min": "2016-09-19 00:15:34",
+          "max": "2020-04-09 22:35:08"
+        }
+      },
+      "numeric": {
+        "order_item_id": {
+          "nonmissing": 112650,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "1",
+          "max": "21"
+        },
+        "price": {
+          "nonmissing": 112650,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 79862,
+          "beyond_cent_precision": 0,
+          "min": "0.85",
+          "max": "6735.00"
+        },
+        "freight_value": {
+          "nonmissing": 112650,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 383,
+          "noninteger": 111015,
+          "beyond_cent_precision": 0,
+          "min": "0.00",
+          "max": "409.68"
+        }
+      },
+      "key": {
+        "columns": [
+          "order_id",
+          "order_item_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 112650,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      }
+    },
+    "products_dataset": {
+      "scope": "formal",
+      "row_count": 32951,
+      "column_count": 9,
+      "columns": [
+        "product_id",
+        "product_category_name",
+        "product_name_lenght",
+        "product_description_lenght",
+        "product_photos_qty",
+        "product_weight_g",
+        "product_length_cm",
+        "product_height_cm",
+        "product_width_cm"
+      ],
+      "raw_dtypes": {
+        "product_id": "string",
+        "product_category_name": "string",
+        "product_name_lenght": "string",
+        "product_description_lenght": "string",
+        "product_photos_qty": "string",
+        "product_weight_g": "string",
+        "product_length_cm": "string",
+        "product_height_cm": "string",
+        "product_width_cm": "string"
+      },
+      "empty_field_counts": {
+        "product_id": 0,
+        "product_category_name": 610,
+        "product_name_lenght": 610,
+        "product_description_lenght": 610,
+        "product_photos_qty": 610,
+        "product_weight_g": 2,
+        "product_length_cm": 2,
+        "product_height_cm": 2,
+        "product_width_cm": 2
+      },
+      "missing_including_whitespace": {
+        "product_id": 0,
+        "product_category_name": 610,
+        "product_name_lenght": 610,
+        "product_description_lenght": 610,
+        "product_photos_qty": 610,
+        "product_weight_g": 2,
+        "product_length_cm": 2,
+        "product_height_cm": 2,
+        "product_width_cm": 2
+      },
+      "whitespace_only_counts": {
+        "product_id": 0,
+        "product_category_name": 0,
+        "product_name_lenght": 0,
+        "product_description_lenght": 0,
+        "product_photos_qty": 0,
+        "product_weight_g": 0,
+        "product_length_cm": 0,
+        "product_height_cm": 0,
+        "product_width_cm": 0
+      },
+      "surrounding_whitespace_counts": {
+        "product_id": 0,
+        "product_category_name": 0,
+        "product_name_lenght": 0,
+        "product_description_lenght": 0,
+        "product_photos_qty": 0,
+        "product_weight_g": 0,
+        "product_length_cm": 0,
+        "product_height_cm": 0,
+        "product_width_cm": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {},
+      "numeric": {
+        "product_name_lenght": {
+          "nonmissing": 32341,
+          "missing": 610,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "5",
+          "max": "76"
+        },
+        "product_description_lenght": {
+          "nonmissing": 32341,
+          "missing": 610,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "4",
+          "max": "3992"
+        },
+        "product_photos_qty": {
+          "nonmissing": 32341,
+          "missing": 610,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "1",
+          "max": "20"
+        },
+        "product_weight_g": {
+          "nonmissing": 32949,
+          "missing": 2,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 4,
+          "noninteger": 0,
+          "min": "0",
+          "max": "40425"
+        },
+        "product_length_cm": {
+          "nonmissing": 32949,
+          "missing": 2,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "7",
+          "max": "105"
+        },
+        "product_height_cm": {
+          "nonmissing": 32949,
+          "missing": 2,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "2",
+          "max": "105"
+        },
+        "product_width_cm": {
+          "nonmissing": 32949,
+          "missing": 2,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "6",
+          "max": "118"
+        }
+      },
+      "key": {
+        "columns": [
+          "product_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 32951,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      }
+    },
+    "order_reviews_dataset": {
+      "scope": "formal",
+      "row_count": 99224,
+      "column_count": 7,
+      "columns": [
+        "review_id",
+        "order_id",
+        "review_score",
+        "review_comment_title",
+        "review_comment_message",
+        "review_creation_date",
+        "review_answer_timestamp"
+      ],
+      "raw_dtypes": {
+        "review_id": "string",
+        "order_id": "string",
+        "review_score": "string",
+        "review_comment_title": "string",
+        "review_comment_message": "string",
+        "review_creation_date": "string",
+        "review_answer_timestamp": "string"
+      },
+      "empty_field_counts": {
+        "review_id": 0,
+        "order_id": 0,
+        "review_score": 0,
+        "review_comment_title": 87656,
+        "review_comment_message": 58247,
+        "review_creation_date": 0,
+        "review_answer_timestamp": 0
+      },
+      "missing_including_whitespace": {
+        "review_id": 0,
+        "order_id": 0,
+        "review_score": 0,
+        "review_comment_title": 87658,
+        "review_comment_message": 58274,
+        "review_creation_date": 0,
+        "review_answer_timestamp": 0
+      },
+      "whitespace_only_counts": {
+        "review_id": 0,
+        "order_id": 0,
+        "review_score": 0,
+        "review_comment_title": 2,
+        "review_comment_message": 27,
+        "review_creation_date": 0,
+        "review_answer_timestamp": 0
+      },
+      "surrounding_whitespace_counts": {
+        "review_id": 0,
+        "order_id": 0,
+        "review_score": 0,
+        "review_comment_title": 1998,
+        "review_comment_message": 9451,
+        "review_creation_date": 0,
+        "review_answer_timestamp": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {
+        "review_creation_date": {
+          "missing": 0,
+          "parse_failures": 0,
+          "min": "2016-10-02 00:00:00",
+          "max": "2018-08-31 00:00:00"
+        },
+        "review_answer_timestamp": {
+          "missing": 0,
+          "parse_failures": 0,
+          "min": "2016-10-07 18:32:28",
+          "max": "2018-10-29 12:27:35"
+        }
+      },
+      "numeric": {
+        "review_score": {
+          "nonmissing": 99224,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "1",
+          "max": "5"
+        }
+      }
+    },
+    "product_category_name_translation": {
+      "scope": "formal",
+      "row_count": 71,
+      "column_count": 2,
+      "columns": [
+        "product_category_name",
+        "product_category_name_english"
+      ],
+      "raw_dtypes": {
+        "product_category_name": "string",
+        "product_category_name_english": "string"
+      },
+      "empty_field_counts": {
+        "product_category_name": 0,
+        "product_category_name_english": 0
+      },
+      "missing_including_whitespace": {
+        "product_category_name": 0,
+        "product_category_name_english": 0
+      },
+      "whitespace_only_counts": {
+        "product_category_name": 0,
+        "product_category_name_english": 0
+      },
+      "surrounding_whitespace_counts": {
+        "product_category_name": 0,
+        "product_category_name_english": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {},
+      "numeric": {},
+      "key": {
+        "columns": [
+          "product_category_name"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 71,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      }
+    },
+    "order_payments_dataset": {
+      "scope": "supporting_summary",
+      "row_count": 103886,
+      "column_count": 5,
+      "columns": [
+        "order_id",
+        "payment_sequential",
+        "payment_type",
+        "payment_installments",
+        "payment_value"
+      ],
+      "raw_dtypes": {
+        "order_id": "string",
+        "payment_sequential": "string",
+        "payment_type": "string",
+        "payment_installments": "string",
+        "payment_value": "string"
+      },
+      "empty_field_counts": {
+        "order_id": 0,
+        "payment_sequential": 0,
+        "payment_type": 0,
+        "payment_installments": 0,
+        "payment_value": 0
+      },
+      "missing_including_whitespace": {
+        "order_id": 0,
+        "payment_sequential": 0,
+        "payment_type": 0,
+        "payment_installments": 0,
+        "payment_value": 0
+      },
+      "whitespace_only_counts": {
+        "order_id": 0,
+        "payment_sequential": 0,
+        "payment_type": 0,
+        "payment_installments": 0,
+        "payment_value": 0
+      },
+      "surrounding_whitespace_counts": {
+        "order_id": 0,
+        "payment_sequential": 0,
+        "payment_type": 0,
+        "payment_installments": 0,
+        "payment_value": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {},
+      "numeric": {
+        "payment_sequential": {
+          "nonmissing": 103886,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 0,
+          "noninteger": 0,
+          "min": "1",
+          "max": "29"
+        },
+        "payment_installments": {
+          "nonmissing": 103886,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 2,
+          "noninteger": 0,
+          "min": "0",
+          "max": "24"
+        },
+        "payment_value": {
+          "nonmissing": 103886,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 0,
+          "zero": 9,
+          "noninteger": 99844,
+          "beyond_cent_precision": 0,
+          "min": "0.00",
+          "max": "13664.08"
+        }
+      }
+    },
+    "sellers_dataset": {
+      "scope": "supporting_summary",
+      "row_count": 3095,
+      "column_count": 4,
+      "columns": [
+        "seller_id",
+        "seller_zip_code_prefix",
+        "seller_city",
+        "seller_state"
+      ],
+      "raw_dtypes": {
+        "seller_id": "string",
+        "seller_zip_code_prefix": "string",
+        "seller_city": "string",
+        "seller_state": "string"
+      },
+      "empty_field_counts": {
+        "seller_id": 0,
+        "seller_zip_code_prefix": 0,
+        "seller_city": 0,
+        "seller_state": 0
+      },
+      "missing_including_whitespace": {
+        "seller_id": 0,
+        "seller_zip_code_prefix": 0,
+        "seller_city": 0,
+        "seller_state": 0
+      },
+      "whitespace_only_counts": {
+        "seller_id": 0,
+        "seller_zip_code_prefix": 0,
+        "seller_city": 0,
+        "seller_state": 0
+      },
+      "surrounding_whitespace_counts": {
+        "seller_id": 0,
+        "seller_zip_code_prefix": 0,
+        "seller_city": 0,
+        "seller_state": 0
+      },
+      "exact_duplicate_additional_rows": 0,
+      "exact_duplicate_all_rows": 0,
+      "dates": {},
+      "numeric": {},
+      "key": {
+        "columns": [
+          "seller_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 3095,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      }
+    },
+    "geolocation_dataset": {
+      "scope": "supporting_summary",
+      "row_count": 1000163,
+      "column_count": 5,
+      "columns": [
+        "geolocation_zip_code_prefix",
+        "geolocation_lat",
+        "geolocation_lng",
+        "geolocation_city",
+        "geolocation_state"
+      ],
+      "raw_dtypes": {
+        "geolocation_zip_code_prefix": "string",
+        "geolocation_lat": "string",
+        "geolocation_lng": "string",
+        "geolocation_city": "string",
+        "geolocation_state": "string"
+      },
+      "empty_field_counts": {
+        "geolocation_zip_code_prefix": 0,
+        "geolocation_lat": 0,
+        "geolocation_lng": 0,
+        "geolocation_city": 0,
+        "geolocation_state": 0
+      },
+      "missing_including_whitespace": {
+        "geolocation_zip_code_prefix": 0,
+        "geolocation_lat": 0,
+        "geolocation_lng": 0,
+        "geolocation_city": 0,
+        "geolocation_state": 0
+      },
+      "whitespace_only_counts": {
+        "geolocation_zip_code_prefix": 0,
+        "geolocation_lat": 0,
+        "geolocation_lng": 0,
+        "geolocation_city": 0,
+        "geolocation_state": 0
+      },
+      "surrounding_whitespace_counts": {
+        "geolocation_zip_code_prefix": 0,
+        "geolocation_lat": 0,
+        "geolocation_lng": 0,
+        "geolocation_city": 1,
+        "geolocation_state": 0
+      },
+      "exact_duplicate_additional_rows": 261831,
+      "exact_duplicate_all_rows": 390005,
+      "dates": {},
+      "numeric": {
+        "geolocation_lat": {
+          "nonmissing": 1000163,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 998827,
+          "zero": 0,
+          "noninteger": 1000163,
+          "min": "-36.6053744107061",
+          "max": "45.06593318269697"
+        },
+        "geolocation_lng": {
+          "nonmissing": 1000163,
+          "missing": 0,
+          "parse_failures": 0,
+          "nonfinite": 0,
+          "negative": 1000160,
+          "zero": 0,
+          "noninteger": 1000163,
+          "min": "-101.46676644931476",
+          "max": "121.10539381057764"
+        }
+      },
+      "zip_prefix": {
+        "columns": [
+          "geolocation_zip_code_prefix"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 19015,
+        "rows_in_duplicate_keys": 999120,
+        "additional_duplicate_keys": 981148,
+        "duplicate_key_groups": 17972,
+        "unique_and_complete": false
+      }
+    }
+  },
+  "facts": {
+    "order_status_counts": {
+      "approved": 2,
+      "canceled": 625,
+      "created": 5,
+      "delivered": 96478,
+      "invoiced": 314,
+      "processing": 301,
+      "shipped": 1107,
+      "unavailable": 609
+    },
+    "missing_and_coverage_by_status": {
+      "approved": {
+        "rows": 2,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 0,
+          "order_delivered_carrier_date": 2,
+          "order_delivered_customer_date": 2,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 0,
+        "orders_without_review": 0
+      },
+      "canceled": {
+        "rows": 625,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 141,
+          "order_delivered_carrier_date": 550,
+          "order_delivered_customer_date": 619,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 164,
+        "orders_without_review": 20
+      },
+      "created": {
+        "rows": 5,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 5,
+          "order_delivered_carrier_date": 5,
+          "order_delivered_customer_date": 5,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 5,
+        "orders_without_review": 2
+      },
+      "delivered": {
+        "rows": 96478,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 14,
+          "order_delivered_carrier_date": 2,
+          "order_delivered_customer_date": 8,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 0,
+        "orders_without_review": 646
+      },
+      "invoiced": {
+        "rows": 314,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 0,
+          "order_delivered_carrier_date": 314,
+          "order_delivered_customer_date": 314,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 2,
+        "orders_without_review": 5
+      },
+      "processing": {
+        "rows": 301,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 0,
+          "order_delivered_carrier_date": 301,
+          "order_delivered_customer_date": 301,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 0,
+        "orders_without_review": 6
+      },
+      "shipped": {
+        "rows": 1107,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 0,
+          "order_delivered_carrier_date": 0,
+          "order_delivered_customer_date": 1107,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 1,
+        "orders_without_review": 75
+      },
+      "unavailable": {
+        "rows": 609,
+        "missing_dates": {
+          "order_purchase_timestamp": 0,
+          "order_approved_at": 0,
+          "order_delivered_carrier_date": 609,
+          "order_delivered_customer_date": 609,
+          "order_estimated_delivery_date": 0
+        },
+        "orders_without_items": 603,
+        "orders_without_review": 14
+      }
+    },
+    "purchase_month_counts": {
+      "2016-09": 4,
+      "2016-10": 324,
+      "2016-11": 0,
+      "2016-12": 1,
+      "2017-01": 800,
+      "2017-02": 1780,
+      "2017-03": 2682,
+      "2017-04": 2404,
+      "2017-05": 3700,
+      "2017-06": 3245,
+      "2017-07": 4026,
+      "2017-08": 4331,
+      "2017-09": 4285,
+      "2017-10": 4631,
+      "2017-11": 7544,
+      "2017-12": 5673,
+      "2018-01": 7269,
+      "2018-02": 6728,
+      "2018-03": 7211,
+      "2018-04": 6939,
+      "2018-05": 6873,
+      "2018-06": 6167,
+      "2018-07": 6292,
+      "2018-08": 6512,
+      "2018-09": 16,
+      "2018-10": 4
+    },
+    "analysis_period_order_count": 99092,
+    "analysis_period_delivered_count": 96211,
+    "date_chronology": {
+      "order_approved_at_before_order_purchase_timestamp": {
+        "comparable_rows": 99281,
+        "affected_rows": 0,
+        "affected_delivered": 0,
+        "affected_in_period_delivered": 0,
+        "calendar_date_affected_rows": 0
+      },
+      "order_delivered_carrier_date_before_order_purchase_timestamp": {
+        "comparable_rows": 97658,
+        "affected_rows": 166,
+        "affected_delivered": 165,
+        "affected_in_period_delivered": 165,
+        "calendar_date_affected_rows": 2
+      },
+      "order_delivered_customer_date_before_order_purchase_timestamp": {
+        "comparable_rows": 96476,
+        "affected_rows": 0,
+        "affected_delivered": 0,
+        "affected_in_period_delivered": 0,
+        "calendar_date_affected_rows": 0
+      },
+      "order_delivered_carrier_date_before_order_approved_at": {
+        "comparable_rows": 97644,
+        "affected_rows": 1359,
+        "affected_delivered": 1350,
+        "affected_in_period_delivered": 1350,
+        "calendar_date_affected_rows": 680
+      },
+      "order_delivered_customer_date_before_order_approved_at": {
+        "comparable_rows": 96462,
+        "affected_rows": 61,
+        "affected_delivered": 61,
+        "affected_in_period_delivered": 61,
+        "calendar_date_affected_rows": 38
+      },
+      "order_delivered_customer_date_before_order_delivered_carrier_date": {
+        "comparable_rows": 96475,
+        "affected_rows": 23,
+        "affected_delivered": 23,
+        "affected_in_period_delivered": 19,
+        "calendar_date_affected_rows": 20
+      },
+      "estimated_calendar_date_before_purchase": {
+        "comparable_rows": 99441,
+        "affected_rows": 0,
+        "affected_delivered": 0,
+        "affected_in_period_delivered": 0
+      }
+    },
+    "foreign_keys": {
+      "orders_dataset.customer_id -> customers_dataset.customer_id": {
+        "child_rows": 99441,
+        "missing_key_rows": 0,
+        "unmatched_nonmissing_rows": 0,
+        "unmatched_distinct_keys": 0,
+        "unmatched_key_examples": []
+      },
+      "order_items_dataset.order_id -> orders_dataset.order_id": {
+        "child_rows": 112650,
+        "missing_key_rows": 0,
+        "unmatched_nonmissing_rows": 0,
+        "unmatched_distinct_keys": 0,
+        "unmatched_key_examples": []
+      },
+      "order_items_dataset.product_id -> products_dataset.product_id": {
+        "child_rows": 112650,
+        "missing_key_rows": 0,
+        "unmatched_nonmissing_rows": 0,
+        "unmatched_distinct_keys": 0,
+        "unmatched_key_examples": []
+      },
+      "order_items_dataset.seller_id -> sellers_dataset.seller_id": {
+        "child_rows": 112650,
+        "missing_key_rows": 0,
+        "unmatched_nonmissing_rows": 0,
+        "unmatched_distinct_keys": 0,
+        "unmatched_key_examples": []
+      },
+      "order_reviews_dataset.order_id -> orders_dataset.order_id": {
+        "child_rows": 99224,
+        "missing_key_rows": 0,
+        "unmatched_nonmissing_rows": 0,
+        "unmatched_distinct_keys": 0,
+        "unmatched_key_examples": []
+      },
+      "products_dataset.product_category_name -> product_category_name_translation.product_category_name": {
+        "child_rows": 32951,
+        "missing_key_rows": 610,
+        "unmatched_nonmissing_rows": 13,
+        "unmatched_distinct_keys": 2,
+        "unmatched_key_examples": [
+          "pc_gamer",
+          "portateis_cozinha_e_preparadores_de_alimentos"
+        ]
+      },
+      "order_payments_dataset.order_id -> orders_dataset.order_id": {
+        "child_rows": 103886,
+        "missing_key_rows": 0,
+        "unmatched_nonmissing_rows": 0,
+        "unmatched_distinct_keys": 0,
+        "unmatched_key_examples": []
+      }
+    },
+    "reviews": {
+      "review_id": {
+        "columns": [
+          "review_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 98410,
+        "rows_in_duplicate_keys": 1603,
+        "additional_duplicate_keys": 814,
+        "duplicate_key_groups": 789,
+        "unique_and_complete": false
+      },
+      "order_id": {
+        "columns": [
+          "order_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 98673,
+        "rows_in_duplicate_keys": 1098,
+        "additional_duplicate_keys": 551,
+        "duplicate_key_groups": 547,
+        "unique_and_complete": false
+      },
+      "review_id_order_id": {
+        "columns": [
+          "review_id",
+          "order_id"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 99224,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      },
+      "review_ids_linked_to_multiple_orders": 789,
+      "repeated_id_order_pairs": 0,
+      "score_validity": {
+        "missing": 0,
+        "noninteger": 0,
+        "out_of_range": 0,
+        "invalid_or_missing": 0,
+        "score_counts": {
+          "1": 11424,
+          "2": 3151,
+          "3": 8179,
+          "4": 19142,
+          "5": 57328
+        }
+      },
+      "answer_before_creation": 0,
+      "creation_calendar_before_purchase": 64,
+      "latest_creation_timestamp_tied_orders": 156
+    },
+    "delivered_missing_dates": {
+      "order_purchase_timestamp": {
+        "all_periods": 0,
+        "analysis_period": 0
+      },
+      "order_approved_at": {
+        "all_periods": 14,
+        "analysis_period": 14
+      },
+      "order_delivered_carrier_date": {
+        "all_periods": 2,
+        "analysis_period": 2
+      },
+      "order_delivered_customer_date": {
+        "all_periods": 8,
+        "analysis_period": 8
+      },
+      "order_estimated_delivery_date": {
+        "all_periods": 0,
+        "analysis_period": 0
+      }
+    },
+    "categories": {
+      "missing_products": 610,
+      "missing_category_item_rows": 1603,
+      "untranslated_products": 13,
+      "untranslated_codes": [
+        "pc_gamer",
+        "portateis_cozinha_e_preparadores_de_alimentos"
+      ],
+      "untranslated_category_item_rows": 24,
+      "translation_missing_english_rows": 0
+    },
+    "shipping_limit": {
+      "after_last_purchase_calendar_day_rows": 4,
+      "after_last_purchase_affected_orders": 3,
+      "before_purchase_timestamp_rows": 0,
+      "after_last_purchase_year_counts": {
+        "2020": 4
+      }
+    },
+    "supporting": {
+      "orders_with_multiple_payments": 2961,
+      "additional_payment_rows_per_order": 4446,
+      "payment_key": {
+        "columns": [
+          "order_id",
+          "payment_sequential"
+        ],
+        "rows_with_missing_key": 0,
+        "distinct_nonmissing_keys": 103886,
+        "rows_in_duplicate_keys": 0,
+        "additional_duplicate_keys": 0,
+        "duplicate_key_groups": 0,
+        "unique_and_complete": true
+      },
+      "orders_without_payment": 1
+    },
+    "orders_with_any_lifecycle_or_estimate_chronology_issue": 1382,
+    "orders_without_items": 775,
+    "delivered_orders_without_items": 0,
+    "orders_without_review": 768
+  },
+  "issues": [
+    {
+      "issue_id": "DQ01",
+      "source": "products_dataset",
+      "columns": [
+        "product_category_name"
+      ],
+      "kind": "missing_category",
+      "affected_count": 610,
+      "affected_unit": "products",
+      "business_meaning": "Item tanpa kategori tidak dapat direkomendasikan sebagai kategori produk.",
+      "planned_action": "Beri label Tidak diketahui; pertahankan nilai barang dalam total/denominator dan pisahkan dari top 5.",
+      "affected_metrics": [
+        "Q1"
+      ],
+      "evidence": "facts.categories",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ02",
+      "source": "products_dataset",
+      "columns": [
+        "product_category_name"
+      ],
+      "kind": "missing_translation",
+      "affected_count": 13,
+      "affected_unit": "products",
+      "business_meaning": "Kode kategori ada tetapi tidak mempunyai nama Inggris.",
+      "planned_action": "Pertahankan kode asli sebagai kunci dan nama tampilan fallback; jangan gabungkan dengan kategori kosong.",
+      "affected_metrics": [
+        "Q1"
+      ],
+      "evidence": "facts.categories",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ03",
+      "source": "order_reviews_dataset",
+      "columns": [
+        "order_id"
+      ],
+      "kind": "multiple_reviews_per_order",
+      "affected_count": 547,
+      "affected_unit": "orders",
+      "business_meaning": "Join ulasan mentah dapat memperbanyak nilai transaksi dan membobot skor secara keliru.",
+      "planned_action": "Pilih satu review per order: creation terbaru, answer terbaru, review_id leksikografis terbesar, lalu nomor baris sumber terbesar; null tanggal sebelum tanggal valid. Pilih sebelum validasi skor.",
+      "affected_metrics": [
+        "Q2",
+        "join_integrity"
+      ],
+      "evidence": "facts.reviews.order_id",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ04",
+      "source": "order_reviews_dataset",
+      "columns": [
+        "review_id"
+      ],
+      "kind": "repeated_review_id",
+      "affected_count": 814,
+      "affected_unit": "additional_rows",
+      "business_meaning": "Review ID berulang tidak membuktikan baris identik dan dapat terkait pesanan berbeda.",
+      "planned_action": "Jangan deduplikasi berdasarkan review_id; gunakan nomor baris sumber untuk audit dan pilih review pada tingkat order.",
+      "affected_metrics": [
+        "Q2"
+      ],
+      "evidence": "facts.reviews",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ05",
+      "source": "orders_dataset",
+      "columns": [
+        "order_delivered_customer_date",
+        "order_status"
+      ],
+      "kind": "missing_lifecycle_date",
+      "affected_count": 2965,
+      "affected_unit": "orders",
+      "business_meaning": "Tanggal kosong harus dibaca menurut status; 8 delivered terdampak.",
+      "planned_action": "Pertahankan NaT dan flag. Tanggal aktual hilang mengecualikan evaluasi keterlambatan; approval/carrier kosong tidak otomatis mengecualikan sales/RFM atau delivery yang tanggal wajibnya valid.",
+      "affected_metrics": [
+        "Q2",
+        "coverage"
+      ],
+      "evidence": "facts.missing_and_coverage_by_status; facts.delivered_missing_dates",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ06",
+      "source": "orders_dataset",
+      "columns": [
+        "order_delivered_carrier_date",
+        "order_status"
+      ],
+      "kind": "missing_lifecycle_date",
+      "affected_count": 1783,
+      "affected_unit": "orders",
+      "business_meaning": "Tanggal kosong harus dibaca menurut status; 2 delivered terdampak.",
+      "planned_action": "Pertahankan NaT dan flag. Tanggal aktual hilang mengecualikan evaluasi keterlambatan; approval/carrier kosong tidak otomatis mengecualikan sales/RFM atau delivery yang tanggal wajibnya valid.",
+      "affected_metrics": [
+        "Q2",
+        "coverage"
+      ],
+      "evidence": "facts.missing_and_coverage_by_status; facts.delivered_missing_dates",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ07",
+      "source": "orders_dataset",
+      "columns": [
+        "order_approved_at",
+        "order_status"
+      ],
+      "kind": "missing_lifecycle_date",
+      "affected_count": 160,
+      "affected_unit": "orders",
+      "business_meaning": "Tanggal kosong harus dibaca menurut status; 14 delivered terdampak.",
+      "planned_action": "Pertahankan NaT dan flag. Tanggal aktual hilang mengecualikan evaluasi keterlambatan; approval/carrier kosong tidak otomatis mengecualikan sales/RFM atau delivery yang tanggal wajibnya valid.",
+      "affected_metrics": [
+        "Q2",
+        "coverage"
+      ],
+      "evidence": "facts.missing_and_coverage_by_status; facts.delivered_missing_dates",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ08",
+      "source": "order_reviews_dataset",
+      "columns": [
+        "review_comment_title"
+      ],
+      "kind": "optional_text_missing",
+      "affected_count": 87658,
+      "affected_unit": "review_rows",
+      "business_meaning": "Teks ulasan opsional; skor tetap dapat dipakai.",
+      "planned_action": "Tandai kosong termasuk whitespace untuk dokumentasi; jangan imputasi atau membuang skor valid.",
+      "affected_metrics": [
+        "Q2"
+      ],
+      "evidence": "profiles.order_reviews_dataset.missing_including_whitespace.review_comment_title",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ09",
+      "source": "order_reviews_dataset",
+      "columns": [
+        "review_comment_message"
+      ],
+      "kind": "optional_text_missing",
+      "affected_count": 58274,
+      "affected_unit": "review_rows",
+      "business_meaning": "Teks ulasan opsional; skor tetap dapat dipakai.",
+      "planned_action": "Tandai kosong termasuk whitespace untuk dokumentasi; jangan imputasi atau membuang skor valid.",
+      "affected_metrics": [
+        "Q2"
+      ],
+      "evidence": "profiles.order_reviews_dataset.missing_including_whitespace.review_comment_message",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ10",
+      "source": "products_dataset",
+      "columns": [
+        "product_name_lenght",
+        "product_description_lenght",
+        "product_photos_qty",
+        "product_weight_g",
+        "product_length_cm",
+        "product_height_cm",
+        "product_width_cm"
+      ],
+      "kind": "missing_optional_product_attributes",
+      "affected_count": 611,
+      "affected_unit": "products",
+      "business_meaning": "Atribut deskripsi dan ukuran tidak digunakan dalam Q1–Q3.",
+      "planned_action": "Parse numerik dengan audit dan pertahankan null; jangan imputasi ukuran atau menghapus item terkait.",
+      "affected_metrics": [
+        "documentation"
+      ],
+      "evidence": "profiles.products_dataset.missing_including_whitespace",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ11",
+      "source": "orders_dataset",
+      "columns": [
+        "order_purchase_timestamp",
+        "order_approved_at",
+        "order_delivered_carrier_date",
+        "order_delivered_customer_date"
+      ],
+      "kind": "lifecycle_chronology",
+      "affected_count": 1382,
+      "affected_unit": "orders_union",
+      "business_meaning": "Urutan approval/kurir/penerimaan dapat terbalik; pengaruh terhadap metrik bergantung tanggal yang dipakai.",
+      "planned_action": "Flag setiap pasangan tanggal tanpa menebak tanggal pengganti. Tanggal penerimaan sebelum pembelian membuat delivery tidak eligible; inversi approval/carrier saja tidak mengecualikan sales/RFM atau delivery. Estimasi sebelum tanggal pembelian harus diinvestigasi jika ditemukan.",
+      "affected_metrics": [
+        "Q2",
+        "coverage"
+      ],
+      "evidence": "facts.date_chronology",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ12",
+      "source": "order_items_dataset",
+      "columns": [
+        "shipping_limit_date"
+      ],
+      "kind": "shipping_deadline_after_purchase_snapshot",
+      "affected_count": 4,
+      "affected_unit": "item_rows",
+      "business_meaning": "Batas pengiriman melampaui tanggal pembelian terakhir; tidak membuktikan transaksi sampai tahun tersebut.",
+      "planned_action": "Dokumentasikan sebagai anomali untuk inspeksi, pertahankan tanggal dan jangan gunakan sebagai batas periode analisis.",
+      "affected_metrics": [
+        "period_context"
+      ],
+      "evidence": "facts.shipping_limit",
+      "owner_phase": "documentation",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ13",
+      "source": "orders_dataset",
+      "columns": [
+        "order_id",
+        "order_status"
+      ],
+      "kind": "orders_without_items",
+      "affected_count": 775,
+      "affected_unit": "orders",
+      "business_meaning": "Pesanan tanpa item tidak mempunyai nilai barang yang dapat dihitung.",
+      "planned_action": "Pertahankan order; order_value null dan sales/RFM tidak eligible. Evaluasi delivery secara independen.",
+      "affected_metrics": [
+        "Q1",
+        "Q3",
+        "coverage"
+      ],
+      "evidence": "facts.missing_and_coverage_by_status",
+      "owner_phase": "P04",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ14",
+      "source": "orders_dataset",
+      "columns": [
+        "order_id"
+      ],
+      "kind": "orders_without_review",
+      "affected_count": 768,
+      "affected_unit": "orders",
+      "business_meaning": "Tidak semua pesanan memiliki skor untuk perbandingan.",
+      "planned_action": "Pertahankan order; review null, tidak eligible untuk perbandingan skor. Delivery/sales tidak bergantung pada review.",
+      "affected_metrics": [
+        "Q2",
+        "coverage"
+      ],
+      "evidence": "facts.missing_and_coverage_by_status",
+      "owner_phase": "P04",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ15",
+      "source": "order_payments_dataset",
+      "columns": [
+        "order_id"
+      ],
+      "kind": "multiple_payments_per_order",
+      "affected_count": 2961,
+      "affected_unit": "orders",
+      "business_meaning": "Join pembayaran mentah berisiko menggandakan nilai item.",
+      "planned_action": "Sumber pendukung; jika dipakai kelak, agregasikan per order sebelum join. Q1–Q3 memakai price item.",
+      "affected_metrics": [
+        "join_integrity"
+      ],
+      "evidence": "facts.supporting",
+      "owner_phase": "P04",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ16",
+      "source": "geolocation_dataset",
+      "columns": [
+        "geolocation_zip_code_prefix"
+      ],
+      "kind": "nonunique_zip_prefix",
+      "affected_count": 17972,
+      "affected_unit": "zip_prefixes",
+      "business_meaning": "Satu kode pos memiliki banyak titik; bukan dimensi unik untuk join.",
+      "planned_action": "Simpan sebagai sumber pendukung; tidak digunakan untuk analisis negara bagian. Agregasikan dengan kebijakan eksplisit jika dipakai kelak.",
+      "affected_metrics": [
+        "join_integrity"
+      ],
+      "evidence": "profiles.geolocation_dataset.zip_prefix",
+      "owner_phase": "documentation",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ17",
+      "source": "order_reviews_dataset",
+      "columns": [
+        "review_creation_date",
+        "order_id"
+      ],
+      "kind": "review_calendar_before_purchase",
+      "affected_count": 64,
+      "affected_unit": "review_rows",
+      "business_meaning": "Tanggal pembuatan ulasan mendahului tanggal pembelian sehingga metadata waktu ulasan perlu dicermati.",
+      "planned_action": "Flag kronologi ulasan, pertahankan timestamp dan aturan seleksi deterministik plan. Skor integer 1–5 tetap tersedia; jangan mengubah tanggal atau membuang skor hanya karena anomali metadata ini.",
+      "affected_metrics": [
+        "Q2",
+        "review_selection"
+      ],
+      "evidence": "facts.reviews.creation_calendar_before_purchase",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ18",
+      "source": "geolocation_dataset",
+      "columns": [
+        "geolocation_zip_code_prefix",
+        "geolocation_lat",
+        "geolocation_lng",
+        "geolocation_city",
+        "geolocation_state"
+      ],
+      "kind": "exact_duplicate_supporting_rows",
+      "affected_count": 261831,
+      "affected_unit": "additional_rows",
+      "business_meaning": "Sumber pendukung mengandung titik identik berulang.",
+      "planned_action": "Catat tanpa mengubah sumber; belum perlu deduplikasi karena geolocation tidak dipakai Q1–Q3. Tinjau satuan baris sebelum analisis peta kelak.",
+      "affected_metrics": [
+        "documentation"
+      ],
+      "evidence": "profiles.geolocation_dataset.exact_duplicate_additional_rows",
+      "owner_phase": "documentation",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ19",
+      "source": "products_dataset",
+      "columns": [
+        "product_weight_g"
+      ],
+      "kind": "zero_product_weight",
+      "affected_count": 4,
+      "affected_unit": "products",
+      "business_meaning": "Berat nol perlu ditinjau jika analisis berat atau ongkos kirim dikembangkan.",
+      "planned_action": "Flag berat nol dan pertahankan nilai sumber; atribut tidak dipakai Q1–Q3 sehingga transaksi tidak dikeluarkan.",
+      "affected_metrics": [
+        "documentation"
+      ],
+      "evidence": "profiles.products_dataset.numeric.product_weight_g",
+      "owner_phase": "P03",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ20",
+      "source": "orders_dataset",
+      "columns": [
+        "order_id"
+      ],
+      "kind": "orders_without_payment",
+      "affected_count": 1,
+      "affected_unit": "orders",
+      "business_meaning": "Cakupan sumber pembayaran tidak mencakup seluruh pesanan.",
+      "planned_action": "Dokumentasikan sumber pendukung; jangan mengubah nilai barang menjadi nol atau mengecualikan Q1–Q3 yang memakai item.",
+      "affected_metrics": [
+        "documentation"
+      ],
+      "evidence": "facts.supporting.orders_without_payment",
+      "owner_phase": "documentation",
+      "status": "assessed_action_pending"
+    },
+    {
+      "issue_id": "DQ21",
+      "source": "order_payments_dataset",
+      "columns": [
+        "payment_installments"
+      ],
+      "kind": "zero_payment_installments",
+      "affected_count": 2,
+      "affected_unit": "payment_rows",
+      "business_meaning": "Jumlah cicilan nol perlu dipahami sebelum analisis pembayaran.",
+      "planned_action": "Catat tanpa imputasi; pembayaran tidak dipakai dalam Q1–Q3. Payment_value nol tidak otomatis invalid.",
+      "affected_metrics": [
+        "documentation"
+      ],
+      "evidence": "profiles.order_payments_dataset.numeric.payment_installments",
+      "owner_phase": "documentation",
+      "status": "assessed_action_pending"
+    }
+  ],
+  "gate": {
+    "passed": true,
+    "primary_sources_loaded": [
+      "orders_dataset",
+      "customers_dataset",
+      "order_items_dataset",
+      "products_dataset",
+      "order_reviews_dataset",
+      "product_category_name_translation"
+    ],
+    "source_rows_and_schema_match_baseline": true,
+    "source_hashes_before_after_match": true,
+    "template_hash_matches": true,
+    "p00_profile_comparisons": {
+      "delivered_orders": 96478,
+      "products_missing_category": 610,
+      "orders_multiple_reviews": 547,
+      "additional_repeated_review_ids": 814,
+      "orders_multiple_payments": 2961,
+      "delivered_missing_delivery_dates": 8,
+      "missing_review_titles": 87658,
+      "missing_review_messages": 58274
+    },
+    "issue_count": 21,
+    "distinct_issue_kinds": 18,
+    "every_issue_has_action": true
+  },
+  "source_sha256": {
+    "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+    "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+    "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+    "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+    "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+    "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+    "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+    "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+    "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+  }
+}
