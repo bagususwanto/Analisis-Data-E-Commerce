@@ -1,0 +1,121 @@
+{
+  "phase": "P08",
+  "status": "passed",
+  "verified_at": "2026-10-24T21:30:15+07:00",
+  "command": "python scripts/prepare_dashboard_data.py",
+  "runtime": {
+    "python": "3.12.13",
+    "pandas": "3.1.0",
+    "invocation_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce"
+  },
+  "bundle_id": "8d4806453e009fa13920e1a18e9eb00d81ed8d458478d7621f6f1c993f7800f4",
+  "metadata_sha256": "adddc369db3ffc8e37451f0e89e856047ae0790837a2ea3c2ff041059ccf9de1",
+  "table_files": {
+    "order_level": {
+      "sha256": "00b412f0ed0173c983ac17274330a50c24d51125b349ff79901aec8456a545a1",
+      "size_bytes": 23119428,
+      "rows": 99441,
+      "columns": 24
+    },
+    "item_level": {
+      "sha256": "a0527ef6353f87d4f85bb30ca3b18703184967dc50aac1d02b6c00bd83b2b9da",
+      "size_bytes": 21520039,
+      "rows": 112650,
+      "columns": 16
+    },
+    "rfm_customers": {
+      "sha256": "6333a2457f1cd0b5283db78025b968f8305ce7f2d7b7b4289b1aed74adef49fb",
+      "size_bytes": 15185104,
+      "rows": 93104,
+      "columns": 10
+    }
+  },
+  "checks": {
+    "second_export_byte_identical": true,
+    "shuffled_input_rows_do_not_change_output": true,
+    "metadata_stable_except_generated_at": true,
+    "all_round_trip_cells_and_dtypes_match": true,
+    "default_analytics_match_notebook_Q1_Q2_Q3": true,
+    "rfm_rebuilt_from_exported_orders_matches": true,
+    "null_lateness_not_false": true,
+    "nine_source_hashes_unchanged": true,
+    "template_hash_unchanged": true
+  },
+  "reconciliation": {
+    "eligible_sales_orders": 96211,
+    "eligible_sales_items": 109880,
+    "order_value_cents": 1318102713,
+    "item_price_cents": 1318102713,
+    "rfm_customers": 93104,
+    "rfm_frequency_sum": 96211,
+    "rfm_monetary_cents": 1318102713
+  },
+  "filter_scenarios": {
+    "q1_q2_default": {
+      "passed": true,
+      "sales_orders": 96211,
+      "comparison_orders": 95560
+    },
+    "q1_q2_state_sp": {
+      "passed": true,
+      "sales_orders": 40406,
+      "comparison_orders": 40171
+    },
+    "q1_q2_small_rr_january": {
+      "passed": true,
+      "sales_orders": 0,
+      "comparison_orders": 0
+    },
+    "q1_q2_partial_month": {
+      "passed": true,
+      "sales_orders": 3099,
+      "comparison_orders": 3076
+    },
+    "q1_q2_empty_states": {
+      "passed": true,
+      "sales_orders": 0,
+      "comparison_orders": 0
+    },
+    "q1_q2_outside_period": {
+      "passed": true,
+      "sales_orders": 0,
+      "comparison_orders": 0
+    },
+    "q3_default": {
+      "passed": true,
+      "customers": 93104
+    },
+    "q3_SP": {
+      "passed": true,
+      "customers": 39059
+    },
+    "q3_RJ": {
+      "passed": true,
+      "customers": 11877
+    },
+    "q3_RR": {
+      "passed": true,
+      "customers": 39
+    },
+    "q3_empty_states": {
+      "passed": true,
+      "customers": 0
+    },
+    "q3_unknown_state": {
+      "passed": true,
+      "customers": 0
+    }
+  },
+  "source_sha256": {
+    "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+    "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+    "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+    "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+    "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+    "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+    "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+    "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+    "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+  },
+  "scope": "Ekspor dan pembacaan terverifikasi; aplikasi Streamlit P09 belum dibuat."
+}

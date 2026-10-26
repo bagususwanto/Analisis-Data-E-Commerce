@@ -1,169 +1,140 @@
 # Analisis Data E-Commerce
 
-Proyek analisis dataset E-Commerce untuk submission Dicoding. Pemilik: **Bagus Uswanto**, ID Dicoding **DS013B6Y0318**.
+Analisis dataset E-Commerce Olist untuk menjawab tiga kebutuhan: memilih kategori prioritas, menyelidiki hubungan keterlambatan dengan ulasan buruk, dan menentukan kandidat pilot retensi melalui RFM tanpa machine learning.
 
-Saat ini tersedia inventaris sumber (P00), fondasi (P01), assessment (P02), cleaning (P03), integrasi/kontrak data (P04), agregasi Q1–Q2 (P05), serta RFM dan segmentasi Q3 (P06). Notebook, visualisasi, dan dashboard mengikuti phase berikutnya pada [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md). Status aktual dicatat di [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
+**Pemilik:** Bagus Uswanto · **Email:** DS013B6Y0318@student.devacademy.id · **ID Dicoding:** DS013B6Y0318.
 
-## Setup lingkungan
+Periode pembelian utama **1 Januari 2017–31 Agustus 2018**, status **delivered** pada snapshot dataset, mata uang **BRL**. Notebook berisi proses Gathering–Assessing–Cleaning–EDA, visualisasi, kesimpulan, dan rekomendasi. Dashboard menyediakan tiga tab dengan filter interaktif. Riwayat pekerjaan dan status deployment/pengemasan terdapat pada [EXECUTION_STATUS.md](EXECUTION_STATUS.md).
 
-Lingkungan P01 menggunakan **Python 3.12.13** dan `.venv` lokal. Dari folder proyek, jalankan:
+## Mulai menjalankan dashboard
+
+Gunakan **Python 3.12.13**. Dari root proyek:
 
 ```bash
 python3.12 -m venv .venv
 source .venv/bin/activate
 python -m pip install -r requirements-dev.txt
 python -m pip check
-python scripts/check_foundation.py
+python -m streamlit run dashboard/dashboard.py
 ```
 
-Pada mesin ini, executable Python 3.12 tersedia di `/Users/bagus/.local/share/uv/python/cpython-3.12.13-macos-aarch64-none/bin/python3.12`. Jika `python3.12` belum ada di PATH, gunakan path tersebut untuk perintah pembuatan environment. Instalasi dependensi P01 menggunakan `uv --cache-dir /tmp/ecommerce-uv-cache pip install --python .venv/bin/python -r requirements-dev.txt`; perintah pip di atas merupakan alternatif setup dengan berkas dependensi yang sama.
+Windows PowerShell: gunakan `py -3.12 -m venv .venv`, lalu `.venv\Scripts\Activate.ps1` untuk aktivasi. Sesudah aktivasi, perintah `python` sama. P10 menguji macOS ARM64; Windows/Linux belum diuji langsung. Runtime cloud harus diuji lagi saat deployment.
 
-`requirements-dev.txt` menyertakan `requirements.txt`, kernel notebook, nbconvert, nbformat, dan pytest. Versi langsung dipin berdasarkan instalasi P01; validasi clean install dan pin final dilakukan P10. Gunakan `.venv/bin/python` secara langsung bila tidak mengaktifkan environment. Jangan sertakan `.venv` dalam paket submission.
+Jika hanya menjalankan aplikasi, cukup instal `requirements.txt`. `requirements-dev.txt` menyertakan runtime, kernel/eksekusi notebook, pembaca render, dan pytest. Semua dependensi langsung dipin; daftar lengkap paket dari lingkungan bersih dicatat pada `reports/reproducibility_validation.json`.
 
-## Memuat sumber mentah
-
-Jalankan dari root proyek dengan Python environment:
-
-```python
-from src.config import ANALYSIS_START, ANALYSIS_END_EXCLUSIVE
-from src.data_pipeline import load_source
-
-orders = load_source("orders_dataset")
-print(orders.shape)
-```
-
-Nama sumber memakai nama file tanpa `.csv`. Daftar kolom wajib dan sumber utama/pendukung tersedia di `src/config.py`. Loader membaca semua kolom sebagai pandas `StringDtype`: ID dan kode pos tetap berupa teks, sementara uang dan tanggal belum dikonversi. Field kosong menjadi `pd.NA`; teks hanya whitespace dan literal seperti `NA` dipertahankan agar penanganannya dapat diaudit pada assessment/cleaning. Loader tidak mengubah sumber atau menghapus baris.
-
-Path data berasal dari lokasi modul (`__file__`), sehingga tidak mengikuti current working directory. Argumen opsional `data_dir` menerima direktori absolut; direktori relatif dihitung dari root proyek. File atau kolom wajib yang hilang menghasilkan pesan error yang menyebut sumber terkait.
-
-Skrip pemeriksaan dapat dipanggil dari direktori lain dengan path absolut ke `.venv/bin/python` dan `scripts/check_foundation.py`. Skrip menemukan root melalui `__file__`, memeriksa loader beserta kasus file/kolom hilang dan pelestarian nilai mentah, lalu membandingkan checksum sembilan CSV dengan baseline. Bukti terakhir ditulis ke `reports/foundation_validation.json`; skrip berhenti dengan error jika sumber berubah.
-
-## Menjalankan assessment P02
+Alternatif instalasi dengan **uv** pada environment yang sudah dibuat:
 
 ```bash
-.venv/bin/python scripts/assess_data.py
+uv pip install --python .venv/bin/python -r requirements-dev.txt
 ```
 
-Skrip memuat enam sumber utama melalui loader dan membuat profil ringkas tiga sumber pendukung. Hasilnya mencakup nilai kosong menurut kolom/status, keunikan kunci, duplikasi persis dan ulasan berulang, parsing tanggal/numerik, presisi uang, kronologi, serta foreign key. Uang diperiksa melalui `Decimal` dari teks sumber agar presisi sen tidak bergantung pada floating point.
+P10 menguji instalasi ke virtual environment baru menggunakan uv dengan opsi `--offline` dan cache paket lokal. Paket tetap dipilih dari requirements yang sama. Instalasi lewat jaringan baru, platform lain, dan ketersediaan indeks paket merupakan kondisi lingkungan yang berbeda. Folder `.venv`, cache, dan keluaran `dist/` tidak disertakan dalam submission.
 
-Laporan lengkap dan rencana tindakan per `issue_id` tersimpan pada [reports/data_quality.json](reports/data_quality.json). Tabel Gathering, Assessing, dan Steps to Take untuk bahan notebook tersedia pada [reports/assessment_summary.md](reports/assessment_summary.md). Profil ditambahkan ke baseline dengan tetap mempertahankan hash dan riwayat P00. Hash sembilan CSV dan templat diperiksa sebelum/sesudah proses; sumber yang berubah menyebabkan skrip berhenti. Entry point juga dapat dipanggil melalui path absolut dari direktori lain.
-
-P02 hanya menilai sumber dan mendokumentasikan tindakan. Seleksi ulasan dan transformasi cleaning dikerjakan di P03; tabel analisis dan flag eligibility dibentuk di P04. Jumlah masalah dapat tumpang tindih, sehingga tidak boleh dijumlahkan sebagai total transaksi bermasalah.
-
-## Menjalankan cleaning P03
+Dashboard membaca tiga CSV yang sudah disiapkan beserta metadata. Aplikasi tidak memerlukan sumber mentah/notebook/reports pada runtime. Jika input hilang, checksum berubah, atau schema tidak sesuai, aplikasi menampilkan instruksi regenerasi dari root proyek:
 
 ```bash
-.venv/bin/python -m pytest tests/test_pipeline.py -q
-.venv/bin/python scripts/check_cleaning.py
+python scripts/prepare_dashboard_data.py
 ```
 
-Fungsi cleaning tersedia pada `src/data_pipeline.py`; setiap fungsi mengembalikan `(tabel, audit)`. Untuk memakainya dari notebook atau phase berikutnya:
+## Struktur dan berkas yang dibutuhkan
 
-```python
-from src.data_pipeline import clean_primary_sources
-
-tables, audits = clean_primary_sources()
-orders = tables["orders_dataset"]
-selected_reviews = tables["order_reviews_dataset"]
+```text
+.
+├── data/                         # 9 CSV sumber lokal; tidak diubah
+├── notebook.ipynb                # Analisis dengan output eksekusi tersimpan
+├── src/                          # Konfigurasi, pipeline, analytics, grafik, reader
+├── dashboard/
+│   ├── dashboard.py              # Entry point Streamlit
+│   ├── order_level.csv           # 99.441 pesanan, seluruh status
+│   ├── item_level.csv            # 112.650 pasangan order/item
+│   ├── rfm_customers.csv         # 93.104 pelanggan unik
+│   └── data_metadata.json        # Schema, provenance, parameter, baseline
+├── scripts/                      # Regenerasi dan pemeriksaan
+├── tests/                        # Kasus berisiko, widget, dan gate validasi
+├── reports/                      # Audit, hasil, HTML, figure, bukti verifikasi
+├── references/notebook_template.ipynb
+├── requirements.txt
+├── requirements-dev.txt
+├── IMPLEMENTATION_PLAN.md
+└── EXECUTION_STATUS.md
 ```
 
-Cleaning dimulai dari enam sumber mentah dan memakai salinan data. Hasil tidak memfilter status atau periode. Kolom tanggal dikonversi dengan salinan `*_raw`, serta flag missing, gagal parsing, dan valid. `is_late` menggunakan tanggal kalender; `days_late` berupa integer nullable. Pasangan tanggal yang tidak dapat dievaluasi tetap menghasilkan nilai kosong. Inversi waktu approval/kurir dicatat tanpa menebak tanggal pengganti. Estimasi sebelum tanggal pembelian diberi flag dan tidak menghasilkan label keterlambatan.
+Untuk notebook/validasi lengkap, pertahankan sumber `data/`, `src/`, `scripts/`, `tests/`, `references/`, dan laporan pendukung dalam `reports/`. Jangan memindahkan notebook sendirian: kode dan audit lokal merupakan dependensinya. Semua skrip menemukan root melalui lokasi file dan dapat dipanggil dari direktori lain dengan path absolut. Kernel notebook dijalankan dari root proyek atau subdirektorinya.
 
-Uang disimpan dalam `price_cents` dan `freight_cents` (`Int64`) melalui representasi Decimal dan rasio integer yang tepat. Nilai nol dipertahankan; nilai negatif/non-numerik menjadi tidak tersedia dengan alasan kualitas. Presisi di luar sen menghentikan proses melalui `MoneyPrecisionError`; tidak ada pembulatan diam-diam. ID dan kode pos tetap string.
+Sumber utama adalah orders, customers, order items, products, order reviews, dan terjemahan kategori. Payments, sellers, serta geolocation hanya dinilai sebagai sumber pendukung dan tidak dimasukkan ke metrik Q1–Q3. Inventaris sembilan CSV, jumlah baris, dan SHA-256 ada di [baseline](reports/baseline.json). Dataset tidak diunduh ulang saat menjalankan analisis.
 
-Produk memiliki `category_code`, `category_name`, `category_missing`, dan `category_translation_missing`. Label kategori kosong dibedakan dari fallback kode kategori yang belum diterjemahkan. Atribut produk opsional tetap nullable. Duplikasi persis dibuang dengan jejak ordinal sumber, sedangkan konflik kunci berbeda isi menghentikan proses untuk diinspeksi.
+## Reproduksi dan verifikasi lengkap
 
-Ulasan dipilih satu per pesanan dengan urutan creation terbaru, answer terbaru, review ID leksikografis terbesar, lalu ordinal sumber terbesar; tanggal kosong ditempatkan sebelum tanggal valid. Validasi skor dilakukan sesudah pemilihan. Kolom `source_row_number` adalah urutan data record mulai 1 sebelum deduplikasi, bukan nomor baris fisik CSV. `review_candidate_count` menghitung kandidat setelah duplikasi persis dihapus. Review ID yang sama pada pesanan berbeda dipertahankan.
-
-Skrip pemeriksaan menjalankan cleaning dua kali untuk membuktikan hasil deterministik, memeriksa kunci dan label nullable, serta merekonsiliasi pemenang review dengan pembacaan CSV independen dan total uang dengan Decimal. Sembilan hash CSV dan hash templat diperiksa sebelum/sesudah. Keluaran berupa [audit cleaning](reports/cleaning_audit.json), [jejak kandidat review](reports/review_selection.csv), dan [laporan verifikasi](reports/cleaning_validation.json). Audit mencakup sebelum/sesudah seluruh issue P02, termasuk kondisi yang sengaja dipertahankan dan pekerjaan eligibility yang menjadi milik P04. CSV tabel analisis/dashboard belum diekspor pada tahap ini.
-
-## Menjalankan integrasi P04
+Jalankan dengan environment aktif, dari root proyek:
 
 ```bash
-.venv/bin/python -m pytest tests/test_pipeline.py -q
-.venv/bin/python scripts/check_integration.py
+python scripts/prepare_dashboard_data.py
+python scripts/validate_outputs.py
+python -m pytest -q
+python scripts/check_notebook.py
 ```
 
-Gunakan API yang sama untuk notebook, analisis, dan ekspor berikutnya:
+`check_notebook.py` membersihkan output lama dan menjalankan **21 code cell** pada kernel Python baru dari executable yang sama dengan runner. Runner memerlukan koneksi lokal Jupyter. Output disimpan pada notebook, HTML dengan gambar tertanam pada `reports/notebook.html`, dan enam PNG V01–V06 pada `reports/figures/`. Generator `scripts/build_notebook.py` hanya diperlukan ketika ingin membentuk ulang isi notebook dari templat, bukan setiap kali menjalankan analisis.
 
-```python
-from src.data_pipeline import build_analysis_tables
-
-tables, join_audit = build_analysis_tables()
-order_level = tables["order_level"]
-item_level = tables["item_level"]
-```
-
-Jika hasil cleaning sudah ada, `build_analysis_tables(cleaned_tables)` memakainya tanpa membaca ulang sumber. Fungsi mengembalikan tabel dalam memori; ekspor CSV dashboard dilakukan pada P08.
-
-`order_level` mempunyai satu baris per pesanan, sedangkan `item_level` mempunyai satu baris per pasangan `order_id`/`order_item_id`. Item diagregasi per order sebelum digabung dengan pelanggan dan satu review terpilih. Enam left join memakai validasi kardinalitas pandas, melaporkan referensi yang tidak cocok pada kedua sisi, dan memeriksa jumlah baris, pesanan unik, serta nilai uang. Pembayaran tidak digunakan.
-
-`order_value_cents` kosong jika pesanan tidak memiliki item atau sedikitnya satu harganya invalid. `item_count` tetap nol untuk pesanan tanpa item. Satu harga invalid mengecualikan seluruh item pesanan dari penjualan; nilai barang tidak dihitung sebagian. Produk/kategori yang tidak cocok dipertahankan sebagai kategori Tidak diketahui dengan flag, sehingga nilai barang tetap tercakup dalam denominator penjualan.
-
-Eligibility order dibentuk sesuai konfigurasi periode dan status delivered: `eligible_sales` memerlukan seluruh harga item valid; `eligible_delivery` memerlukan tanggal delivery valid; `eligible_review_comparison` menambahkan skor review terpilih valid; `eligible_rfm` menambahkan identitas pelanggan lintas pesanan yang valid pada eligible sales. Harga, review, dan tanggal memiliki cakupan tersendiri. Pelanggan yang tidak cocok dapat tetap tercakup dalam nilai penjualan global, sedangkan RFM memerlukan identitas valid. Item mewarisi `eligible_sales` seluruh order; gunakan `order_level` untuk denominator Q2.
-
-Kontrak nama/tipe/satuan/arti null/asal kolom tersedia pada `src/data_contracts.py` dan [data dictionary](reports/data_dictionary.json). [Audit join](reports/join_audit.json) memuat agregasi, cakupan join, jumlah eligible, alasan pengecualian yang tumpang tindih maupun saling eksklusif, serta rekonsiliasi item–order. [Laporan verifikasi](reports/integration_validation.json) mencatat pencocokan dengan pembacaan CSV independen dan determinisme hasil. Entry point dapat dijalankan dari direktori lain dengan path absolut. Seluruh status dan transaksi sumber tetap dipertahankan dalam keluaran integrasi.
-
-## Menjalankan agregasi Q1–Q2 (P05)
+Setiap eksekusi menandai review visual sebagai **pending**. Buka keenam PNG atau HTML dan periksa label panjang, angka, satuan, skala, warna, legenda, margin, denominator dan konteks. Setelah pemeriksaan tersebut benar-benar dilakukan, catat nama pemeriksa serta catatan temuan, misalnya:
 
 ```bash
-.venv/bin/python -m pytest tests/test_analytics.py tests/test_pipeline.py -q
-.venv/bin/python scripts/check_analytics.py
+python scripts/record_notebook_review.py --reviewer 'Pemeriksa lokal' --notes 'V01–V06 dibuka; label, unit, skala, n/denominator, legenda, dan margin sudah diperiksa.'
+python scripts/prepare_dashboard_data.py
+python scripts/validate_outputs.py
+python -m streamlit run dashboard/dashboard.py
 ```
 
-```python
-from src.analytics import analyze_q1, analyze_q2
-from src.data_pipeline import build_analysis_tables
+Perintah pencatatan hanya menyimpan review dan mengikatnya ke hash notebook/HTML/PNG; perintah tersebut tidak memeriksa gambar secara otomatis. Sesuaikan nama dan catatan dengan pemeriksaan yang dilakukan. Ekspor diulang setelah notebook selesai ditinjau agar hash provenance merujuk versi terbaru. Jika ekspor belum mengikuti notebook/review baru, validator sengaja gagal dengan pesan **Provenance usang**. Ekspor membaca sumber, melakukan round-trip tipe/sel, dan membandingkan dua ekspor dengan urutan input diacak.
 
-tables, audit = build_analysis_tables()
-q1 = analyze_q1(tables["item_level"])
-q2 = analyze_q2(tables["order_level"])
+`validate_outputs.py` berhenti dengan **exit code 1** bila ada ketidaksesuaian, lalu menyimpan rincian pada [validation_results.json](reports/validation_results.json). Pemeriksa mencakup:
 
-# Tanggal akhir eksklusif; contoh mencakup Februari 2018 di SP/RJ.
-q1_filtered = analyze_q1(
-    tables["item_level"], start="2018-02-01", end_exclusive="2018-03-01", states=["SP", "RJ"]
-)
-```
+- Hash sembilan sumber/templat; schema, tipe, null, kunci dan metadata bundle.
+- Pembangunan ulang pipeline dari sumber dan pencocokan setiap sel/tipe CSV.
+- Referensi independen berbasis CSV, Decimal, datetime, dan dictionary untuk order/item, Q1–Q2, serta seluruh pelanggan RFM.
+- Rekonsiliasi nilai barang item–order, cakupan eligibility, frequency/monetary RFM, 12 skenario filter, dan ambang global.
+- Payload Q1–Q3 yang benar-benar dikeluarkan kernel notebook, laporan analitis, metadata, serta KPI/tabel kategori, kelompok ulasan dan segmen pada dashboard default melalui AppTest.
+- Kelengkapan identitas, placeholder templat, hash notebook/HTML/enam figure, dan status review visual.
 
-Fungsi pada `src/analytics.py` mengembalikan summary, metadata filter, dan DataFrame agregat untuk notebook/dashboard. Rentang filter diiris dengan periode utama di config; batas berupa tanggal kalender tanpa waktu/timezone. `states=None` berarti seluruh wilayah termasuk yang belum diketahui, sedangkan `states=[]` menghasilkan filter kosong. Rentang terbalik ditolak. Persentase/selisih yang tidak memiliki denominator tersedia sebagai `None` atau nullable Float64, dan menjadi JSON null pada laporan.
+Jangan menjalankan pemeriksa dengan `python -O`, karena referensi independen memakai assertion. `scripts/check_dashboard.py` menyediakan tes regresi/UI tambahan dan laporan `reports/dashboard_validation.json`; pemeriksaan browser nyata tetap diperlukan untuk layout/interaksi. Alur P10 serta versi dan hasil perintah lingkungan bersih dicatat pada `reports/reproducibility_validation.json`. Pemeriksaan P02–P06 yang lebih terperinci tetap tersedia pada skrip `assess_data.py`, `check_cleaning.py`, `check_integration.py`, `check_analytics.py`, dan `check_rfm.py`; jika laporan analitis diregenerasi, lanjutkan urutan dependensi P05 → P06 → notebook/review → ekspor → validasi agar provenance tetap konsisten.
 
-Q1 menghasilkan kategori, top lima, kalender bulan, serta seri bulanan kategori yang sama sepanjang filter aktif. Nilai barang memakai integer sen; kategori Tidak diketahui tetap masuk denominator tetapi tidak masuk top lima. Tie-break memakai kode kategori. Bulan tanpa transaksi dalam irisan filter diisi nol; bulan di luar periode tidak ditambahkan. Bulan parsial diberi penanda dan rentang tanggalnya. Nol teramati tidak membuktikan kelengkapan pencatatan.
+## Cara membaca dashboard
 
-Q2 menghasilkan coverage delivered/delivery/review, perbandingan terlambat–tepat waktu (dengan n masing-masing), dan tabel seluruh wilayah. Tingkat keterlambatan memakai eligible delivery; proporsi ulasan buruk memakai eligible review comparison. Selisih dinyatakan dalam persentase poin. Wilayah dengan minimal 50 order comparison diperingkat menurut keterlambatan, ulasan buruk, ukuran sampel (semuanya menurun), lalu kode state menaik. Kelompok kecil tetap ditampilkan; wilayah tidak diketahui tidak diperingkat. Ini aturan prioritas investigasi dan tidak membuktikan sebab-akibat.
+**Penjualan** dan **Pengiriman & Ulasan** menggunakan filter tanggal pembelian dan negara bagian pelanggan yang sama. Tanggal akhir inklusif diterapkan melalui batas eksklusif hari berikutnya; satu tanggal berarti satu hari penuh. Opsi **Semua wilayah** mencakup wilayah tidak diketahui. Hapus opsi ini sebelum memilih kode wilayah tertentu; pilihan kosong berarti tidak ada wilayah. Top kategori serta ringkasan mengikuti filter aktif. Grafik dapat diperbesar dengan Fullscreen dan tabel rincian digeser mendatar.
 
-[Hasil numerik Q1–Q2](reports/analytical_results.json) mencakup seluruh kategori, 20 bulan periode utama, perbandingan ulasan, peringkat wilayah, dan summary enam skenario filter. [Laporan verifikasi](reports/analytics_validation.json) memuat referensi independen berbasis CSV/datetime/Decimal, pencocokan dengan P04, determinisme, serta hash sumber. Visualisasi dan narasi akhir dikerjakan P07; hasil RFM/Q3 menjadi milik P06.
+**Pelanggan RFM** mempunyai filter **Segmen pelanggan** dan **Wilayah pesanan terakhir**. Kontrol transaksi tidak mengubah jendela observasi RFM atau tanggal acuan **1 September 2018**. Negara bagian mengikuti pesanan eligible terakhir, dengan tie-break timestamp lalu order ID leksikografis terbesar; riwayat pembelian pelanggan di wilayah lain tetap masuk R/F/M. Ambang nilai tinggi dihitung sekali dari populasi global, tidak dihitung ulang oleh filter. Persentase segmen memakai total pelanggan/monetary pada filter aktif.
 
-## Menjalankan RFM dan segmentasi Q3 (P06)
+## Definisi metrik dan kebijakan kualitas
 
-```bash
-.venv/bin/python -m pytest tests/test_analytics.py tests/test_pipeline.py -q
-.venv/bin/python scripts/check_rfm.py
-```
+| Metrik | Definisi dan denominator |
+| --- | --- |
+| Nilai penjualan barang | Jumlah `price` item pada pesanan delivered eligible; tanpa freight. Disimpan dalam integer sen BRL, ditampilkan sebagai BRL. Bukan laba, pendapatan bersih, atau total pembayaran. |
+| Pesanan / item | Order ID unik / baris item valid. Pesanan lintas kategori dapat muncul sekali di tiap kategori; jumlah order kategori tidak dijumlahkan menjadi total global. |
+| Kontribusi kategori | Nilai kategori / total barang dalam filter yang sama, termasuk kategori Tidak diketahui. Top lima dipilih dari kategori yang diketahui sekali untuk seluruh rentang filter. |
+| Keterlambatan | Tanggal kalender penerimaan melewati estimasi, dengan pasangan tanggal valid pada delivered; hari estimasi yang sama berarti tepat waktu. |
+| Ulasan buruk | Skor terpilih 1–2 / ulasan integer valid 1–5 pada pengiriman yang dapat dievaluasi. n kelompok terlambat dan tepat waktu ditampilkan terpisah. Selisih dalam persentase poin. |
+| Prioritas wilayah | Minimal 50 pesanan eligible review comparison. Urutan: tingkat keterlambatan, ulasan buruk, ukuran sampel menurun, kemudian kode wilayah menaik. Kelompok kecil tetap ditampilkan tanpa peringkat. |
+| Recency / frequency / monetary | Hari kalender dari pembelian terakhir ke tanggal acuan / order unik / nilai barang eligible per `customer_unique_id` selama periode utama. |
 
-```python
-from src.analytics import build_rfm, analyze_q3
-from src.data_pipeline import build_analysis_tables
+Item diagregasi per order dan satu ulasan dipilih sebelum join untuk mencegah nilai barang berlipat. Ulasan dipilih menurut creation terbaru, answer terbaru, review ID leksikografis terbesar, lalu ordinal sumber terbesar; tanggal kosong mendahului tanggal valid. Skor diperiksa sesudah seleksi, tanpa kembali ke ulasan lama. Nilai harga invalid mengecualikan seluruh nilai order dari penjualan; order tanpa item tetap null, bukan nilai nol.
 
-tables, audit = build_analysis_tables()
-rfm_customers, rfm_metadata = build_rfm(tables["order_level"])
-q3 = analyze_q3(rfm_customers, rfm_metadata)
-q3_rj = analyze_q3(rfm_customers, rfm_metadata, states=["RJ"])
-```
+Kelayakan metrik dipisahkan: penjualan memerlukan item/harga valid; pengiriman memerlukan pasangan tanggal; perbandingan ulasan menambah syarat skor; RFM menambah identitas pelanggan valid pada penjualan. Missing date/ulasan tidak diubah menjadi tepat waktu atau skor baik. Persentase tanpa denominator menjadi **Tidak tersedia**. Kategori kosong diberi label eksplisit, sementara kode tanpa terjemahan memakai kode aslinya. Masalah, tindakan dan cakupan terukur ada pada [kualitas data](reports/data_quality.json), [audit cleaning](reports/cleaning_audit.json), [audit join](reports/join_audit.json), dan [dictionary](reports/data_dictionary.json).
 
-Bangun RFM dari seluruh `order_level` periode acuan sebelum memfilter wilayah. Satu baris merepresentasikan `customer_unique_id`: recency berupa hari kalender ke tanggal acuan 1 September 2018, frequency berupa order unik, dan monetary berupa jumlah nilai barang dalam sen BRL tanpa freight. Setiap baris masuk satu dari lima segmen manual menurut ambang 30/90 hari di config. Pembeli sekali bukan otomatis churn; hasil dibatasi periode observasi dan status delivered pada snapshot, tanpa machine learning atau skor berbobot.
+CSV dashboard memakai UTF-8, ID string, uang/skor `Int64` nullable, datetime dan boolean nullable dengan parser eksplisit. Null disimpan sebagai token `\N`; string `False` tidak diparse memakai `astype(bool)`. Schema, grain, sort, hash, profil null/uang, parameter dan asal berkas ada pada [metadata](dashboard/data_metadata.json). Reader menolak file campuran/rusak, parameter usang, serta tipe yang tidak sesuai. Cache Streamlit mengikuti ukuran/waktu perubahan berkas; filter memakai salinan tabel.
 
-`last_order_state` berasal dari order eligible terakhir, dengan tie-break timestamp pembelian lalu order_id leksikografis terbesar. Label filter adalah **Wilayah pesanan terakhir**. Filter ini hanya memilih pelanggan; seluruh pembelian eligible mereka di wilayah lain tetap tercakup dalam R/F/M. Wilayah kosong pada order terakhir tetap kosong dan tidak diganti wilayah dari order lama. API Q3 tidak menerima filter tanggal yang mengubah periode acuan.
+## Segmentasi dan batas interpretasi
 
-Ambang nilai tinggi P75 global dihitung sekali di `build_rfm`, dengan interpolasi linear, lalu diteruskan lewat metadata. Flag memakai monetary >= ambang, termasuk ties. Nilai statistik ambang dapat berupa pecahan sen; pembanding memakai rasio integer tepat (`threshold_cents_exact`) dan tidak membulatkan ambang atau monetary. Jumlah pelanggan bernilai tinggi tidak selalu tepat 25%. Filter wilayah tidak menghitung ulang ambang. Kuartil distribusi deskriptif dalam filter boleh berubah, tetapi tidak menggantikan cutoff label global.
+Lima segmen manual saling eksklusif: pembeli sekali dengan recency ≤30, 31–90, atau >90 hari; pelanggan berulang dengan recency ≤90 atau >90 hari. Atribut nilai tinggi memakai monetary ≥ P75 global dengan interpolasi linear dan rasio integer tepat. Cutoff statistik bisa berupa pecahan sen; ties bisa membuat jumlah bernilai tinggi melebihi 25%.
 
-`analyze_q3` mengembalikan summary, lima baris segmen (termasuk segmen kosong), kontribusi pelanggan/monetary, median R/F/M, hitungan nilai tinggi, dan distribusi R/F/M. Filter kosong menghasilkan persentase/median unavailable, sedangkan total monetary nol hanya membuat kontribusi monetary unavailable. Tabel pelanggan tetap dalam memori sampai ekspor P08.
+Periode utama menghindari ekor data 2016/September–Oktober 2018 yang jarang, tetapi tidak membuktikan kelengkapan pencatatan bulan lain. Status delivered berasal dari snapshot, bukan rekonstruksi status pada akhir setiap bulan. Nol tren adalah nol teramati dalam filter. Q2 menunjukkan hubungan, tanpa mengisolasi penyebab ulasan buruk. Ambang 30/90 hari adalah heuristik operasional, bukan prediksi churn; pembeli sekali tidak otomatis churn. Frekuensi pembelian sangat didominasi satu order sehingga tidak dipaksa menjadi kuantil. Monetary tidak mengukur keuntungan.
 
-[Hasil analisis bersama](reports/analytical_results.json) kini memuat Q1–Q3. [Kontrak RFM](reports/rfm_data_dictionary.json) dan [verifikasi RFM](reports/rfm_validation.json) mencatat schema, ambang, rekonsiliasi, serta enam skenario wilayah. Dictionary P04 order/item tetap terpisah untuk digabung pada metadata ekspor P08. Skrip P06 memeriksa ulang Q1/Q2 beserta enam summary filter P05 dan mempertahankan payload tersebut saat menambahkan Q3; lineage hash laporan bersama dicatat dalam verifikasi P05/P06. Bila P05 dijalankan ulang sehingga laporan Q1/Q2 dihasilkan kembali, jalankan P06 kembali sebelum memakai hasil Q3 pada notebook/dashboard.
+Rekomendasi notebook berupa pilot katalog/pemasaran pada kategori prioritas, investigasi logistik wilayah, dan pilot retensi pada segmen bernilai tinggi. Pengukuran efektivitas memerlukan periode tindak lanjut/kelompok pembanding dan data biaya tambahan; dataset ini tidak membuktikan hasil pilot. Angka, kategori dan sasaran dalam kesimpulan dihitung dari hasil analisis, tanpa jaminan kenaikan penjualan atau nilai penilaian submission.
 
-## Konfigurasi dan sumber
+## Sumber dan atribusi
 
-`src/config.py` mendefinisikan periode utama 1 Januari 2017 hingga sebelum 1 September 2018, tanggal acuan RFM 1 September 2018, status delivered, ambang recency 30/90 hari, minimum sampel wilayah 50, serta aturan kategori dan persentil monetary. Konfigurasi ini baru mendefinisikan parameter; loader belum menerapkan filter atau menghitung metrik.
+- Referensi dataset: [Brazilian E-Commerce Public Dataset by Olist](https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce). Berkas yang digunakan adalah sembilan CSV lokal yang dicatat dalam baseline; aplikasi tidak mengunduh data saat dijalankan.
+- Struktur notebook diadaptasi dari [templat resmi Dicoding](https://colab.research.google.com/drive/144WFnMMqvTAnGG-Qj5pUuVAYtCHGJbcp?usp=sharing). Salinan 37 sel beserta hash dipertahankan di `references/` dan baseline.
+- Acuan tugas: [Instruksi Submission Dicoding](https://www.dicoding.com/academies/555/tutorials/31230/submission-guidance). Audit persyaratan yang sudah dicatat tersedia di implementation plan; halaman dapat memerlukan akses kelas.
+- [Contoh struktur proyek Dicoding](https://github.com/dicodingacademy/a555-Project-Structure/blob/main/README.md) menjadi referensi susunan berkas. Analisis, narasi, fungsi dan grafik proyek mengikuti dataset serta keputusan kualitas lokal; tidak mengimpor hasil analisis atau identitas dari notebook contoh.
 
-Enam sumber utama di `data/` adalah orders, customers, order items, products, order reviews, dan terjemahan kategori. Payments, sellers, dan geolocation merupakan sumber pendukung. CSV lokal dipertahankan; ukuran, jumlah baris, dan SHA-256 tersimpan di `reports/baseline.json`.
-
-Templat notebook resmi tersimpan di `references/notebook_template.ipynb`; sumbernya adalah [templat Dicoding di Colab](https://colab.research.google.com/drive/144WFnMMqvTAnGG-Qj5pUuVAYtCHGJbcp?usp=sharing). Provenance dan hash tercatat di baseline. Analisis mengikuti [instruksi submission Dicoding](https://www.dicoding.com/academies/555/tutorials/31230/submission-guidance).
+Deployment Community Cloud adalah P11; URL aktif dan `url.txt` baru dibuat setelah deployment berhasil diperiksa. Pengemasan ZIP serta pengujian hasil ekstraksi adalah P12. Kesiapan teknis lokal P10 tidak menyatakan kedua tahap tersebut selesai.

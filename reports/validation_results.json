@@ -1,0 +1,423 @@
+{
+  "phase": "P10",
+  "status": "passed",
+  "verified_at": "2026-10-24T21:36:36+07:00",
+  "command": "python scripts/validate_outputs.py",
+  "runtime": {
+    "python": "3.12.13",
+    "executable": "/tmp/ecommerce-p10-clean/bin/python",
+    "invocation_cwd": "/private/tmp",
+    "optimized": false,
+    "packages": {
+      "narwhals": "2.27.1",
+      "uvicorn": "0.54.0",
+      "pexpect": "4.9.0",
+      "kiwisolver": "1.5.1",
+      "click": "8.5.0",
+      "ptyprocess": "0.7.0",
+      "packaging": "26.3",
+      "protobuf": "7.36.2",
+      "starlette": "1.9.0",
+      "nbformat": "5.11.1",
+      "Pygments": "2.21.0",
+      "prompt_toolkit": "3.0.53",
+      "pyarrow": "26.0.0",
+      "jsonschema-specifications": "2025.9.1",
+      "ipykernel": "7.4.0",
+      "requests": "2.34.2",
+      "defusedxml": "0.7.1",
+      "wcwidth": "0.9.3",
+      "certifi": "2026.10.23",
+      "jsonschema": "4.26.0",
+      "websockets": "17.3",
+      "seaborn": "0.13.2",
+      "matplotlib-inline": "0.2.2",
+      "pandas": "3.1.0",
+      "webencodings": "0.6.1",
+      "itsdangerous": "2.2.0",
+      "soupsieve": "3.0.4",
+      "traitlets": "5.16.1",
+      "jedi": "0.20.1",
+      "pandocfilters": "1.5.1",
+      "mistune": "3.4.0",
+      "ipython_pygments_lexers": "1.1.1",
+      "iniconfig": "2.3.1",
+      "numpy": "2.5.4",
+      "tornado": "6.6",
+      "tzdata": "2026.5",
+      "stack-data": "0.6.3",
+      "pillow": "13.0.0",
+      "contourpy": "1.4.0",
+      "pluggy": "1.7.0",
+      "pip": "25.0.1",
+      "pytest": "9.1.1",
+      "pyzmq": "27.2.0",
+      "urllib3": "2.8.0",
+      "h11": "0.16.0",
+      "appnope": "1.0.0",
+      "python-multipart": "0.0.32",
+      "jupyterlab_pygments": "0.3.0",
+      "altair": "6.3.0",
+      "nbconvert": "7.17.2",
+      "matplotlib": "3.11.2",
+      "jupyter_client": "8.10.0",
+      "pydeck": "0.9.3",
+      "bleach": "6.4.0",
+      "jupyter_core": "5.9.1",
+      "pure_eval": "0.2.4",
+      "cycler": "0.12.1",
+      "Jinja2": "3.1.6",
+      "referencing": "0.37.0",
+      "nbclient": "0.11.0",
+      "rpds-py": "2026.9.1",
+      "attrs": "26.1.0",
+      "executing": "2.3.0",
+      "nest-asyncio2": "1.7.4",
+      "debugpy": "1.8.22",
+      "fastjsonschema": "2.22.2",
+      "tinycss2": "1.5.1",
+      "typing_extensions": "4.16.0",
+      "MarkupSafe": "3.0.4",
+      "asttokens": "3.0.2",
+      "beautifulsoup4": "4.15.0",
+      "psutil": "7.2.2",
+      "fonttools": "4.67.0",
+      "python-dateutil": "3.0.0",
+      "parso": "0.8.7",
+      "streamlit": "1.66.1",
+      "charset-normalizer": "3.5.2",
+      "anyio": "4.15.1",
+      "pyparsing": "3.3.3",
+      "six": "1.17.0",
+      "platformdirs": "4.13.5",
+      "idna": "3.20",
+      "comm": "0.2.3",
+      "ipython": "9.17.1"
+    }
+  },
+  "checks": {
+    "source_and_template_hashes": {
+      "passed": true,
+      "detail": {
+        "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+        "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+        "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+        "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+        "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+        "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+        "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+        "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+        "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6",
+        "references/notebook_template.ipynb": "a278bc0b6f5210e56f820c4afe3c9320da0a3db26d188ff566a3ce3bb5f29b33"
+      },
+      "elapsed_seconds": 0.068
+    },
+    "python_and_direct_dependency_pins": {
+      "passed": true,
+      "detail": {
+        "python": "3.12.13",
+        "direct_pins": {
+          "pandas": "3.1.0",
+          "numpy": "2.5.4",
+          "matplotlib": "3.11.2",
+          "seaborn": "0.13.2",
+          "streamlit": "1.66.1",
+          "ipykernel": "7.4.0",
+          "nbconvert": "7.17.2",
+          "nbformat": "5.11.1",
+          "nbclient": "0.11.0",
+          "jupyter-client": "8.10.0",
+          "Pillow": "13.0.0",
+          "pytest": "9.1.1"
+        },
+        "isolated": true
+      },
+      "elapsed_seconds": 0.007
+    },
+    "bundle_schema_keys_types_metadata": {
+      "passed": true,
+      "detail": {
+        "bundle_id": "8d4806453e009fa13920e1a18e9eb00d81ed8d458478d7621f6f1c993f7800f4",
+        "rows": {
+          "order_level": 99441,
+          "item_level": 112650,
+          "rfm_customers": 93104
+        }
+      },
+      "elapsed_seconds": 1.424
+    },
+    "fresh_raw_pipeline_matches_every_exported_cell": {
+      "passed": true,
+      "detail": {
+        "all_cells_and_dtypes_match": true,
+        "reconciliation": {
+          "order_rows_before": 99441,
+          "order_rows_after": 99441,
+          "item_rows_before": 112650,
+          "item_rows_after": 112650,
+          "all_item_money_before": {
+            "price_cents": {
+              "known_total_cents": 1359164370,
+              "nonnull_rows": 112650,
+              "null_rows": 0
+            },
+            "freight_cents": {
+              "known_total_cents": 225190954,
+              "nonnull_rows": 112650,
+              "null_rows": 0
+            }
+          },
+          "all_item_money_after": {
+            "price_cents": {
+              "known_total_cents": 1359164370,
+              "nonnull_rows": 112650,
+              "null_rows": 0
+            },
+            "freight_cents": {
+              "known_total_cents": 225190954,
+              "nonnull_rows": 112650,
+              "null_rows": 0
+            }
+          },
+          "eligible_sales_orders": 96211,
+          "eligible_sales_items": 109880,
+          "eligible_order_item_count": 109880,
+          "eligible_order_value_cents": 1318102713,
+          "eligible_item_price_cents": 1318102713,
+          "eligible_items_unique_orders": 96211,
+          "matched_item_order_totals_equal": true
+        }
+      },
+      "elapsed_seconds": 11.349
+    },
+    "independent_csv_decimal_reference": {
+      "passed": true,
+      "detail": {
+        "order_item": {
+          "order_field_comparisons": 1690497,
+          "item_rows_checked": 112650,
+          "order_rows_checked": 99441,
+          "eligibility_counts": {
+            "eligible_sales": 96211,
+            "eligible_delivery": 96203,
+            "eligible_review_comparison": 95560,
+            "eligible_rfm": 96211
+          },
+          "eligible_sales_value_cents": 1318102713,
+          "eligible_sales_item_count": 109880,
+          "all_order_statuses_preserved": true
+        },
+        "q1_q2": {
+          "independent_reference_matches": true,
+          "sales_orders": 96211,
+          "sales_items": 109880,
+          "sales_value_cents": 1318102713,
+          "q2_summary": {
+            "total_delivered": 96211,
+            "delivery_evaluable": 96203,
+            "late_orders": 6531,
+            "on_time_orders": 89672,
+            "delivery_unavailable": 8,
+            "review_comparison_evaluable": 95560,
+            "comparison_late_orders": 6378,
+            "comparison_on_time_orders": 89182,
+            "bad_review_orders": 12228,
+            "bad_reviews_late": 3980,
+            "bad_reviews_on_time": 8248,
+            "review_unavailable_among_delivery": 643,
+            "late_rate_pct": 6.788769580990198,
+            "bad_review_rate_pct": 12.796149016324822,
+            "bad_review_rate_late_pct": 62.40200689871433,
+            "bad_review_rate_on_time_pct": 9.248503061155839,
+            "bad_review_rate_difference_pp": 53.153503837558496
+          },
+          "priority_state_codes": [
+            "AL",
+            "MA",
+            "SE",
+            "PI",
+            "CE",
+            "BA",
+            "RJ",
+            "PA",
+            "ES",
+            "PB",
+            "TO",
+            "MS",
+            "PE",
+            "RN",
+            "SC",
+            "GO",
+            "RS",
+            "MT",
+            "DF",
+            "MG",
+            "SP",
+            "PR",
+            "AC",
+            "AP",
+            "RO",
+            "AM"
+          ]
+        },
+        "rfm": {
+          "customer_count": 93104,
+          "order_count": 96211,
+          "monetary_cents": 1318102713,
+          "repeat_customers": 2789,
+          "high_value_customers": 23276,
+          "reference_matches": true
+        },
+        "identity_coverage": {
+          "eligible_sales_orders": 96211,
+          "eligible_sales_value_cents": 1318102713,
+          "excluded_identity_orders": 0,
+          "excluded_identity_value_cents": 0
+        }
+      },
+      "elapsed_seconds": 21.267
+    },
+    "analytical_reports_and_12_filter_scenarios": {
+      "passed": true,
+      "detail": {
+        "q1_q2_default": {
+          "passed": true,
+          "sales_orders": 96211,
+          "comparison_orders": 95560
+        },
+        "q1_q2_state_sp": {
+          "passed": true,
+          "sales_orders": 40406,
+          "comparison_orders": 40171
+        },
+        "q1_q2_small_rr_january": {
+          "passed": true,
+          "sales_orders": 0,
+          "comparison_orders": 0
+        },
+        "q1_q2_partial_month": {
+          "passed": true,
+          "sales_orders": 3099,
+          "comparison_orders": 3076
+        },
+        "q1_q2_empty_states": {
+          "passed": true,
+          "sales_orders": 0,
+          "comparison_orders": 0
+        },
+        "q1_q2_outside_period": {
+          "passed": true,
+          "sales_orders": 0,
+          "comparison_orders": 0
+        },
+        "q3_default": {
+          "passed": true,
+          "customers": 93104
+        },
+        "q3_SP": {
+          "passed": true,
+          "customers": 39059
+        },
+        "q3_RJ": {
+          "passed": true,
+          "customers": 11877
+        },
+        "q3_RR": {
+          "passed": true,
+          "customers": 39
+        },
+        "q3_empty_states": {
+          "passed": true,
+          "customers": 0
+        },
+        "q3_unknown_state": {
+          "passed": true,
+          "customers": 0
+        }
+      },
+      "elapsed_seconds": 0.581
+    },
+    "executed_notebook_and_six_reviewed_figures": {
+      "passed": true,
+      "detail": {
+        "code_cells": 21,
+        "inline_png": 6,
+        "errors": 0,
+        "full_q1_q2_q3_payload_matches": true
+      },
+      "elapsed_seconds": 0.036
+    },
+    "current_provenance": {
+      "passed": true,
+      "detail": {
+        "references_checked": 6,
+        "source_csvs_checked": 9
+      },
+      "elapsed_seconds": 0.065
+    },
+    "identity_and_placeholders": {
+      "passed": true,
+      "detail": {
+        "identity_complete": true,
+        "template_placeholders_absent": true
+      },
+      "elapsed_seconds": 0.005
+    },
+    "dashboard_default_metrics_and_aggregates": {
+      "passed": true,
+      "detail": {
+        "metrics": {
+          "Nilai barang": "BRL 13.181.027,13",
+          "Pesanan delivered": "96.211",
+          "Item terjual": "109.880",
+          "Tingkat keterlambatan": "6,79%",
+          "Pengiriman dapat dievaluasi": "96.203",
+          "Pesanan dengan ulasan pembanding": "95.560",
+          "Monetary / nilai barang": "BRL 13.181.027,13",
+          "Pelanggan": "93.104",
+          "Pelanggan berulang": "3,00%"
+        },
+        "category_rows": 74,
+        "review_group_rows": 2,
+        "segment_rows": 5,
+        "exceptions": 0
+      },
+      "elapsed_seconds": 2.838
+    },
+    "sources_still_unchanged": {
+      "passed": true,
+      "detail": {
+        "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+        "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+        "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+        "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+        "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+        "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+        "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+        "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+        "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6",
+        "references/notebook_template.ipynb": "a278bc0b6f5210e56f820c4afe3c9320da0a3db26d188ff566a3ce3bb5f29b33"
+      },
+      "elapsed_seconds": 0.054
+    }
+  },
+  "artifact_sha256": {
+    "requirements.txt": "ac428235c0607497e670b648f74043a4e614235596dcc0f45a12f3b95defe0e5",
+    "requirements-dev.txt": "ca878f9e2496cd13882a8d6ee1a77e5a5f489430eaa6bada02668ae279a945b4",
+    "README.md": "1a16b966acf7528eebe9b0566508ba117004ba7f50a89e45d9e1dde3fccfb905",
+    "notebook.ipynb": "3c2465feb9acd77b865fdbb14b440eea82225f334d3e0404b79b4b7bfa4886c3",
+    "dashboard/dashboard.py": "f3b09eba6a233c161522da08f32a391f3856ec20d8e28a20347a1ef3140733fc",
+    "dashboard/data_metadata.json": "adddc369db3ffc8e37451f0e89e856047ae0790837a2ea3c2ff041059ccf9de1",
+    "scripts/validate_outputs.py": "d7b8ee2a4fd805bbf662ef7dcc4773847c084dd830f5445f30e606536dd69fe2",
+    "scripts/check_notebook.py": "17cb75334efd5236bcf3fe4218e0ce88c6d59446f9718a23d2f438638a37d55d",
+    "src/dashboard_data.py": "7014f7ffc25cf024b4d396c84815d6185a6b2aeae61e4f261518da2a9c1621a2",
+    "src/config.py": "8bafdb1e5e8a0b9fe817acffe99ce1601773e764a0a5e34e27560ec96ed5be4c",
+    "src/data_pipeline.py": "c6b85002ae1d7a06edb395669898f37b361af9f234ba7b9861e9f0bd0bcda935",
+    "src/charts.py": "b9ad21d18e7e1e2cf702a65a7b2a084d739899e29714deaeb69d4267f8558515",
+    "src/__init__.py": "1db94be567eae584653151e98c7fe4ec879422e6cb339db9837a4f7de4581868",
+    "src/data_assessment.py": "0f118082966ccc5d0cffa4014a586f4db5bfda0e8696da9cf422cf568577dc6e",
+    "src/analytics.py": "4dcc66b870d1f2f25f6e60f09f9e34798e877eb373d910cf4c82700d76a975d7",
+    "src/data_contracts.py": "bd10ab90a47104e876e2d83307950c01029e9490aef5f05e86da7ece1dacd1d0"
+  },
+  "scope": "Integritas lokal P10; clean install/tes/UI nyata dicatat terpisah. Bukan bukti deployment/ZIP."
+}

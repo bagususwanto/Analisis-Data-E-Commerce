@@ -1,0 +1,431 @@
+{
+  "phase": "P10",
+  "status": "passed",
+  "started_at": "2026-10-24T21:33:58+07:00",
+  "clean_environment": {
+    "path": "/tmp/ecommerce-p10-clean",
+    "isolated": true,
+    "python": "3.12.13",
+    "platform": "macOS-27.0.1-arm64-arm-64bit",
+    "architecture": "arm64",
+    "creation_command": ".venv/bin/python -m venv /tmp/ecommerce-p10-clean",
+    "installation_command": "uv --cache-dir /tmp/ecommerce-uv-cache pip install --offline --python /tmp/ecommerce-p10-clean/bin/python -r requirements-dev.txt",
+    "installation_result": "Fresh environment: 83 packages installed from local cache; exact dev pins checked again after pin finalization.",
+    "limitations": [
+      "No new registry network install",
+      "macOS ARM64 only; Windows/Linux/cloud not exercised"
+    ]
+  },
+  "installed_distributions": {
+    "Jinja2": "3.1.6",
+    "MarkupSafe": "3.0.4",
+    "Pygments": "2.21.0",
+    "altair": "6.3.0",
+    "anyio": "4.15.1",
+    "appnope": "1.0.0",
+    "asttokens": "3.0.2",
+    "attrs": "26.1.0",
+    "beautifulsoup4": "4.15.0",
+    "bleach": "6.4.0",
+    "certifi": "2026.10.23",
+    "charset-normalizer": "3.5.2",
+    "click": "8.5.0",
+    "comm": "0.2.3",
+    "contourpy": "1.4.0",
+    "cycler": "0.12.1",
+    "debugpy": "1.8.22",
+    "defusedxml": "0.7.1",
+    "executing": "2.3.0",
+    "fastjsonschema": "2.22.2",
+    "fonttools": "4.67.0",
+    "h11": "0.16.0",
+    "idna": "3.20",
+    "iniconfig": "2.3.1",
+    "ipykernel": "7.4.0",
+    "ipython": "9.17.1",
+    "ipython_pygments_lexers": "1.1.1",
+    "itsdangerous": "2.2.0",
+    "jedi": "0.20.1",
+    "jsonschema": "4.26.0",
+    "jsonschema-specifications": "2025.9.1",
+    "jupyter_client": "8.10.0",
+    "jupyter_core": "5.9.1",
+    "jupyterlab_pygments": "0.3.0",
+    "kiwisolver": "1.5.1",
+    "matplotlib": "3.11.2",
+    "matplotlib-inline": "0.2.2",
+    "mistune": "3.4.0",
+    "narwhals": "2.27.1",
+    "nbclient": "0.11.0",
+    "nbconvert": "7.17.2",
+    "nbformat": "5.11.1",
+    "nest-asyncio2": "1.7.4",
+    "numpy": "2.5.4",
+    "packaging": "26.3",
+    "pandas": "3.1.0",
+    "pandocfilters": "1.5.1",
+    "parso": "0.8.7",
+    "pexpect": "4.9.0",
+    "pillow": "13.0.0",
+    "pip": "25.0.1",
+    "platformdirs": "4.13.5",
+    "pluggy": "1.7.0",
+    "prompt_toolkit": "3.0.53",
+    "protobuf": "7.36.2",
+    "psutil": "7.2.2",
+    "ptyprocess": "0.7.0",
+    "pure_eval": "0.2.4",
+    "pyarrow": "26.0.0",
+    "pydeck": "0.9.3",
+    "pyparsing": "3.3.3",
+    "pytest": "9.1.1",
+    "python-dateutil": "3.0.0",
+    "python-multipart": "0.0.32",
+    "pyzmq": "27.2.0",
+    "referencing": "0.37.0",
+    "requests": "2.34.2",
+    "rpds-py": "2026.9.1",
+    "seaborn": "0.13.2",
+    "six": "1.17.0",
+    "soupsieve": "3.0.4",
+    "stack-data": "0.6.3",
+    "starlette": "1.9.0",
+    "streamlit": "1.66.1",
+    "tinycss2": "1.5.1",
+    "tornado": "6.6",
+    "traitlets": "5.16.1",
+    "typing_extensions": "4.16.0",
+    "tzdata": "2026.5",
+    "urllib3": "2.8.0",
+    "uvicorn": "0.54.0",
+    "wcwidth": "0.9.3",
+    "webencodings": "0.6.1",
+    "websockets": "17.3"
+  },
+  "steps": [
+    {
+      "argv": [
+        "/tmp/ecommerce-p10-clean/bin/python",
+        "-m",
+        "pip",
+        "--no-cache-dir",
+        "check"
+      ],
+      "exit_code": 0,
+      "stdout": "No broken requirements found.\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "/tmp/ecommerce-p10-clean/bin/python",
+        "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce/scripts/check_foundation.py"
+      ],
+      "exit_code": 0,
+      "stdout": "PASS P01: 99,441 orders, 8 columns, 9 source hashes unchanged.\n",
+      "stderr": "/Users/bagus/.matplotlib is not a writable directory\nMatplotlib created a temporary cache directory at /var/folders/_r/klmb02sn3q10bmt607gfqq680000gp/T/matplotlib-uiufmhcy because there was an issue with the default path (/Users/bagus/.matplotlib); it is highly recommended to set the MPLCONFIGDIR environment variable to a writable directory, in particular to speed up the import of Matplotlib and to better support multiprocessing.\nMatplotlib is building the font cache; this may take a moment.\n"
+    }
+  ],
+  "notebook": {
+    "phase": "P07",
+    "execution_status": "passed",
+    "visual_review_status": "passed",
+    "executed_at": "2026-10-24T21:28:54+07:00",
+    "kernel_executable": "/tmp/ecommerce-p10-clean/bin/python",
+    "invocation_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce",
+    "kernel_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce",
+    "notebook_sha256": "3c2465feb9acd77b865fdbb14b440eea82225f334d3e0404b79b4b7bfa4886c3",
+    "html_sha256": "910b5ac9f7f56438350fb89a85503393907f98021bef496bea402b67dc87cf32",
+    "template_cells_preserved": 37,
+    "total_cells": 55,
+    "executed_code_cells": 21,
+    "error_outputs": 0,
+    "inline_png_outputs": 6,
+    "figures": {
+      "V01_top_categories.png": {
+        "path": "reports/figures/V01_top_categories.png",
+        "sha256": "229479eb695f69a7c01b743b43c3f9d13954f9e6ec3fd7fc002fcfaa66ca65c3",
+        "width": 2028,
+        "height": 1186,
+        "size_bytes": 124964
+      },
+      "V02_monthly_categories.png": {
+        "path": "reports/figures/V02_monthly_categories.png",
+        "sha256": "9620586e9591bca179b82dddc35fa8d5edebfa69a726124c3086948da44785f7",
+        "width": 1942,
+        "height": 1032,
+        "size_bytes": 224466
+      },
+      "V03_bad_reviews.png": {
+        "path": "reports/figures/V03_bad_reviews.png",
+        "sha256": "bb123e04ee75de1620d04ca4eb07e556d8686459c662c39e32d314290ebbc347",
+        "width": 1704,
+        "height": 1032,
+        "size_bytes": 93600
+      },
+      "V04_state_priority.png": {
+        "path": "reports/figures/V04_state_priority.png",
+        "sha256": "a748faa75bb5f712a5a8c05c1c09e85376706ab985f592804b76d907df4d4a4f",
+        "width": 2031,
+        "height": 1032,
+        "size_bytes": 133291
+      },
+      "V05_rfm_distributions.png": {
+        "path": "reports/figures/V05_rfm_distributions.png",
+        "sha256": "557736419c84df63f65bb83922079e7e4188b792cadc862ec9a3985399bb9aba",
+        "width": 2270,
+        "height": 1032,
+        "size_bytes": 147676
+      },
+      "V06_rfm_segments.png": {
+        "path": "reports/figures/V06_rfm_segments.png",
+        "sha256": "cf624ee4c8774b9b529d0906b220ff8195c97128abd1451335c624d6f333d42a",
+        "width": 2225,
+        "height": 1109,
+        "size_bytes": 136956
+      }
+    },
+    "analytics_payload_sha256": "89b15b28f17f747ef8d731f0a43e809757c85277c5d88171504b9a243fdd45fd",
+    "source_sha256": {
+      "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+      "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+      "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+      "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+      "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+      "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+      "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+      "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+      "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+    },
+    "template_hash_unchanged": true,
+    "note": "Eksekusi dan pemeriksaan visual lulus; review berlaku untuk hash figure yang tercatat.",
+    "visual_review": {
+      "reviewer": "Codex — inspeksi P10",
+      "notes": "Keenam PNG V01–V06 dibuka ulang setelah kernel clean. Diperiksa label, angka, unit, legend, kontras, margin, skala bar dari nol, warna kategori konsisten, n/denominator dan batas observasional. Semua terbaca; frequency satu dominan, monetary log eksplisit, dua denominator segmen terpisah.",
+      "reviewed_at": "2026-10-24T21:29:54+07:00",
+      "figure_sha256": {
+        "V01_top_categories.png": "229479eb695f69a7c01b743b43c3f9d13954f9e6ec3fd7fc002fcfaa66ca65c3",
+        "V02_monthly_categories.png": "9620586e9591bca179b82dddc35fa8d5edebfa69a726124c3086948da44785f7",
+        "V03_bad_reviews.png": "bb123e04ee75de1620d04ca4eb07e556d8686459c662c39e32d314290ebbc347",
+        "V04_state_priority.png": "a748faa75bb5f712a5a8c05c1c09e85376706ab985f592804b76d907df4d4a4f",
+        "V05_rfm_distributions.png": "557736419c84df63f65bb83922079e7e4188b792cadc862ec9a3985399bb9aba",
+        "V06_rfm_segments.png": "cf624ee4c8774b9b529d0906b220ff8195c97128abd1451335c624d6f333d42a"
+      }
+    },
+    "gate": {
+      "passed": true,
+      "scope": "Notebook analitis: eksekusi bersih dan enam render ditinjau; bukan deployment/paket final."
+    }
+  },
+  "export": {
+    "phase": "P08",
+    "status": "passed",
+    "verified_at": "2026-10-24T21:30:15+07:00",
+    "command": "python scripts/prepare_dashboard_data.py",
+    "runtime": {
+      "python": "3.12.13",
+      "pandas": "3.1.0",
+      "invocation_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce"
+    },
+    "bundle_id": "8d4806453e009fa13920e1a18e9eb00d81ed8d458478d7621f6f1c993f7800f4",
+    "metadata_sha256": "adddc369db3ffc8e37451f0e89e856047ae0790837a2ea3c2ff041059ccf9de1",
+    "table_files": {
+      "order_level": {
+        "sha256": "00b412f0ed0173c983ac17274330a50c24d51125b349ff79901aec8456a545a1",
+        "size_bytes": 23119428,
+        "rows": 99441,
+        "columns": 24
+      },
+      "item_level": {
+        "sha256": "a0527ef6353f87d4f85bb30ca3b18703184967dc50aac1d02b6c00bd83b2b9da",
+        "size_bytes": 21520039,
+        "rows": 112650,
+        "columns": 16
+      },
+      "rfm_customers": {
+        "sha256": "6333a2457f1cd0b5283db78025b968f8305ce7f2d7b7b4289b1aed74adef49fb",
+        "size_bytes": 15185104,
+        "rows": 93104,
+        "columns": 10
+      }
+    },
+    "checks": {
+      "second_export_byte_identical": true,
+      "shuffled_input_rows_do_not_change_output": true,
+      "metadata_stable_except_generated_at": true,
+      "all_round_trip_cells_and_dtypes_match": true,
+      "default_analytics_match_notebook_Q1_Q2_Q3": true,
+      "rfm_rebuilt_from_exported_orders_matches": true,
+      "null_lateness_not_false": true,
+      "nine_source_hashes_unchanged": true,
+      "template_hash_unchanged": true
+    },
+    "reconciliation": {
+      "eligible_sales_orders": 96211,
+      "eligible_sales_items": 109880,
+      "order_value_cents": 1318102713,
+      "item_price_cents": 1318102713,
+      "rfm_customers": 93104,
+      "rfm_frequency_sum": 96211,
+      "rfm_monetary_cents": 1318102713
+    },
+    "filter_scenarios": {
+      "q1_q2_default": {
+        "passed": true,
+        "sales_orders": 96211,
+        "comparison_orders": 95560
+      },
+      "q1_q2_state_sp": {
+        "passed": true,
+        "sales_orders": 40406,
+        "comparison_orders": 40171
+      },
+      "q1_q2_small_rr_january": {
+        "passed": true,
+        "sales_orders": 0,
+        "comparison_orders": 0
+      },
+      "q1_q2_partial_month": {
+        "passed": true,
+        "sales_orders": 3099,
+        "comparison_orders": 3076
+      },
+      "q1_q2_empty_states": {
+        "passed": true,
+        "sales_orders": 0,
+        "comparison_orders": 0
+      },
+      "q1_q2_outside_period": {
+        "passed": true,
+        "sales_orders": 0,
+        "comparison_orders": 0
+      },
+      "q3_default": {
+        "passed": true,
+        "customers": 93104
+      },
+      "q3_SP": {
+        "passed": true,
+        "customers": 39059
+      },
+      "q3_RJ": {
+        "passed": true,
+        "customers": 11877
+      },
+      "q3_RR": {
+        "passed": true,
+        "customers": 39
+      },
+      "q3_empty_states": {
+        "passed": true,
+        "customers": 0
+      },
+      "q3_unknown_state": {
+        "passed": true,
+        "customers": 0
+      }
+    },
+    "source_sha256": {
+      "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+      "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+      "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+      "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+      "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+      "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+      "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+      "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+      "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+    },
+    "scope": "Ekspor dan pembacaan terverifikasi; aplikasi Streamlit P09 belum dibuat."
+  },
+  "source_attribution": {
+    "dataset_url": "https://www.kaggle.com/datasets/olistbr/brazilian-ecommerce",
+    "dataset_page_title_verified": true,
+    "submission_url": "https://www.dicoding.com/academies/555/tutorials/31230/submission-guidance",
+    "submission_page_recheck": "HTTP 405 on P10; prior requirements audit recorded in implementation plan, no new rubric content inferred."
+  },
+  "verified_at": "2026-10-24T21:38:07+07:00",
+  "tests": {
+    "command": "/tmp/ecommerce-p10-clean/bin/python -m pytest -q",
+    "exit_code": 0,
+    "stdout": "........................................................................ [ 51%]\n....................................................................     [100%]\n140 passed in 34.99s\n",
+    "stderr": "",
+    "report": "reports/dashboard_validation.json",
+    "sha256": "3a4e3c77f75c25ec819385781d48e62da7325d36272cfb7150ca07ef250d7fb4"
+  },
+  "integrity": {
+    "command": "/tmp/ecommerce-p10-clean/bin/python <project>/scripts/validate_outputs.py",
+    "invocation_cwd": "/private/tmp",
+    "exit_code": 0,
+    "passed_checks": 11,
+    "report": "reports/validation_results.json",
+    "sha256": "15e3b40cf943299b27f608342a5c48234f898a3501e73f2a8c3cb165e8e0e56b"
+  },
+  "executed_workflow": [
+    "Fresh virtual environment creation and dependency install from local uv cache",
+    "pip check and check_foundation.py on new interpreter",
+    "prepare_dashboard_data.py: raw CSV -> two deterministic exports and round-trip",
+    "build_notebook.py then check_notebook.py: clean new kernel from clean interpreter",
+    "Open all six generated PNGs and record_notebook_review.py",
+    "prepare_dashboard_data.py again to refresh provenance after notebook/review",
+    "validate_outputs.py, full 140-case pytest via check_dashboard.py",
+    "streamlit run dashboard/dashboard.py --server.port 8502; browser review including empty state",
+    "Final validate_outputs.py through absolute path from /private/tmp: 11/11 passed"
+  ],
+  "browser_review": {
+    "status": "completed",
+    "checked_at": "2026-10-24T21:38:07+07:00",
+    "url": "http://127.0.0.1:8502",
+    "runtime": "/tmp/ecommerce-p10-clean/bin/python; Python 3.12.13; Streamlit 1.66.1",
+    "scope": [
+      "Tiga tab pada bundle regenerasi P10",
+      "Nilai barang/order/item default terbaca",
+      "Pengiriman: coverage, n kelompok, 62,40% vs 9,25%, grafik V03 dan tabel Indonesia",
+      "RFM: periode/ambang tetap, 93.104 pelanggan; interaksi wilayah kosong -> 0, unavailable, grafik kosong"
+    ],
+    "screenshots": {
+      "reports/dashboard_ui/p10_rfm_empty.png": "b661db65f6f22dcc55f253bfb008f10caca42c0dbcb9fe40a8f44ce35acae68f",
+      "reports/dashboard_ui/p10_delivery.png": "3c00f255e6ef0bb6d235b2b70e5970acf47045e4cbcbf5e2305248c851f5c11c",
+      "reports/dashboard_ui/p10_sales_overview.png": "67986c6c1744f7d615c881bab8c33cd77cbec3f08b7101676651c362ef92aee8"
+    },
+    "note": "Notebook V01–V06 diperiksa ulang secara terpisah melalui PNG; UI nyata bukan pengganti tes numerik."
+  },
+  "resolved_findings": [
+    {
+      "finding": "Matplotlib chose MacOS GUI backend in validator before Streamlit worker opened figures",
+      "impact": "Initial validator failed 1 of 10 checks; source/bundle/notebook/provenance checks passed",
+      "fix": "Explicit Agg rendering in dashboard entry point and headless validator",
+      "verification": "All 140 tests passed after fix; final UI metrics/category/review/segment checks and browser passed"
+    },
+    {
+      "finding": "Initial sandbox notebook startup could not bind local socket",
+      "fix": "Local kernel execution with approved permission succeeded; failed startup process terminated and diagnostic notebook removed"
+    },
+    {
+      "finding": "README accumulated phase-era statements and host-specific Python path",
+      "fix": "Rewrite around portable setup, file requirements, actual metric policies and tested reproduction flow"
+    },
+    {
+      "finding": "Notebook output had no structured result payload for direct cross-output checks",
+      "fix": "Add application/json result emitted by executed kernel and checked against raw pipeline, CSV, reports and UI"
+    }
+  ],
+  "audit": {
+    "identity_complete": true,
+    "required_notebook_headings_and_template_indices_preserved": true,
+    "runtime_and_readme_host_paths_absent": true,
+    "source_and_template_hashes_unchanged": true,
+    "three_business_conclusions_with_data_based_actions": true,
+    "causality_churn_profit_and_campaign_effect_not_claimed": true,
+    "dataset_and_template_attributed": true,
+    "deployment_not_claimed": true,
+    "url_txt_not_created": true,
+    "package_not_created": true,
+    "diff_check_passed": true,
+    "submission_guidance_scope": "Uses requirements previously audited in plan; P10 re-fetch returned HTTP 405, no new rubric text inferred."
+  },
+  "final_pins_sha256": {
+    "requirements.txt": "ac428235c0607497e670b648f74043a4e614235596dcc0f45a12f3b95defe0e5",
+    "requirements-dev.txt": "ca878f9e2496cd13882a8d6ee1a77e5a5f489430eaa6bada02668ae279a945b4",
+    ".python-version": "aa0d6581054e6e4ff3f91839deca7a854ad37221b8784d060b42d0f847ff1a3b"
+  }
+}

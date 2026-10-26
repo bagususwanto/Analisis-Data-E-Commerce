@@ -1,0 +1,91 @@
+{
+  "phase": "P07",
+  "execution_status": "passed",
+  "visual_review_status": "passed",
+  "executed_at": "2026-10-24T21:28:54+07:00",
+  "kernel_executable": "/tmp/ecommerce-p10-clean/bin/python",
+  "invocation_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce",
+  "kernel_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce",
+  "notebook_sha256": "3c2465feb9acd77b865fdbb14b440eea82225f334d3e0404b79b4b7bfa4886c3",
+  "html_sha256": "910b5ac9f7f56438350fb89a85503393907f98021bef496bea402b67dc87cf32",
+  "template_cells_preserved": 37,
+  "total_cells": 55,
+  "executed_code_cells": 21,
+  "error_outputs": 0,
+  "inline_png_outputs": 6,
+  "figures": {
+    "V01_top_categories.png": {
+      "path": "reports/figures/V01_top_categories.png",
+      "sha256": "229479eb695f69a7c01b743b43c3f9d13954f9e6ec3fd7fc002fcfaa66ca65c3",
+      "width": 2028,
+      "height": 1186,
+      "size_bytes": 124964
+    },
+    "V02_monthly_categories.png": {
+      "path": "reports/figures/V02_monthly_categories.png",
+      "sha256": "9620586e9591bca179b82dddc35fa8d5edebfa69a726124c3086948da44785f7",
+      "width": 1942,
+      "height": 1032,
+      "size_bytes": 224466
+    },
+    "V03_bad_reviews.png": {
+      "path": "reports/figures/V03_bad_reviews.png",
+      "sha256": "bb123e04ee75de1620d04ca4eb07e556d8686459c662c39e32d314290ebbc347",
+      "width": 1704,
+      "height": 1032,
+      "size_bytes": 93600
+    },
+    "V04_state_priority.png": {
+      "path": "reports/figures/V04_state_priority.png",
+      "sha256": "a748faa75bb5f712a5a8c05c1c09e85376706ab985f592804b76d907df4d4a4f",
+      "width": 2031,
+      "height": 1032,
+      "size_bytes": 133291
+    },
+    "V05_rfm_distributions.png": {
+      "path": "reports/figures/V05_rfm_distributions.png",
+      "sha256": "557736419c84df63f65bb83922079e7e4188b792cadc862ec9a3985399bb9aba",
+      "width": 2270,
+      "height": 1032,
+      "size_bytes": 147676
+    },
+    "V06_rfm_segments.png": {
+      "path": "reports/figures/V06_rfm_segments.png",
+      "sha256": "cf624ee4c8774b9b529d0906b220ff8195c97128abd1451335c624d6f333d42a",
+      "width": 2225,
+      "height": 1109,
+      "size_bytes": 136956
+    }
+  },
+  "analytics_payload_sha256": "89b15b28f17f747ef8d731f0a43e809757c85277c5d88171504b9a243fdd45fd",
+  "source_sha256": {
+    "data/orders_dataset.csv": "8df58ef3d2d7e9944010f7beecd9b75367f5588ec6e3c91cec19ae3345ef9ecf",
+    "data/customers_dataset.csv": "983a422239e1712ded753b3bf9ecf47dc73f144d306029dcfa99e70a226883d2",
+    "data/order_items_dataset.csv": "0bc4d068c4fe38cbb01bd90e8746e3c613fe7b4baef75fab7b0e329701c3e279",
+    "data/products_dataset.csv": "3e6569628a17fbc75fd206ee357b59e20364b9afa90f5b6cd5b4d624c58aa9cc",
+    "data/order_reviews_dataset.csv": "012b61c7593e34f51fa614efdf802b9c7056ce6aae5307ddb93236e7cfc797d7",
+    "data/product_category_name_translation.csv": "a81f0d1f27b27e7293f761bc79e3ce8f348ee39c4b3ed3e49bde38f478586278",
+    "data/order_payments_dataset.csv": "4f713964f2815dbbaa40b9488268c55aac3627bfce5aa96cf58d1f3616de3cc0",
+    "data/sellers_dataset.csv": "1f643d2b950373b85735e7794b20986f528d7a000432e7c6f9bcbb44d0846a0e",
+    "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6"
+  },
+  "template_hash_unchanged": true,
+  "note": "Eksekusi dan pemeriksaan visual lulus; review berlaku untuk hash figure yang tercatat.",
+  "visual_review": {
+    "reviewer": "Codex — inspeksi P10",
+    "notes": "Keenam PNG V01–V06 dibuka ulang setelah kernel clean. Diperiksa label, angka, unit, legend, kontras, margin, skala bar dari nol, warna kategori konsisten, n/denominator dan batas observasional. Semua terbaca; frequency satu dominan, monetary log eksplisit, dua denominator segmen terpisah.",
+    "reviewed_at": "2026-10-24T21:29:54+07:00",
+    "figure_sha256": {
+      "V01_top_categories.png": "229479eb695f69a7c01b743b43c3f9d13954f9e6ec3fd7fc002fcfaa66ca65c3",
+      "V02_monthly_categories.png": "9620586e9591bca179b82dddc35fa8d5edebfa69a726124c3086948da44785f7",
+      "V03_bad_reviews.png": "bb123e04ee75de1620d04ca4eb07e556d8686459c662c39e32d314290ebbc347",
+      "V04_state_priority.png": "a748faa75bb5f712a5a8c05c1c09e85376706ab985f592804b76d907df4d4a4f",
+      "V05_rfm_distributions.png": "557736419c84df63f65bb83922079e7e4188b792cadc862ec9a3985399bb9aba",
+      "V06_rfm_segments.png": "cf624ee4c8774b9b529d0906b220ff8195c97128abd1451335c624d6f333d42a"
+    }
+  },
+  "gate": {
+    "passed": true,
+    "scope": "Notebook analitis: eksekusi bersih dan enam render ditinjau; bukan deployment/paket final."
+  }
+}
