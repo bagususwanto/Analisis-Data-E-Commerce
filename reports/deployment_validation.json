@@ -1,0 +1,29 @@
+{
+  "status": "completed",
+  "date": "2026-10-28",
+  "timezone": "Asia/Jakarta",
+  "url": "https://y2ybbkygxb92qnxwkgmqsq.streamlit.app/",
+  "repository": "bagususwanto/Analisis-Data-E-Commerce",
+  "visibility": "public",
+  "branch": "main",
+  "entry_point": "dashboard/dashboard.py",
+  "cloud_python": "3.12.15",
+  "streamlit": "1.66.1",
+  "local_head": "a8d3445d0e2d5ffd70ce9043b3ccebce0908a25e",
+  "checks": {
+    "build": "passed",
+    "three_tabs": "passed",
+    "sales_brl": "13.181.027,13",
+    "orders": 96211,
+    "items": 109880,
+    "delivery_evaluable": 96203,
+    "review_comparison": 95560,
+    "customers": 93104,
+    "empty_rfm_filter": "0 customers, BRL 0,00, unavailable percentage, no exception"
+  },
+  "notes": [
+    "Initial request HTTP 403; reload/retry succeeded.",
+    "Cloud automatically replaced pyarrow 26.0.0 with 24.0.0.",
+    "Cloud log identifies main branch but does not expose resolved commit SHA."
+  ]
+}

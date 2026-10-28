@@ -1,7 +1,7 @@
 {
   "schema_version": 1,
   "bundle_format": "ecommerce-dashboard-csv",
-  "generated_at": "2026-10-24T21:30:11+07:00",
+  "generated_at": "2026-10-28T20:25:29+07:00",
   "generator": "scripts/prepare_dashboard_data.py",
   "parameters": {
     "analysis_start": "2017-01-01",
@@ -115,8 +115,8 @@
       "reports/join_audit.json": "2b32a1b9132bb6ccf615bf6acc7a0b48274da9619dc759a571a67ab37facfb9a",
       "reports/analytical_results.json": "1bf07034d9e501b36e1dd501008621763c20523d72a31153cca511dc995aa160",
       "reports/rfm_validation.json": "cd06db5fe118559678bc4d8752b8901c5610354c3010647419c245fc94cadcea",
-      "reports/notebook_validation.json": "b4698a899fec7445df304f1a33343ad1e35b5cffea0b0806bb60f845086ca58e",
-      "notebook.ipynb": "3c2465feb9acd77b865fdbb14b440eea82225f334d3e0404b79b4b7bfa4886c3"
+      "reports/notebook_validation.json": "a2c4e808352ffe173969d94c72eb3342ff0ba58a9f58ebd7cbb3dff8d9a31f73",
+      "notebook.ipynb": "189a36a72f8cd3a0bb572387c0734b55351c5edd595f13b9a6eb3439a4898010"
     },
     "runtime": {
       "python": "3.12.13",
@@ -4401,5 +4401,5 @@
     "Null/False/0 berbeda. Timestamp dan ID tidak memakai inferensi otomatis.",
     "Cutoff RFM global tidak dihitung ulang saat membaca atau memfilter dashboard."
   ],
-  "bundle_id": "8d4806453e009fa13920e1a18e9eb00d81ed8d458478d7621f6f1c993f7800f4"
+  "bundle_id": "d30590c50b558ac0dcb07c82410143938b4521820cb2ec6eff8d8f5a5ce4b150"
 }

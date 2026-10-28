@@ -1,0 +1,15 @@
+{
+  "verified_at": "2026-10-28T20:26:48+07:00",
+  "python": "3.12.13",
+  "environment": "/private/tmp/ecommerce-p11-validation",
+  "environment_install": "Fresh virtual environment; 83 packages installed from requirements-dev.txt through PyPI; uv pip check passed",
+  "commands": {
+    "scripts/check_notebook.py": "passed: 21 code cells, 6 figures, 0 errors",
+    "scripts/record_notebook_review.py": "passed: six figures byte-identical to previously inspected images",
+    "scripts/prepare_dashboard_data.py": "passed: deterministic round-trip, 12 filters, unchanged sources",
+    "python -m pytest -q": "140 passed in 34.84s",
+    "scripts/validate_outputs.py": "11/11 passed",
+    "git diff --check": "passed"
+  },
+  "scope": "Notebook deployment note and generator updated; HTML, notebook proof, dashboard metadata/export proof refreshed. Numerical payload, six PNGs and three dashboard CSVs unchanged. No ZIP, commit, push or cloud redeploy performed."
+}

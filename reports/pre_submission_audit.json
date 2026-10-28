@@ -1,0 +1,55 @@
+{
+  "date": "2026-10-28",
+  "scope": "Pre-ZIP audit; no ZIP created",
+  "verdict": "Content matches confirmed official rubric; notebook deployment note corrected and fresh validation passed; ZIP/extraction test pending.",
+  "rubric_access": "Official Dicoding submission guidance read successfully after user login on 2026-10-28: Pengantar, Kriteria, Penilaian, Ketentuan Berkas Submission, Lainnya.",
+  "criteria": {
+    "dataset": "provided E-Commerce CSVs; 10/10 source/template hashes match prior validation",
+    "business_questions": "3 questions with explicit SMART mapping, metrics, population and period",
+    "wrangling": "gathering, assessment, issue actions and cleaning documented",
+    "eda": "Q1-Q3 tables, insights and conclusions present",
+    "notebook": "21/21 code cells executed, no error outputs; hash matches reviewed notebook",
+    "visualization": "6 figures visually inspected in this audit; units, periods, scales, denominators and legends readable; hashes unchanged",
+    "recommendations": "3 specific action items with targets and evaluation metrics",
+    "advanced_analysis": "RFM and manual grouping; purpose and thresholds explained; no ML",
+    "dashboard": "three-tab cloud deployment tested earlier in same conversation; KPIs and empty filter passed",
+    "deployment": "active URL recorded in url.txt",
+    "attribution": "sources and template attribution present; no comprehensive plagiarism comparison performed"
+  },
+  "findings": [
+    {
+      "severity": "packaging_pending",
+      "issue": "ZIP, manifest/checksum and extracted-package run remain P12 and were intentionally not created."
+    }
+  ],
+  "rating_limit": "Only Dicoding reviewers can award 5 stars; internal criteria coverage is not a guarantee.",
+  "official_rubric_url": "https://www.dicoding.com/academies/555/tutorials/31230/submission-guidance",
+  "official_rubric_confirmation": {
+    "five_stars": "All mandatory criteria plus all four recommendations are required.",
+    "mandatory": [
+      "Provided dataset",
+      "Full analysis including at least two SMART questions, assessment/cleaning, EDA, visual answer for every question, conclusions and action item",
+      "Provided notebook template",
+      "Interactive Streamlit dashboard that runs locally"
+    ],
+    "recommendations": [
+      "Markdown explanations and stage insights",
+      "Design and integrity in every visualization",
+      "Streamlit Cloud deployment and url.txt",
+      "Relevant advanced analysis without ML, explained in notebook"
+    ],
+    "matches_recorded_plan": true,
+    "remaining": "ZIP packaging, checksum/manifest and extracted-package test remain P12."
+  },
+  "updated_at": "2026-10-28T20:26:48+07:00",
+  "latest_validation": {
+    "notebook_code_cells": 21,
+    "notebook_errors": 0,
+    "figures_unchanged": 6,
+    "tests_passed": 140,
+    "test_seconds": 34.84,
+    "gates_passed": 11,
+    "export_filter_scenarios": 12,
+    "source_hashes_unchanged": true
+  }
+}

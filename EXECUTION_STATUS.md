@@ -1,19 +1,19 @@
 # Execution Status — Proyek Analisis Data E-Commerce
 
-Terakhir diperbarui: 24 Oktober 2026, Asia/Jakarta.
+Terakhir diperbarui: 28 Oktober 2026, Asia/Jakarta.
 Acuan: [IMPLEMENTATION_PLAN.md](IMPLEMENTATION_PLAN.md), versi 2.1.
 
 ## Ringkasan untuk AI berikutnya
 
-- Status pekerjaan: **P00–P10 selesai; P11 belum dimulai**.
-- Phase berikutnya: **P11 — Deployment Streamlit Community Cloud**.
-- Permintaan pengguna terakhir: lanjutkan P10 — Verifikasi lintas keluaran dan README. Gate P10 lulus; deployment P11 belum dijalankan.
+- Status pekerjaan: **P00–P11 selesai; P12 belum dimulai**.
+- Phase berikutnya: **P12 — ZIP dan audit akhir**.
+- Permintaan pengguna terakhir: deploy ke akun Streamlit miliknya. P11 lulus; P12 belum dijalankan.
 - Artefak yang tersedia: plan/tracker, baseline dan templat P00, `src/config.py`, `src/data_pipeline.py`, requirements runtime/dev, README, `scripts/check_foundation.py`, `reports/foundation_validation.json`, modul/skrip assessment, `reports/data_quality.json`, ringkasan notebook, laporan verifikasi P02, fungsi cleaning, tes pipeline, audit/trace/verifikasi P03, builder order/item, kontrak kolom, `reports/join_audit.json`, `reports/data_dictionary.json`, verifikasi P04, `src/analytics.py`, tes agregasi, `reports/analytical_results.json`, verifikasi P05, builder/ringkasan RFM, `reports/rfm_data_dictionary.json`, `reports/rfm_validation.json`, notebook terjalankan, modul grafik bersama, enam PNG, HTML preview, verifikasi P07, tiga CSV/dashboard metadata, modul reader/codec, serta `reports/export_validation.json`, dashboard tiga tab P09, tes AppTest, `scripts/check_dashboard.py`, laporan dan screenshot verifikasi UI; validator lintas keluaran P10, pencatat review notebook, tes validator, serta reports/validation_results.json dan reports/reproducibility_validation.json.
 - Kondisi terakhir: sembilan CSV sumber tetap sesuai hash baseline; fondasi, cleaning enam sumber, integrasi order/item, serta agregasi Q1/Q2 dan RFM/Q3 berhasil diverifikasi. Tabel analisis dapat direproduksi dari sumber dan sudah diekspor ke tiga CSV dashboard beserta metadata yang terverifikasi. Notebook analisis dan visualisasi sudah dibuat/dieksekusi; dashboard Streamlit tiga tab sudah berjalan dan diperiksa di browser lokal. Runtime terpilih: Python 3.12.13 dalam `.venv`, juga dicatat pada `.python-version`.
 - P00 memverifikasi sembilan CSV, ukuran, SHA-256, jumlah baris, dan profil awal pada 22 Oktober 2026. Seluruh jumlah baris dan temuan numerik yang diperiksa sesuai plan; hash pertama tersimpan pada `reports/baseline.json`. Assessment formal selesai pada P02; profil lengkap ditambahkan ke baseline tanpa mengubah hash/riwayat P00.
 - Salinan lokal templat notebook: **terverifikasi**, nbformat 4, 37 sel. URL sumber, waktu pengambilan, heading, dan SHA-256 tersedia dalam baseline; gunakan salinan ini pada P07.
 - Identitas notebook diberikan langsung oleh pengguna: **Bagus Uswanto**, **DS013B6Y0318@student.devacademy.id**, ID Dicoding **DS013B6Y0318**. Tersimpan di `reports/baseline.json`; gunakan pada P07.
-- Deployment: akun/repo/branch/visibilitas belum ditetapkan untuk proyek ini; tidak ada URL deployment yang telah diverifikasi.
+- Deployment: akun bagususwanto, repo publik Analisis-Data-E-Commerce, branch main; URL aktif https://y2ybbkygxb92qnxwkgmqsq.streamlit.app/; lihat reports/deployment_validation.json.
 
 Keputusan periode, eligibility, nilai uang, seleksi review, dan RFM mengacu ke bagian 3–5 dalam plan. Jangan menggandakan aturan tersebut di tracker dengan versi berbeda.
 
@@ -34,7 +34,7 @@ Status yang sah: `not_started`, `in_progress`, `completed`, `blocked`, dan khusu
 | P08 | Ekspor data dashboard | `completed` | 3 CSV + metadata; 125 tes; 5.120.024 sel round-trip; 12 filter dan dua ekspor byte-identik | Bangun UI Streamlit P09 |
 | P09 | Dashboard Streamlit | `completed` | 3 tab, V01–V06, filter/empty/error states; 132 tes lulus, default cocok notebook dan audit browser selesai | Verifikasi lintas keluaran P10 |
 | P10 | Verifikasi dan dokumentasi | `completed` | Lingkungan bersih; 140 tes, 11 gate; notebook/CSV/UI dan referensi independen cocok; README final | Deployment P11 dengan konteks akun/repo |
-| P11 | Deployment | `not_started` | Belum ada URL terverifikasi | Setelah P10 dan konteks eksternal tersedia |
+| P11 | Deployment | `completed` | Build cloud, tiga tab, KPI dan filter kosong lulus; url.txt tersedia | Kemas P12 |
 | P12 | ZIP dan audit akhir | `not_started` | Belum ada paket submission | Setelah kesiapan lokal dan status P11 jelas |
 
 ## Dependency eksternal yang diketahui
@@ -297,3 +297,26 @@ Tidak ada pemeriksaan ulang tertunda setelah P08. Jika sumber/loader/assessment 
 - Audit narasi dan sumber: tiga kesimpulan/action item notebook menyebut kategori/wilayah/segmen berdasarkan hasil aktual dan KPI evaluasi. Tidak menyatakan sebab-akibat, prediksi churn, laba, efektivitas kampanye atau jaminan bintang 5. Referensi dataset Olist di Kaggle dibuka dan judul sesuai; instruksi Dicoding dicoba ulang tetapi HTTP 405, sehingga audit saran tetap memakai persyaratan yang telah diverifikasi dan dicatat pada plan, tanpa mengarang isi terbaru. Tidak mengimpor notebook analisis pihak lain; asal kode/metode dan adaptasi templat dijelaskan. Sembilan hash sumber dan hash templat tetap utuh. Pencarian tidak menemukan path /Users atau /private yang di-hardcode pada runtime/skrip/README; laporan historis boleh mencatat executable/cwd sebagai bukti.
 - Gate: lulus. Alur lingkungan bersih yang tersedia berhasil, notebook dieksekusi/visual ditinjau, tes dan seluruh gate integritas lulus, UI nyata diperiksa, identitas lengkap, README final dan git diff --check bersih. Bukti perintah, versi, manifest paket, temuan/perbaikan dan keterbatasan tersimpan pada dua laporan P10.
 - Handoff P11: deploy memakai entry point `dashboard/dashboard.py`, `src/`, lima runtime requirements, tiga CSV + metadata, dan Python yang kompatibel. Tinjau konteks akun/repo/branch/visibilitas serta kesiapan cloud; semua itu belum ditetapkan dan tidak dikarang. Buat `url.txt` hanya setelah URL aktif diverifikasi. P11 masih `not_started`; belum ada publikasi atau ZIP P12.
+
+
+### P11 — Deployment Streamlit Community Cloud
+
+- Verifikasi: 28 Oktober 2026, sekitar 20:07 Asia/Jakarta. Status: `completed`.
+- Pengguna mengotorisasi deploy dan menyelesaikan login/otorisasi GitHub. Repo publik bagususwanto/Analisis-Data-E-Commerce, branch main, entry point dashboard/dashboard.py.
+- URL aktif: https://y2ybbkygxb92qnxwkgmqsq.streamlit.app/; tersimpan pada url.txt. Runtime cloud Python 3.12.15, Streamlit 1.66.1; instalasi requirements dan server berhasil. Platform otomatis mengganti pyarrow 26.0.0 dengan 24.0.0.
+- Percobaan awal HTTP 403; reload dan percobaan kedua berhasil. Tidak mengubah kode/data analisis.
+- Tiga tab cloud dibuka. Penjualan BRL 13.181.027,13, 96.211 order, 109.880 item; pengiriman 96.203 evaluable dan 95.560 review pembanding, 6,79% terlambat; RFM 93.104 pelanggan, 3,00% berulang. Periode dan bundle 8d4806453e00 sesuai lokal.
+- Filter wilayah RFM kosong menghasilkan 0 pelanggan, BRL 0,00, persentase Tidak tersedia dan pesan kosong tanpa exception; filter dikembalikan ke Semua wilayah.
+- Bukti: reports/deployment_validation.json dan reports/deployment/ (log build, screenshot kondisi kosong dan dashboard). Log cloud tidak mengekspos resolved commit SHA; HEAD lokal a8d3445d0e2d5ffd70ce9043b3ccebce0908a25e cocok tracking origin/main saat pemeriksaan.
+- Gate P11 lulus; berikutnya P12 pengemasan deterministik, checksum, dan uji hasil ekstraksi. P12 belum dikerjakan.
+
+
+### Pembaruan catatan notebook dan validasi ulang — 28 Oktober 2026
+
+- Permintaan: perbarui narasi URL cloud dan ulang validasi; tidak membuat ZIP.
+- Notebook dan scripts/build_notebook.py kini menyebut dashboard aktif beserta URL dan url.txt; HTML diregenerasi melalui eksekusi kernel bersih.
+- Environment baru Python 3.12.13 di /private/tmp/ecommerce-p11-validation, 83 paket dari requirements-dev.txt; uv pip check lulus.
+- check_notebook.py lulus 21 code cell, 6 grafik, 0 error. Payload numerik dan keenam hash PNG identik dengan versi yang telah ditinjau; review dicatat ulang sesuai hash.
+- prepare_dashboard_data.py lulus round-trip, determinisme, 12 skenario filter, dan hash sumber; tiga CSV tetap sama. Metadata bundle/provenance diperbarui untuk notebook terbaru.
+- pytest: 140 passed in 34.84s. validate_outputs.py: 11/11 passed termasuk referensi independen, notebook/CSV/UI, provenance, identitas dan hash sumber. git diff --check lulus; frasa URL cloud belum tersedia tidak ditemukan pada notebook/generator/HTML.
+- Bukti: reports/notebook_update_validation.json, reports/validation_results.json, reports/notebook_validation.json dan reports/export_validation.json. Audit pra-submission diperbarui; hanya pengemasan/uji ekstraksi P12 yang tersisa. Tidak commit/push/redeploy; aplikasi cloud tetap memakai deployment P11 dengan hasil numerik yang sama.

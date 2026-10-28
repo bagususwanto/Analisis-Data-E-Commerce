@@ -384,7 +384,7 @@ display({"application/json": {"artifact": "ecommerce.analytics.v1",
 - Struktur notebook diadaptasi dari [templat resmi Dicoding]({baseline['template']['source_url']}) yang disalin dan diverifikasi pada P00. Salinan lokal dipertahankan tanpa modifikasi pada references/notebook_template.ipynb.
 - Analisis dan visual dihitung melalui kode proyek ini; tidak mengimpor notebook analisis pihak lain. Metode, kebijakan kualitas, dan batas interpretasi dijelaskan pada setiap tahap.
 - Ikuti README untuk Python 3.12.13 dan requirements-dev.txt. Jalankan seluruh sel dari kernel bersih di root proyek. Grafik yang sama diekspor ke reports/figures; data dictionary order/item dan RFM tersedia di reports.
-- Notebook ini menyelesaikan tahap analitis P07. Ekspor dashboard, aplikasi Streamlit, deployment dan paket submission akhir memiliki gate terpisah; URL cloud belum tersedia.''')],
+- Notebook ini memuat hasil analisis yang telah diverifikasi. Dashboard sudah aktif di [Streamlit Community Cloud](https://y2ybbkygxb92qnxwkgmqsq.streamlit.app/); tautannya juga tersimpan dalam url.txt. Pengemasan dan uji hasil ekstraksi submission diperiksa terpisah sebelum pengiriman.''')],
     }
     cells=[]
     for idx,original in enumerate(nb.cells):

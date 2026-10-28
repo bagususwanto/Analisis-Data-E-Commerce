@@ -1,15 +1,15 @@
 {
   "phase": "P08",
   "status": "passed",
-  "verified_at": "2026-10-24T21:30:15+07:00",
+  "verified_at": "2026-10-28T20:25:34+07:00",
   "command": "python scripts/prepare_dashboard_data.py",
   "runtime": {
     "python": "3.12.13",
     "pandas": "3.1.0",
     "invocation_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce"
   },
-  "bundle_id": "8d4806453e009fa13920e1a18e9eb00d81ed8d458478d7621f6f1c993f7800f4",
-  "metadata_sha256": "adddc369db3ffc8e37451f0e89e856047ae0790837a2ea3c2ff041059ccf9de1",
+  "bundle_id": "d30590c50b558ac0dcb07c82410143938b4521820cb2ec6eff8d8f5a5ce4b150",
+  "metadata_sha256": "ebbf1525119183891ef6c3f4251bf30005b34b14f5a60b7d3ee2400f908c6d04",
   "table_files": {
     "order_level": {
       "sha256": "00b412f0ed0173c983ac17274330a50c24d51125b349ff79901aec8456a545a1",

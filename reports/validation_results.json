@@ -1,23 +1,23 @@
 {
   "phase": "P10",
   "status": "passed",
-  "verified_at": "2026-10-24T21:36:36+07:00",
+  "verified_at": "2026-10-28T20:26:28+07:00",
   "command": "python scripts/validate_outputs.py",
   "runtime": {
     "python": "3.12.13",
-    "executable": "/tmp/ecommerce-p10-clean/bin/python",
-    "invocation_cwd": "/private/tmp",
+    "executable": "/private/tmp/ecommerce-p11-validation/bin/python",
+    "invocation_cwd": "/Users/bagus/Library/CloudStorage/OneDrive-UniversitasTerbuka/Stupen/Submission/DS/Analisis-Data-E-Commerce",
     "optimized": false,
     "packages": {
-      "narwhals": "2.27.1",
       "uvicorn": "0.54.0",
       "pexpect": "4.9.0",
       "kiwisolver": "1.5.1",
+      "starlette": "1.10.0",
       "click": "8.5.0",
       "ptyprocess": "0.7.0",
       "packaging": "26.3",
+      "narwhals": "2.28.0",
       "protobuf": "7.36.2",
-      "starlette": "1.9.0",
       "nbformat": "5.11.1",
       "Pygments": "2.21.0",
       "prompt_toolkit": "3.0.53",
@@ -26,12 +26,12 @@
       "ipykernel": "7.4.0",
       "requests": "2.34.2",
       "defusedxml": "0.7.1",
-      "wcwidth": "0.9.3",
       "certifi": "2026.10.23",
       "jsonschema": "4.26.0",
       "websockets": "17.3",
       "seaborn": "0.13.2",
       "matplotlib-inline": "0.2.2",
+      "wcwidth": "0.9.4",
       "pandas": "3.1.0",
       "webencodings": "0.6.1",
       "itsdangerous": "2.2.0",
@@ -44,12 +44,11 @@
       "iniconfig": "2.3.1",
       "numpy": "2.5.4",
       "tornado": "6.6",
-      "tzdata": "2026.5",
+      "platformdirs": "4.13.7",
       "stack-data": "0.6.3",
       "pillow": "13.0.0",
       "contourpy": "1.4.0",
       "pluggy": "1.7.0",
-      "pip": "25.0.1",
       "pytest": "9.1.1",
       "pyzmq": "27.2.0",
       "urllib3": "2.8.0",
@@ -68,6 +67,8 @@
       "cycler": "0.12.1",
       "Jinja2": "3.1.6",
       "referencing": "0.37.0",
+      "fonttools": "4.68.0",
+      "tzdata": "2026.6",
       "nbclient": "0.11.0",
       "rpds-py": "2026.9.1",
       "attrs": "26.1.0",
@@ -81,7 +82,6 @@
       "asttokens": "3.0.2",
       "beautifulsoup4": "4.15.0",
       "psutil": "7.2.2",
-      "fonttools": "4.67.0",
       "python-dateutil": "3.0.0",
       "parso": "0.8.7",
       "streamlit": "1.66.1",
@@ -89,7 +89,6 @@
       "anyio": "4.15.1",
       "pyparsing": "3.3.3",
       "six": "1.17.0",
-      "platformdirs": "4.13.5",
       "idna": "3.20",
       "comm": "0.2.3",
       "ipython": "9.17.1"
@@ -110,7 +109,7 @@
         "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6",
         "references/notebook_template.ipynb": "a278bc0b6f5210e56f820c4afe3c9320da0a3db26d188ff566a3ce3bb5f29b33"
       },
-      "elapsed_seconds": 0.068
+      "elapsed_seconds": 0.076
     },
     "python_and_direct_dependency_pins": {
       "passed": true,
@@ -132,19 +131,19 @@
         },
         "isolated": true
       },
-      "elapsed_seconds": 0.007
+      "elapsed_seconds": 0.005
     },
     "bundle_schema_keys_types_metadata": {
       "passed": true,
       "detail": {
-        "bundle_id": "8d4806453e009fa13920e1a18e9eb00d81ed8d458478d7621f6f1c993f7800f4",
+        "bundle_id": "d30590c50b558ac0dcb07c82410143938b4521820cb2ec6eff8d8f5a5ce4b150",
         "rows": {
           "order_level": 99441,
           "item_level": 112650,
           "rfm_customers": 93104
         }
       },
-      "elapsed_seconds": 1.424
+      "elapsed_seconds": 1.383
     },
     "fresh_raw_pipeline_matches_every_exported_cell": {
       "passed": true,
@@ -188,7 +187,7 @@
           "matched_item_order_totals_equal": true
         }
       },
-      "elapsed_seconds": 11.349
+      "elapsed_seconds": 11.17
     },
     "independent_csv_decimal_reference": {
       "passed": true,
@@ -275,7 +274,7 @@
           "excluded_identity_value_cents": 0
         }
       },
-      "elapsed_seconds": 21.267
+      "elapsed_seconds": 21.328
     },
     "analytical_reports_and_12_filter_scenarios": {
       "passed": true,
@@ -335,7 +334,7 @@
           "customers": 0
         }
       },
-      "elapsed_seconds": 0.581
+      "elapsed_seconds": 0.582
     },
     "executed_notebook_and_six_reviewed_figures": {
       "passed": true,
@@ -345,7 +344,7 @@
         "errors": 0,
         "full_q1_q2_q3_payload_matches": true
       },
-      "elapsed_seconds": 0.036
+      "elapsed_seconds": 0.035
     },
     "current_provenance": {
       "passed": true,
@@ -353,7 +352,7 @@
         "references_checked": 6,
         "source_csvs_checked": 9
       },
-      "elapsed_seconds": 0.065
+      "elapsed_seconds": 0.061
     },
     "identity_and_placeholders": {
       "passed": true,
@@ -382,7 +381,7 @@
         "segment_rows": 5,
         "exceptions": 0
       },
-      "elapsed_seconds": 2.838
+      "elapsed_seconds": 2.837
     },
     "sources_still_unchanged": {
       "passed": true,
@@ -398,16 +397,16 @@
         "data/geolocation_dataset.csv": "b514f6fc991b9566aeba02aa5d67e2c3630f034b60a0e05aa0d082a3b66d88d6",
         "references/notebook_template.ipynb": "a278bc0b6f5210e56f820c4afe3c9320da0a3db26d188ff566a3ce3bb5f29b33"
       },
-      "elapsed_seconds": 0.054
+      "elapsed_seconds": 0.056
     }
   },
   "artifact_sha256": {
     "requirements.txt": "ac428235c0607497e670b648f74043a4e614235596dcc0f45a12f3b95defe0e5",
     "requirements-dev.txt": "ca878f9e2496cd13882a8d6ee1a77e5a5f489430eaa6bada02668ae279a945b4",
-    "README.md": "1a16b966acf7528eebe9b0566508ba117004ba7f50a89e45d9e1dde3fccfb905",
-    "notebook.ipynb": "3c2465feb9acd77b865fdbb14b440eea82225f334d3e0404b79b4b7bfa4886c3",
+    "README.md": "ef7514cd9d148ff6af5ef21d5a4432d454f2cff81a4486d3092bbb925dc2a24a",
+    "notebook.ipynb": "189a36a72f8cd3a0bb572387c0734b55351c5edd595f13b9a6eb3439a4898010",
     "dashboard/dashboard.py": "f3b09eba6a233c161522da08f32a391f3856ec20d8e28a20347a1ef3140733fc",
-    "dashboard/data_metadata.json": "adddc369db3ffc8e37451f0e89e856047ae0790837a2ea3c2ff041059ccf9de1",
+    "dashboard/data_metadata.json": "ebbf1525119183891ef6c3f4251bf30005b34b14f5a60b7d3ee2400f908c6d04",
     "scripts/validate_outputs.py": "d7b8ee2a4fd805bbf662ef7dcc4773847c084dd830f5445f30e606536dd69fe2",
     "scripts/check_notebook.py": "17cb75334efd5236bcf3fe4218e0ce88c6d59446f9718a23d2f438638a37d55d",
     "src/dashboard_data.py": "7014f7ffc25cf024b4d396c84815d6185a6b2aeae61e4f261518da2a9c1621a2",
